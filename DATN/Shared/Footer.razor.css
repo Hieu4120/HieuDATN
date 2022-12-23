@@ -1,0 +1,32 @@
+﻿.cus-text-secondary {
+    color: #F5F5F5 ;
+}
+
+.btn.btn-primary {
+    color: #3D464D !important;
+}
+.btn-primary {
+    background-color: #FFD333;
+    border-color: #FFD333;
+}
+
+.cus-text-primary {
+    color: #FFD333;
+}
+
+.cus-bg-dark {
+    background-color: #3D464D;
+}
+
+a {
+    text-decoration: none;
+    background-color: transparent;
+}
+a:hover {
+  color: #e6b400;
+ }
+
+.cus-form-control:focus {
+    border-color: none !important;
+    box-shadow: none !important;
+}

@@ -1,0 +1,71 @@
+﻿@layout SupportLayout
+@page "/manager-suplier/{Page:int}"
+@page "/manager-suplier"
+@inject NavigationManager UriHelper
+
+
+<div class="card mb-4">
+    <div class="card-header mb-3">
+        Quản lý nhà cung cấp
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <div class="row col-sm-12 mb-4 mt-2">
+                <div class="col-sm-3">
+                    <a href="/add-suplier" class="btn btn-primary btn-sm">Thêm nhà cung cấp</a>
+                </div>
+            </div>
+            <table class="table table-sm table-bordered table-hover">
+                <thead class="table-warning">
+                    <tr>
+                        <th>STT</th>
+                        <th>Tên nhà cung cấp</th>
+                        <th>Số điện thoại</th>
+                        <th>Email</th>
+                        <th>Địa chỉ</th>
+                        <th>Trạng thái</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (supplis == null)
+                    {
+                        <tr class="cus-text-align-center">
+                            <td colspan="4">Không có dữ liệu</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var item in supplis)
+                        {
+
+                            <tr>
+                                <td>@ROW_INDEX</td>
+                                <td class="cus-width-15">@item.supplier_name</td>
+                                <td class="cus-width-15">@item.supplier_phone_number</td>
+                                <td>@item.supplier_email</td>
+                                <td>@item.supplier_address</td>
+                                <td class="cus-width-10">@item.supplier_status</td>
+                                <td>
+                                    <a class="btn btn-primary"
+                               @onclick="() => btn_pass_data(item)"> Cập nhật</a>
+                                </td>
+                            </tr>
+                            ROW_INDEX++;
+                            @if (ROW_INDEX > supplis.Count())
+                            { ROW_INDEX = 1; }
+                        }
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="7">
+                            <Paging PI="pagingInfo" PageClassesEnabled="true" PageClass="Paging" PageClassSelected="active" PageUri="@CurrentUri"></Paging>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+<RadzenNotification />

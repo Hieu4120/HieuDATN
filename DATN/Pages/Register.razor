@@ -1,0 +1,95 @@
+﻿@page "/register"
+@using DATN
+@using DATN.Model
+@using DATN.Services
+@inject IJSRuntime js
+@inject AuthenticationStateProvider authStateProvider
+@inject NavigationManager navManager
+
+<EditForm Model="account_n" OnValidSubmit="@btn_add_new_account">
+    <DataAnnotationsValidator />
+    <div class="container-fluid cus-bg-dark cus-text-secondary">
+        <div class="col-sm-12 p-4 border">
+            <div class="mb-3 text-center">
+                <h3>LOGIN</h3>
+            </div>
+            <div class="mb-3">
+                <div class="text-danger">
+                    <ValidationMessage For="@(() => account_n.username)" />
+                </div>
+                <label>
+                    Tài Khoản
+                </label>
+                @if (UserIsExits)
+                {
+                    <div class="text-danger">@errMess</div>
+                }
+                <InputText @bind-Value="account_n.username"
+                           style="@errCodeStyle"
+                           @onblur="btn_handle_input"
+                           class="form-control"
+                           placeholder="Tài Khoản" />
+            </div>
+
+            <div class="mb-3">
+                <div class="text-danger">
+                    <ValidationMessage For="@(() => account_n.password)" />
+                </div>
+                <label>
+                    Mật Khẩu
+                </label>
+                <InputText type="password" @bind-Value="account_n.password" class="form-control" placeholder="Mật Khẩu" />
+            </div>
+
+            <div class="mb-3">
+                <div class="text-danger">
+                    <ValidationMessage For="@(() => account_n.email)" />
+                </div>
+                <label>
+                    email
+                </label>
+                <InputText @bind-Value="account_n.email" class="form-control" placeholder="email" />
+            </div>
+
+            <div class="mb-2 ">
+                <button type="submit" class="btn btn-primary">Đăng ký</button>
+            </div>
+        </div>
+    </div>
+</EditForm>
+@code {
+    [Inject]
+    private IAccountServices asv { get; set; }
+    private m_account account_n = new m_account();
+    private bool UserIsExits;
+    private string? errCodeStyle;
+    private string? errMess;
+
+    private void resetState()
+    {
+        UserIsExits = false;
+        errCodeStyle = "";
+        errMess = "";
+    }
+
+    private void btn_handle_input()
+    {
+        resetState();
+    }
+
+    private async void btn_add_new_account()
+    {
+        account_n.role = "User";
+        account_n.create_at = DateTime.Now;
+        UserIsExits = await asv.ExistUser(account_n.username);
+        if (UserIsExits)
+        {
+            errCodeStyle = "outline: 1px solid red!important;";
+            errMess = "Tên người dùng đã tồn tại";
+            return;
+        }
+        await asv.Create(account_n);
+        StateHasChanged();
+    }
+}
+

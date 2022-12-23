@@ -1,0 +1,59 @@
+﻿label{
+   margin-bottom:0.5rem;
+}
+
+h5, .h5 {
+    font-size: 1.25rem;
+    color: #3D464D;
+    font-weight:700 !important;
+}
+h6 {
+    line-height: 1.2;
+    color: #3D464D;
+    font-weight: 700 !important;
+}
+
+.custom-control {
+    position: relative;
+    z-index: 1;
+    display: block;
+    min-height: 1.5rem;
+    padding-left: 1.5rem;
+}
+
+.font-weight-bold {
+    font-weight: 700 !important;
+}
+
+
+element.style {
+}
+
+.btn:not(:disabled):not(.disabled) {
+    cursor: pointer;
+}
+
+.btn.btn-primary {
+    color: #3D464D !important;
+}
+
+button:not(:disabled), [type="button"]:not(:disabled), [type="reset"]:not(:disabled), [type="submit"]:not(:disabled) {
+    cursor: pointer;
+}
+
+.font-weight-bold {
+    font-weight: 700 !important;
+}
+
+.pb-3, .py-3 {
+    padding-bottom: 1rem !important;
+}
+
+.pt-3, .py-3 {
+    padding-top: 1rem !important;
+}
+
+.btn-block {
+    display: block;
+    width: 100%;
+}

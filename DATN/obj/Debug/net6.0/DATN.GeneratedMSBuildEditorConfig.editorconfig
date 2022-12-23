@@ -1,0 +1,212 @@
+is_global = true
+build_property.TargetFramework = net6.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = DATN
+build_property.RootNamespace = DATN
+build_property.ProjectDir = C:\Users\hieu\source\repos\DATN\DATN\
+build_property.RazorLangVersion = 6.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\hieu\source\repos\DATN\DATN
+build_property._RazorSourceGeneratorDebug = 
+
+[C:/Users/hieu/source/repos/DATN/DATN/App.razor]
+build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hieu/source/repos/DATN/DATN/Pages/Admin/Account/AccountManager.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cQWNjb3VudFxBY2NvdW50TWFuYWdlci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hieu/source/repos/DATN/DATN/Pages/Admin/Book/AdminAddNewBook.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cQm9va1xBZG1pbkFkZE5ld0Jvb2sucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hieu/source/repos/DATN/DATN/Pages/Admin/Book/AdminMangagerBook.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cQm9va1xBZG1pbk1hbmdhZ2VyQm9vay5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hieu/source/repos/DATN/DATN/Pages/Admin/Book/AdminUpdateBook.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cQm9va1xBZG1pblVwZGF0ZUJvb2sucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hieu/source/repos/DATN/DATN/Pages/Admin/Carousel/AddminManagerCarousel.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cQ2Fyb3VzZWxcQWRkbWluTWFuYWdlckNhcm91c2VsLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hieu/source/repos/DATN/DATN/Pages/Admin/Carousel/AdminAddNewCarousel.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cQ2Fyb3VzZWxcQWRtaW5BZGROZXdDYXJvdXNlbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hieu/source/repos/DATN/DATN/Pages/Admin/Carousel/AdminUpdateCarousel.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cQ2Fyb3VzZWxcQWRtaW5VcGRhdGVDYXJvdXNlbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hieu/source/repos/DATN/DATN/Pages/Admin/Customer/AdminManagerCustomer.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cQ3VzdG9tZXJcQWRtaW5NYW5hZ2VyQ3VzdG9tZXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hieu/source/repos/DATN/DATN/Pages/Admin/Feeback/AdminFeedback.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cRmVlYmFja1xBZG1pbkZlZWRiYWNrLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hieu/source/repos/DATN/DATN/Pages/Admin/Feeback/AdminManagerFeeback.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cRmVlYmFja1xBZG1pbk1hbmFnZXJGZWViYWNrLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hieu/source/repos/DATN/DATN/Pages/Admin/Genre/AdminAddGenre.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cR2VucmVcQWRtaW5BZGRHZW5yZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hieu/source/repos/DATN/DATN/Pages/Admin/Genre/AdminManagerGenre.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cR2VucmVcQWRtaW5NYW5hZ2VyR2VucmUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hieu/source/repos/DATN/DATN/Pages/Admin/Genre/AdminUpdateGenre.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cR2VucmVcQWRtaW5VcGRhdGVHZW5yZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hieu/source/repos/DATN/DATN/Pages/Admin/ImportOrder/AdminAddImportOrder.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cSW1wb3J0T3JkZXJcQWRtaW5BZGRJbXBvcnRPcmRlci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hieu/source/repos/DATN/DATN/Pages/Admin/ImportOrder/AdminImportOder.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cSW1wb3J0T3JkZXJcQWRtaW5JbXBvcnRPZGVyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hieu/source/repos/DATN/DATN/Pages/Admin/ImportOrder/AdminImportOderDetail.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cSW1wb3J0T3JkZXJcQWRtaW5JbXBvcnRPZGVyRGV0YWlsLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hieu/source/repos/DATN/DATN/Pages/Admin/Review/AdminReviewManager.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cUmV2aWV3XEFkbWluUmV2aWV3TWFuYWdlci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hieu/source/repos/DATN/DATN/Pages/Admin/SaleOrder/AdminDetailSaleOrder.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cU2FsZU9yZGVyXEFkbWluRGV0YWlsU2FsZU9yZGVyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hieu/source/repos/DATN/DATN/Pages/Admin/SaleOrder/AdminSaleOrder.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cU2FsZU9yZGVyXEFkbWluU2FsZU9yZGVyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hieu/source/repos/DATN/DATN/Pages/Admin/SaleOrder/AdminSaleOrderUpdate.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cU2FsZU9yZGVyXEFkbWluU2FsZU9yZGVyVXBkYXRlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hieu/source/repos/DATN/DATN/Pages/Admin/Supplier/AdminAddNewSuplier.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cU3VwcGxpZXJcQWRtaW5BZGROZXdTdXBsaWVyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hieu/source/repos/DATN/DATN/Pages/Admin/Supplier/AdminManagerSuplier.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cU3VwcGxpZXJcQWRtaW5NYW5hZ2VyU3VwbGllci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hieu/source/repos/DATN/DATN/Pages/Admin/Supplier/AdminUpdateSuplier.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cU3VwcGxpZXJcQWRtaW5VcGRhdGVTdXBsaWVyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hieu/source/repos/DATN/DATN/Pages/BookResultSearch.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQm9va1Jlc3VsdFNlYXJjaC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hieu/source/repos/DATN/DATN/Pages/Login.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW4ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hieu/source/repos/DATN/DATN/Pages/Paging.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGFnaW5nLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hieu/source/repos/DATN/DATN/Shared/Components/ModalConfirm.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXENvbXBvbmVudHNcTW9kYWxDb25maXJtLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hieu/source/repos/DATN/DATN/Shared/SearchBox.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFNlYXJjaEJveC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hieu/source/repos/DATN/DATN/Shared/SurveyPrompt.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFN1cnZleVByb21wdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hieu/source/repos/DATN/DATN/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hieu/source/repos/DATN/DATN/Pages/Cart.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2FydC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-fc9ad5bfk9
+
+[C:/Users/hieu/source/repos/DATN/DATN/Pages/Checkout.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2hlY2tvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-vofd0wxtm8
+
+[C:/Users/hieu/source/repos/DATN/DATN/Pages/Contact.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29udGFjdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-z1e2n35bkf
+
+[C:/Users/hieu/source/repos/DATN/DATN/Pages/DetailProduct.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRGV0YWlsUHJvZHVjdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-xcrl8yzitk
+
+[C:/Users/hieu/source/repos/DATN/DATN/Pages/Home.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSG9tZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-s2g741jfjb
+
+[C:/Users/hieu/source/repos/DATN/DATN/Pages/Register.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVnaXN0ZXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-83grsy773n
+
+[C:/Users/hieu/source/repos/DATN/DATN/Pages/Shop.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hvcC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-lp15x7xxs5
+
+[C:/Users/hieu/source/repos/DATN/DATN/Shared/AdminNav.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXEFkbWluTmF2LnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-rdwnz7leir
+
+[C:/Users/hieu/source/repos/DATN/DATN/Shared/Components/DownLoadingComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXENvbXBvbmVudHNcRG93bkxvYWRpbmdDb21wb25lbnQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-9seajfgzxd
+
+[C:/Users/hieu/source/repos/DATN/DATN/Shared/Components/LoadingComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXENvbXBvbmVudHNcTG9hZGluZ0NvbXBvbmVudC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-cpsrt4q3k2
+
+[C:/Users/hieu/source/repos/DATN/DATN/Shared/Components/SmallLoadingComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXENvbXBvbmVudHNcU21hbGxMb2FkaW5nQ29tcG9uZW50LnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-lhr4e99oyx
+
+[C:/Users/hieu/source/repos/DATN/DATN/Shared/Footer.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXEZvb3Rlci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-0oxfsyqc1h
+
+[C:/Users/hieu/source/repos/DATN/DATN/Shared/MainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE1haW5MYXlvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-crbbowx7zc
+
+[C:/Users/hieu/source/repos/DATN/DATN/Shared/NavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE5hdk1lbnUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-4kz1s4h1f6
+
+[C:/Users/hieu/source/repos/DATN/DATN/Shared/SupportLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFN1cHBvcnRMYXlvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-teia209me3
+
+[C:/Users/hieu/source/repos/DATN/DATN/Pages/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hieu/source/repos/DATN/DATN/Pages/_Host.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX0hvc3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/hieu/source/repos/DATN/DATN/Pages/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX0xheW91dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 

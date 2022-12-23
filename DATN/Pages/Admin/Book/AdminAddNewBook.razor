@@ -1,0 +1,157 @@
+﻿@layout SupportLayout
+@page "/add-new-book"
+@using DATN.Model
+@using Microsoft.AspNetCore.Components
+@using System.ComponentModel.DataAnnotations;
+<PageTitle>Thêm sách</PageTitle>
+
+
+<div class="card mb-4">
+    <div class="card-header mb-3">
+        Thêm mới sách
+    </div>
+    <div class="card-body">
+        @if (@isLoading)
+        {
+            <DATN.Shared.Components.LoadingComponent />
+        }
+        else
+        {
+
+            <EditForm Model="books" OnValidSubmit="@AddBook">
+                <div class="form-group row mb-2 ms-3">
+                    <label class="col-sm-3">Tên sản phẩm</label>
+                    <div class="col-sm-4 pt-2">
+                        <RadzenAutoComplete Data=@import_order
+                                        TextProperty="book_id"
+                                        LoadData=@OnLoadData
+                                        Change="@OnChanged"
+                                        @bind-Value=@RetSearchValue
+                                        id="prvYearCode"
+                                        Style="width: 100%;">
+                            <Template Context="Aucontext">
+                                @if (isLoadingAuto)
+                                {
+                                    <DATN.Shared.Components.SmallLoadingComponent />
+                                }
+                                else
+                                {
+                                    @if (@Aucontext.book_id != null)
+                                    {
+                                        @Aucontext.book_id
+                                        <a class="ms-2"></a>
+                                    }
+                                    @if (@Aucontext.book_name != null)
+                                    {
+                                        @Aucontext.book_name
+                                    }
+                                }
+                            </Template>
+                        </RadzenAutoComplete>
+                    </div>
+                    <div class="col-sm-3 pt-1">
+                        @*@if (IsDisableCopy)
+                    {
+                    <button type="button"
+                    disabled
+                    class="btn btn-primary-add btn-sm">
+                    コピー　
+                    </button>
+                    }
+                    else
+                    {*@
+                        <button type="button"
+                            @onclick="btn_click_copy"
+                            class="btn btn-primary btn-sm">
+                            Lấy dữ liệu
+                        </button>
+                        @*}*@
+
+                    </div>
+                </div>
+
+                <div class="form-group row mb-2 ms-3">
+                    <div class="text-danger">
+                        <ValidationMessage For="@(() => books.book_name)" />
+                    </div>
+                    <label class="col-sm-3">Tên sản phẩm</label>
+                    <div class="col-sm-4">
+                        <InputText readonly @bind-Value="books.book_name"
+                               class="form-control form-control-sm" />
+                    </div>
+                </div>
+                <div class="form-group row mb-2 ms-3">
+                    <label class="col-sm-3 col-form-label">Thể Loại</label>
+                    <div class="col-sm-4">
+                        <InputText readonly @bind-Value="@gen_name" class="form-control form-control-sm" />
+                    </div>
+                </div>
+                <div class="form-group row mb-2 ms-3">
+                    <label class="col-sm-3 col-form-label">Nhà cung cấp</label>
+                    <div class="col-sm-4">
+                        <InputText readonly class="form-control form-control-sm" @bind-Value="@supp_name" />
+                    </div>
+                </div>
+                <div class="form-group row mb-2 ms-3">
+                    <label class="col-sm-3 col-form-label">Tên tác giả</label>
+                    <div class="col-sm-4">
+                        <InputText readonly @bind-Value="books.author"
+                               class="form-control form-control-sm"/>
+                    </div>
+                </div>
+                <div class="form-group row mb-2 ms-3">
+                    <label class="col-sm-3 col-form-label">Giá sản phẩm</label>
+                    <div class="col-sm-4">
+                        <InputNumber readonly @bind-Value="books.price"
+                                 class="form-control form-control-sm" />
+                    </div>
+                </div>
+                <div class="form-group row mb-2 ms-3">
+                    <label class="col-sm-3 col-form-label">Nội dung sách</label>
+                    <div class="col-sm-4">
+                        <InputTextArea @bind-Value="books.book_content"
+                                   class="form-control form-control-sm" />
+                    </div>
+                </div>
+                <div class="form-group row mb-2 ms-3">
+                    <label class="col-sm-3 col-form-label">Trạng thái</label>
+                    <div class="col-sm-4">
+                        <InputSelect @bind-Value="books.status"
+                                 class="form-select form-select-sm">
+                            <option disabled selected></option>
+                            @foreach (var ele in status_b)
+                            {
+                                <option value="@ele">
+                                    @ele
+                                </option>
+                            }
+                        </InputSelect>
+                    </div>
+                </div>
+                <div class="form-group row mb-2 ms-3">
+                    <label class="col-sm-3 col-form-label">Số lượng</label>
+                    <div class="col-sm-4">
+                        <InputNumber readonly @bind-Value="books.amount"
+                                 class="form-control form-control-sm" />
+                    </div>
+                </div>
+                <div class="form-group row mb-2 ms-3">
+                    <label class="col-sm-3 col-form-label">Ảnh sách</label>
+                    <div class="col-sm-4">
+                        @if (books.book_image != null)
+                        {
+                            <img src="data:image/bmp;base64, @(Convert.ToBase64String(books.book_image))" />
+                        }
+                    </div>
+                </div>
+                <div class="form-group row mb-2 ms-3">
+                    <div class="col-sm-9 offset-3">
+                        <button type="submit" class="btn btn-primary">Thêm sách</button>
+                        <a href="/manager-book" class="btn btn-primary">Trở lại</a>
+                    </div>
+                </div>
+            </EditForm>
+        }
+    </div>
+</div>
+<RadzenNotification />

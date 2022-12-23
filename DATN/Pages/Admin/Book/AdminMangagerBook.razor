@@ -1,0 +1,98 @@
+﻿@layout SupportLayout
+@page "/manager-book"
+
+<div class="card mb-4">
+    <div class="card-header mb-3">
+        Quản lý sách
+    </div>
+    <div class="card-body">
+        @if (isLoading)
+        {
+            <DATN.Shared.Components.LoadingComponent />
+        }
+        else
+        {
+            <div class="table-responsive">
+                <div class="row col-sm-12 mb-4 mt-2">
+                    <div class="col-sm-3">
+                        <a href="/add-new-book" class="btn btn-primary btn-sm">Thêm sách</a>
+                    </div>
+                </div>
+                <table class="table table-sm table-bordered table-hover">
+                    <thead class="table-warning">
+                        <tr>
+                            <th class="text-center">STT</th>
+                            <th class="text-center">Ảnh sách</th>
+                            <th class="text-center">Tên sách</th>
+                            <th class="text-center">Tác giả</th>
+                            <th class="text-center">Thể loại</th>
+                            <th class="text-center">Nhà cung cấp</th>
+                            <th class="text-center">Số lượng</th>
+                            <th class="text-center">Giá bán</th>
+                            <th class="text-center">Số lượt xem</th>
+                            <th class="text-center">Số lượng bán</th>
+                            <th class="text-center">Trạng thái</th>
+                            <th class="text-center"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (books == null || books.Count() == 0)
+                        {
+                            <tr class="cus-text-align-center">
+                                <td colspan="4">Không có dữ liệu</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var ele in books)
+                            {
+                                <tr>
+                                    <td>@ROW_INDEX</td>
+                                    <td class="cus-width-15">
+                                        <img class="cus-width-100"
+                                 src="data:image/bmp;base64,
+                                         @(Convert.ToBase64String(ele.book_image))" />
+                                    </td>
+                                    <td class="cus-width-10">@ele.book_name</td>
+                                    <td class="cus-width-10">@ele.author</td>
+                                    @foreach (var s in suppliers)
+                                    {
+                                        if (ele.supplier_id == s.supplier_id)
+                                        {
+                                            <td class="cus-width-10">
+                                                @s.supplier_name
+                                            </td>
+                                        }
+                                    }
+                                    @foreach (var g in genres)
+                                    {
+                                        if (ele.genre_id == g.genre_id)
+                                        {
+                                            <td class="cus-width-10">
+                                                @g.genre_name
+                                            </td>
+                                        }
+                                    }
+                                    <td>@ele.amount</td>
+                                    <td>@ele.price</td>
+                                    <td>@ele.number_click</td>
+                                    <td></td>
+                                    <td>@ele.status</td>
+                                    <td>
+                                        <a class="btn btn-primary btn-sm"
+                               @onclick="() => btn_pass_data_b(ele)"> Cập nhật</a>
+                                    </td>
+                                </tr>
+                                ROW_INDEX++;
+                                @if (ROW_INDEX > books.Count())
+                                { ROW_INDEX = 1; }
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>
+<RadzenNotification />
+

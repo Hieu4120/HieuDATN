@@ -1,0 +1,53 @@
+﻿@using DATN.Services
+@inject NavigationManager navManager
+
+
+    <div class="text-left nav-item cus-padding">
+        <div class="input-group">
+            <input @bind-value="Input" type="text" class="form-control cus-form-control"
+               @onkeydown="@pass_search_string"
+               @oninput="@((e) => getvalueinput(e))"
+               placeholder="Tìm kiếm sách theo tên" />
+            <button @onclick="pass_data" class="btn btn-sm btn-primary">
+                Tìm kiếm
+            </button>
+        </div>
+    </div>
+
+
+@code {
+
+    [Inject]
+    private IRedirectSevices? iredir { get; set; }
+    private string SearchString = "";
+    private string Input { get; set; }
+   
+    
+    private void getvalueinput(ChangeEventArgs e)
+    {
+        SearchString = e.Value.ToString();
+    }
+    private void pass_search_string(KeyboardEventArgs e)
+    {
+        string InputVal = SearchString;
+        if (e.Code == "Enter")
+        {
+            Dictionary<string, string> passData = new Dictionary<string, string>
+            {
+                {"search_string", InputVal},
+            };
+            iredir.RedirectParameterForce("search", passData, true);
+            StateHasChanged();
+        }
+    }
+    private void pass_data()
+    {
+        string book_id = Input;
+        Dictionary<string, string> passData = new Dictionary<string, string>
+            {
+                {"search_string", book_id},
+            };
+        iredir.RedirectParameterForce("search", passData, true);
+        StateHasChanged();
+    }
+}

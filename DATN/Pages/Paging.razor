@@ -1,0 +1,114 @@
+﻿@using DATN.Model
+@using Microsoft.AspNetCore.Mvc.Rendering;
+<style>
+    .pagingDiv {
+        display: flex;
+    }
+
+        .pagingDiv > a {
+            display: inline-block;
+            padding: 0px 9px;
+            margin-right: 4px;
+            border-radius: 3px;
+            box-shadow: inset 0px 1px 0px rgba(255,255,255, .8), 0px 1px 3px rgba(0,0,0, .1);
+            font-size: .875em;
+            font-weight: bold;
+            text-decoration: none;
+            color: #212529;
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+            text-shadow: 0px 1px 0px rgba(255,255,255, 1);
+            padding: 0.5rem 0.75rem;
+        }
+
+            .pagingDiv > a.active {
+                border: none;
+                color: #212529;
+                background-color: #FFD333;
+                border-color: #FFD333;
+            }
+</style>
+
+<div class="pagingDiv">@((MarkupString)CreatePaging())</div>
+
+@code {
+    [Parameter]
+    public PagingInfo PI { get; set; }
+
+    [Parameter]
+    public bool PageClassesEnabled { get; set; } = false;
+
+    [Parameter]
+    public string PageClass { get; set; }
+
+    [Parameter]
+    public string PageClassSelected { get; set; }
+    [Parameter]
+    public string PageUri{ get; set; }
+
+    public string CreatePaging()
+    {
+        TagBuilder result = new TagBuilder("div");
+        string anchorInnerHtml = "";
+
+        for (int i = 1; i <= PI.TotalPages; i++)
+        {
+            TagBuilder tag = new TagBuilder("a");
+            anchorInnerHtml = AnchorInnerHtml(i, PI);
+
+            if (anchorInnerHtml == "..")
+                tag.Attributes["href"] = "#";
+            else if (i == 1)
+                tag.Attributes["href"] = $"/{PageUri}";
+            else
+                tag.Attributes["href"] = $"/{PageUri}" + $"/{i}";
+
+            if (PageClassesEnabled)
+            {
+                tag.AddCssClass(PageClass);
+                tag.AddCssClass(i == PI.CurrentPage ? PageClassSelected : "");
+            }
+
+            tag.InnerHtml.Append(anchorInnerHtml);
+
+            if (anchorInnerHtml != "")
+                result.InnerHtml.AppendHtml(tag);
+        }
+
+        System.IO.StringWriter writer = new System.IO.StringWriter();
+        result.InnerHtml.WriteTo(writer, System.Text.Encodings.Web.HtmlEncoder.Default);
+        return writer.ToString();
+    }
+
+    public static string AnchorInnerHtml(int i, PagingInfo pagingInfo)
+    {
+        string anchorInnerHtml = "";
+        if (pagingInfo.TotalPages <= 10)
+            anchorInnerHtml = i.ToString();
+        else
+        {
+            if (pagingInfo.CurrentPage <= 5)
+            {
+                if ((i <= 8) || (i == pagingInfo.TotalPages))
+                    anchorInnerHtml = i.ToString();
+                else if (i == pagingInfo.TotalPages - 1)
+                    anchorInnerHtml = "..";
+            }
+            else if ((pagingInfo.CurrentPage > 5) && (pagingInfo.TotalPages - pagingInfo.CurrentPage >= 5))
+            {
+                if ((i == 1) || (i == pagingInfo.TotalPages) || ((pagingInfo.CurrentPage - i >= -3) && (pagingInfo.CurrentPage - i <= 3)))
+                    anchorInnerHtml = i.ToString();
+                else if ((i == pagingInfo.CurrentPage - 4) || (i == pagingInfo.CurrentPage + 4))
+                    anchorInnerHtml = "..";
+            }
+            else if (pagingInfo.TotalPages - pagingInfo.CurrentPage < 5)
+            {
+                if ((i == 1) || (pagingInfo.TotalPages - i <= 7))
+                    anchorInnerHtml = i.ToString();
+                else if (pagingInfo.TotalPages - i == 8)
+                    anchorInnerHtml = "..";
+            }
+        }
+        return anchorInnerHtml;
+    }
+}

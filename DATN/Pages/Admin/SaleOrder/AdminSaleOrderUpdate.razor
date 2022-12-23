@@ -1,0 +1,61 @@
+﻿@layout SupportLayout
+@page "/sale-order-update"
+@using DATN.Shared.Components
+@inject NavigationManager NavigationManager
+
+<div class="card mb-4">
+    <div class="card-header mb-3">
+        Cập nhật thể loại
+    </div>
+    <div class="card-body">
+        @if (@isLoading)
+        {
+            <DATN.Shared.Components.LoadingComponent />
+        }
+        else
+        {
+            <EditForm Model="@sale_Order" OnValidSubmit="@UpdateSaleorder">
+                <DataAnnotationsValidator />
+                <div class="form-group row ms-3">
+                    <div class="text-danger col-sm-7 offset-sm-3 ps-0">
+                        <ValidationMessage For="@(() => sale_Order.delivery_date)" />
+                    </div>
+                </div>
+                <div class="form-group row mb-2 ms-3 col-sm-11">
+                    <label class="col-sm-3">Ngày vận chuyển</label>
+                    <div class="col-sm-4">
+                        <InputDate @bind-Value="@sale_Order.delivery_date"
+                               class="form-control form-control-sm" />
+                    </div>
+                </div>
+
+                <div class="form-group row ms-3">
+                    <div class="text-danger col-sm-7 offset-sm-3 ps-0">
+                        <ValidationMessage For="@(() => sale_Order.status)" />
+                    </div>
+                </div>
+                <div class="form-group row mb-2 ms-3 col-sm-11">
+                    <label class="col-sm-3 col-form-label">Trạng thái</label>
+                    <div class="col-sm-4">
+                        <InputSelect @bind-Value="@sale_Order.status"
+                                 class="form-select form-select-sm">
+                            <option selected disabled>@sale_Order.status</option>
+                            @foreach (var ele in status_sale)
+                            {
+                                <option value="@ele">
+                                    @ele
+                                </option>
+                            }
+                        </InputSelect>
+                    </div>
+                </div>
+                <div class="form-group row mb-2 ms-3">
+                    <div class="col-sm-9 offset-3">
+                        <button type="submit" class="btn btn-primary">Cập nhật</button>
+                        <a href="/manager-sale-order" class="btn btn-primary">Trở lại</a>
+                    </div>
+                </div>
+            </EditForm>
+        }
+    </div>
+</div>

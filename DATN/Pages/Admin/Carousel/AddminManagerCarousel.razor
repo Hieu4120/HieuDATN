@@ -1,0 +1,69 @@
+﻿@layout SupportLayout
+@page "/manager-carousel"
+
+<div class="card mb-4">
+    <div class="card-header mb-3">
+        Quản lý sách
+    </div>
+    <div class="card-body">
+          @if (isLoading)
+        {
+            <DATN.Shared.Components.LoadingComponent />
+        }
+        else
+        {
+        <div class="table-responsive">
+            <div class="row col-sm-12 mb-4 mt-2">
+                <div class="col-sm-3">
+                    <a href="/add-carousel" class="btn btn-primary btn-sm">Thêm Carousel</a>
+                </div>
+            </div>
+            <table class="table table-sm table-bordered table-hover">
+                <thead class="table-warning">
+                    <tr>
+                        <th class="text-center">STT</th>
+                        <th class="text-center">Ảnh</th>
+                        <th class="text-center">Tiêu đề</th>
+                        <th class="text-center">Nội dung</th>
+                        <th class="text-center">Ngày tạo</th>
+                        <th class="text-center"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (carosels == null || carosels.Count() == 0)
+                    {
+                        <tr class="cus-text-align-center">
+                            <td colspan="4">Không có dữ liệu</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var ele in carosels)
+                        {
+                            <tr>
+                                <td class="cus-width-10">@ROW_INDEX</td>
+                                <td class="cus-width-20">
+                                    <img class="cus-width-100"
+                                 src="data:image/bmp;base64,
+                                         @(Convert.ToBase64String(ele.carosel_image))" />
+                                </td>
+                                <td class="cus-width-10">@ele.tiltle</td>
+                                <td class="cus-width-30">@ele.content</td>
+                                <td>@ele.create_at.ToString("yyyy-MM-dd")</td>
+                                <td class="cus-width-10">
+                                    <a class="btn btn-primary btn-sm"
+                               @onclick="() => btn_pass_data_carousel(ele)"> Cập nhật</a>
+                                </td>
+                            </tr>
+                            ROW_INDEX++;
+                            @if (ROW_INDEX > carosels.Count())
+                            { ROW_INDEX = 1; }
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+        }
+    </div>
+</div>
+<RadzenNotification />

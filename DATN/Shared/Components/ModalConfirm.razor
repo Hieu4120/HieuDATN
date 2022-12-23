@@ -1,0 +1,48 @@
+﻿@if (ModalClass)
+{
+
+    <div class="modal modal_overlay show d-block" tabindex="-1" role="dialog">
+        <div class="modal-dialog fade-modal-open" role="document">
+            <div class="modal-content modal-content-top-50">
+                <div class="p-3">
+                    <h5 class="modal-title pb-2">Bạn có chắc muốn xóa ?</h5>
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn btn-primary btn-sm me-2" @onclick="() => handleDelte()"> OK </button>
+                        <button type="button" class="btn btn-secondary  btn-sm" data-dismiss="modal" @onclick="() => Close()">Không</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Inject]
+    private NavigationManager? NavManager { get; set; }
+    [Parameter]
+    public EventCallback<string> DeleteGenCallBack { get; set; }
+    public string ModalDisplay = "none;";
+    public bool ModalClass = false;
+
+    private void reset()
+    {
+        ModalDisplay = "none";
+        ModalClass = false;
+
+    }
+    public void Show()
+    {
+        ModalDisplay = "block;";
+        ModalClass = true;
+        StateHasChanged();
+    }
+    public void Close()
+    {
+        reset();
+        StateHasChanged();
+    }
+    public async void handleDelte()
+    { 
+        await DeleteGenCallBack.InvokeAsync();
+    }
+}

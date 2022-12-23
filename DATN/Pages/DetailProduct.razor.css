@@ -1,0 +1,34 @@
+﻿
+img {
+    vertical-align: middle;
+    border-style: none;
+}
+
+.btn.btn-primary {
+    color: #3D464D !important;
+}
+
+.btn-primary:hover {
+    color: #fff;
+    background-color: none !important;
+    border-color: none !important;
+}
+
+a {
+    text-decoration: none;
+    background-color: transparent;
+}
+
+    a:hover {
+        color: #e6b400;
+        text-decoration: underline;
+    }
+
+.cus-text-secondary {
+    color: #3D464D;
+}
+
+.cus-font-weight {
+    font-weight: 700;
+    color: #3D464D;
+}

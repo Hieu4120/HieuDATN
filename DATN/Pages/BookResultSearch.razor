@@ -1,0 +1,64 @@
+﻿@page "/search"
+
+
+<!-- Featured End -->
+<!-- Products Start -->
+@if (bookSearch == null || bookSearch.Count() == 0)
+{
+    <div class="col-sm-10 offset-1 pb-1">
+        <div class="bg-light mb-4" style="padding: 30px;">
+            <h5 class="cus-text-fea m-0 cus-text-align-center">
+                KHÔNG TÌM THẤY KẾT QUẢ TÌM KIẾM PHÙ HỢP CHO <br>
+                TỪ KHÓA: @searchString
+            </h5>
+        </div>
+    </div>
+}
+else
+{
+    <div class="col-sm-10 offset-1 pb-1">
+        <div class="bg-light mb-4" style="padding: 30px;">
+            <h5 class="cus-text-fea m-0 cus-text-align-center">
+                KẾT QUẢ TÌM KIẾM PHÙ HỢP CHO <br>
+                TỪ KHÓA: @searchString
+            </h5>
+        </div>
+    </div>
+    <div class="container-fluid pt-5 pb-3">
+        <div class="row px-xl-5">
+            @foreach (var ele in bookSearch)
+            {
+                <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
+                    <div class="product-item bg-light mb-4">
+                        <div class="product-img position-relative overflow-hidden">
+                            <img class="img-fluid w-100" src="data:image/bmp;base64,
+                                         @(Convert.ToBase64String(ele.book_image))" alt="">
+                            <div class="product-action">
+                                <a class="btn btn-outline-dark btn-square" style="cursor:pointer;"
+                           @onclick="() => icon_add_to_cart(ele)">
+                                    <i class="oi oi-cart"></i>
+                                </a>
+                                <a class="btn btn-outline-dark btn-square" style="cursor:pointer;"><i class="oi oi-heart"></i></a>
+                            </div>
+                        </div>
+                        <div class="text-center py-4 ">
+                            <a class="h6 text-decoration-none text-truncate cus-text-secondary cus-font-weight"
+                       @onclick="() => pass_data_book(ele)" style="cursor:pointer;">@ele.book_name</a>
+                            <div class="d-flex align-items-center justify-content-center mt-2">
+                                <h5 class="cus-font-weight">@ele.price </h5><h6 class="text-muted ms-2"><del>$123.00</del></h6>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-center mb-1">
+                                <small class="oi oi-star text-primary me-1"></small>
+                                <small class="oi oi-star text-primary me-1"></small>
+                                <small class="oi oi-star text-primary me-1"></small>
+                                <small class="oi oi-star text-primary me-1"></small>
+                                <small class="oi oi-star text-primary me-1"></small>
+                                <small>(99)</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}

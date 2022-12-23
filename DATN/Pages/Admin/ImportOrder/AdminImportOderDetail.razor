@@ -1,0 +1,107 @@
+﻿@layout SupportLayout
+@page "/import-order-detail"
+
+<div class="card mb-4">
+    <div class="card-header mb-3">
+        Chi tiết đơn hàng nhập
+    </div>
+    <div class="card-body">
+        @if (isLoading)
+        {
+            <DATN.Shared.Components.LoadingComponent />
+        }
+        else
+        {
+            <div class="form-group row" style="padding:10px;">
+                <label class="col-sm-2 col-form-label">ID đơn hàng</label>
+                <div class="col-sm-3">
+                    <label class="col-sm-2 col-form-label">@get_import_id</label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Nhà cung cấp</label>
+                <div class="col-sm-3 mb-1">
+                    <input class="form-control form-control-sm" @bind-value="suppliers.supplier_name" />
+                </div>
+                <div class="col-sm-3 mb-1">
+                    <a href="/manager-import-order" class="btn btn-primary">Trở lại</a>
+                </div>
+            </div>
+            @if (import_order_detail_list != null)
+            {
+                @for (int i = 0; i < import_order_detail_list.Count(); i++)
+                {
+                    int current_ind = i;
+                    <form style="border:1px solid #6C757D; padding:10px;" class="m-2">
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">ID sách</label>
+                            <div class="col-sm-3">
+                                <input type="number" class="form-control form-control-sm"
+                           id="inp-proj-name"
+                           @bind-value="@import_order_detail_list[current_ind].book_id">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Tên Sách</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control form-control-sm"
+                           id="inp-proj-code"
+                           @bind-value="@import_order_detail_list[current_ind].book_name">
+                            </div>
+
+                            <label class="col-sm-2 col-form-label">Ảnh sách</label>
+                            <div class="col-sm-3">
+                                <img style="width:50%;" class="mb-2"
+                         src="data:image/bmp;base64,
+                                    @(Convert.ToBase64String(import_order_detail_list[current_ind].book_image))" />
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Thể loại</label>
+                            <div class="col-sm-3 mb-1">
+                                @foreach (var item in genre_list)
+                                {
+                                    if (item.genre_id == import_order_detail_list[current_ind].genre_id)
+                                    {
+                                        <label class="form-control form-control-sm">@item.genre_name</label>
+                                    }
+                                }
+                            </div>
+                            <label class="col-sm-2 col-form-label">Tên tác giả</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control form-control-sm"
+                           id="inp-order-date"
+                           @bind-value="@import_order_detail_list[current_ind].author">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Giá</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control form-control-sm"
+                           id="inp-finish-date"
+                           @bind-value="@import_order_detail_list[current_ind].price">
+                            </div>
+                            <label class="col-sm-2 col-form-label">Số lượng</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control form-control-sm"
+                           id="inp-order-date"
+                           @bind-value="@import_order_detail_list[current_ind].amount">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Số trang</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control form-control-sm"
+                           id="inp-finish-date"
+                           @bind-value="@import_order_detail_list[current_ind].page_number">
+                            </div>
+                        </div>
+                    </form>
+                }
+            }
+        }
+    </div>
+</div>
+<RadzenNotification />

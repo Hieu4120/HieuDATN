@@ -1,0 +1,130 @@
+﻿@page "/login"
+@using DATN
+@using DATN.Model
+@using DATN.Services
+@inject IJSRuntime js
+@inject AuthenticationStateProvider authStateProvider
+@inject NavigationManager navManager
+
+<EditForm Model="account_t" OnValidSubmit="@Authenticate">
+
+    <div class="container-fluid cus-bg-dark cus-text-secondary">
+        <div class="col-sm-12 p-4 border">
+            <div class="mb-3 text-center">
+                <h3>ĐĂNG NHẬP</h3>
+            </div>
+            <div class="mb-3">
+                <div class="text-danger">
+                    @errMess_u
+                </div>
+                <label>
+                    Tài Khoản
+                </label>
+                <InputText @bind-Value="account_t.username"
+                           style="@errCodeStyle_u"
+                           @onblur="btn_handle_input"
+                           class="form-control"
+                           placeholder="Tài Khoản" />
+            </div>
+
+            <div class="mb-3">
+                <div class="text-danger">
+                    @errMess_p
+                </div>
+                <label>
+                    Mật Khẩu
+                </label>
+                <InputText type="password" @bind-Value="account_t.password"
+                           style="@errCodeStyle_p"
+                           @onblur="btn_handle_input"
+                           class="form-control"
+                           placeholder="Mật Khẩu" />
+            </div>
+
+            <div class="mb-2">
+                <button type="submit" class="btn btn-primary">Đăng Nhập</button>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-10">
+                    <label>Bạn chưa có tài khoản?</label>
+                    <a href="/register">Đăng ký</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</EditForm>
+@code {
+    //private class Model {
+    //    public string username { get; set; }
+    //    public string password { get; set; }
+    //}
+
+    //private Model model = new Model();
+    [Inject]
+    private IAccountServices asv { get; set; }
+    private m_account account_t = new m_account();
+    public IEnumerable<m_account> account_data { get; set; }
+    private bool UserIsExits;
+    private bool checkValid;
+    private string? errCodeStyle_u = "";
+    private string? errMess_u = "";
+
+    private string? errCodeStyle_p = "";
+    private string? errMess_p = "";
+
+    private void resetState()
+    {
+        //Checkacc = false;
+        errCodeStyle_u = "";
+        errMess_u = "";
+        errCodeStyle_p = "";
+        errMess_p = "";
+    }
+
+    private void btn_handle_input()
+    {
+        resetState();
+    }
+
+    private async Task Authenticate()
+    {
+        //var userAccount = userAccountService.GetByUserName(model.username);
+        if (account_t.username == null || account_t.username == "")
+        {
+            errCodeStyle_u = "outline: 1px solid red!important;";
+            errMess_u = "Vui lòng nhập tên";
+        }
+        if (account_t.password == null || account_t.password == "")
+        {
+            errCodeStyle_p = "outline: 1px solid red!important;";
+            errMess_p = "Vui lòng nhập mật khẩu";
+            return;
+        }
+        account_data = await asv.GetUserName(account_t.username);
+        if (account_data.Count() == 0)
+        {
+            errCodeStyle_u = "outline: 1px solid red!important;";
+            errMess_u = "Tên người dùng không tồn tại";
+        }
+        else
+        {
+            foreach (var ele in account_data)
+            {
+                if (ele.password != account_t.password)
+                {
+                    errCodeStyle_p = "outline: 1px solid red!important;";
+                    errMess_p = "Sai mật khẩu";
+                    return;
+                }
+                var customAuthStateProvider = (Authentication)authStateProvider;
+                await customAuthStateProvider.UpdateAuthentincationState(new m_account
+                    {
+                        username = ele.username,
+                        role = ele.role
+                    });
+                navManager.NavigateTo("/", true);
+            }
+        }
+    }
+}

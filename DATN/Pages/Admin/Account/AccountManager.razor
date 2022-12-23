@@ -1,0 +1,48 @@
+﻿@layout SupportLayout
+@page "/manager-account"
+@inject NavigationManager UriHelper
+
+<div class="card mb-4">
+    <div class="card-header mb-3">
+        Quản lý tài khoản
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-sm table-bordered table-hover">
+                <thead class="table-warning">
+                    <tr>
+                        <th>STT</th>
+                        <th>Tên người dùng</th>
+                        <th>email</th>
+                        <th>Ngày tạo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (accounts == null || accounts.Count() == 0)
+                    {
+                        <tr class="cus-text-align-center">
+                            <td colspan="4">Không có dữ liệu</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var item in accounts)
+                        {
+                            <tr>
+                                <td>@ROW_INDEX</td>
+                                <td>@item.username</td>
+                                <td>@item.email</td>
+                                <td>@item.create_at?.ToString("yyyy-MM-dd")</td>
+                            </tr>
+                            ROW_INDEX++;
+                            @if (ROW_INDEX > accounts.Count())
+                            { ROW_INDEX = 1; }
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+

@@ -1,0 +1,66 @@
+﻿@layout SupportLayout
+@page "/update-feedback"
+
+<div class="card mb-4">
+    <div class="card-header mb-3">
+        Trả lời phản hồi
+    </div>
+    <div class="card-body">
+        @if (@isLoading)
+        {
+            <DATN.Shared.Components.LoadingComponent />
+        }
+        else
+        {
+            <EditForm Model="@feedback_item" OnValidSubmit="@UpdateFeedBack">
+                <DataAnnotationsValidator />
+
+                <div class="form-group row mb-2 ms-3 col-sm-11">
+                    <label class="col-sm-3">Tên khách hàng</label>
+                    <div class="col-sm-4">
+                        <input readonly @bind-value="@feedback_item.user_name"
+                               class="form-control form-control-sm" />
+                    </div>
+                </div>
+                <div class="form-group row mb-2 ms-3 col-sm-11">
+                    <label class="col-sm-3">Email</label>
+                    <div class="col-sm-4">
+                        <input readonly @bind-value="@feedback_item.email"
+                               class="form-control form-control-sm" />
+                    </div>
+                </div>
+                <div class="form-group row mb-2 ms-3 col-sm-11">
+                    <label class="col-sm-3">Tin nhắn</label>
+                    <div class="col-sm-4">
+                        <input readonly  @bind-value="@feedback_item.message"
+                           class="form-control form-control-sm" />
+                    </div>
+                    
+                </div>
+                
+
+                <div class="form-group row mb-2 ms-3 col-sm-11">
+                    <label class="col-sm-3 col-form-label">Trạng thái</label>
+                    <div class="col-sm-4">
+                        <InputSelect @bind-Value="@feedback_item.status"
+                                 class="form-select form-select-sm">
+                            <option selected disabled></option>
+                            @foreach (var ele in status)
+                            {
+                                <option value="@ele">
+                                    @ele
+                                </option>
+                            }
+                        </InputSelect>
+                    </div>
+                </div>
+                <div class="form-group row mb-2 ms-3">
+                    <div class="col-sm-9 offset-3">
+                        <button type="submit" class="btn btn-primary">Cập nhật</button>
+                        <a href="/manager-feeback" class="btn btn-primary">Trở lại</a>
+                    </div>
+                </div>
+            </EditForm>
+        }
+    </div>
+</div>

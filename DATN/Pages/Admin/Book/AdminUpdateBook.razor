@@ -1,0 +1,101 @@
+﻿@layout SupportLayout
+@page "/update-book"
+@using DATN.Shared.Components
+@inject NavigationManager NavigationManager
+
+<PageTitle>Chỉnh sửa sách</PageTitle>
+
+<div class="card mb-4">
+    <div class="card-header mb-3">
+        Thêm mới sách
+    </div>
+    <div class="card-body">
+         @if (@isLoading)
+        {
+            <DATN.Shared.Components.LoadingComponent />
+        }
+        else
+        {
+           
+            <EditForm Model="@book_item" OnValidSubmit="@UpdateBook">
+                <DataAnnotationsValidator />
+            <div class="form-group row mb-2 ms-3">
+                <label class="col-sm-3 col-form-label">Tên sách</label>
+                <div class="col-sm-4">
+                        <InputText readonly @bind-Value="@book_item.book_name" class="form-control form-control-sm"/>
+                </div>
+            </div>
+             <div class="form-group row mb-2 ms-3">
+                <label class="col-sm-3 col-form-label">Tác giả</label>
+                <div class="col-sm-4">
+                        <InputText readonly @bind-Value="@book_item.author" class="form-control form-control-sm" />
+                </div>
+            </div>
+            <div class="form-group row mb-2 ms-3">
+                <label class="col-sm-3 col-form-label">Thể loại</label>
+                <div class="col-sm-4">
+                        <InputText readonly @bind-Value="@genre_item.genre_name" class="form-control form-control-sm" />
+                </div>
+            </div>
+            <div class="form-group row mb-2 ms-3">
+                <label class="col-sm-3 col-form-label">Nhà cung cấp</label>
+                <div class="col-sm-4">
+                        <InputText readonly @bind-Value="@supplier_item.supplier_name" class="form-control form-control-sm" />
+                </div>
+            </div>
+            <div class="form-group row mb-2 ms-3">
+                <label class="col-sm-3 col-form-label">Giá sản phẩm</label>
+                <div class="col-sm-4">
+                        <InputNumber @bind-Value="@book_item.price" class="form-control form-control-sm" />
+                </div>
+            </div>
+            <div class="form-group row mb-2 ms-3">
+                <label class="col-sm-3 col-form-label">Số lượng</label>
+                <div class="col-sm-4">
+                        <InputNumber @bind-Value="@book_item.amount" class="form-control form-control-sm" />
+                </div>
+            </div>
+            <div class="form-group row mb-2 ms-3">
+                <label class="col-sm-3 col-form-label">Số lượng xem</label>
+                <div class="col-sm-4">
+                        <InputNumber readonly @bind-Value="@book_item.number_click" class="form-control form-control-sm" />
+                </div>
+            </div>
+            <div class="form-group row mb-2 ms-3">
+                <label class="col-sm-3 col-form-label">Trạng thái</label>
+                <div class="col-sm-4">
+                        <InputSelect @bind-Value="@book_item.status"
+                                 class="form-select form-select-sm">
+                            <option selected disabled>@book_item.status</option>
+                            @foreach (var ele in status_book_list)
+                            {
+                                <option value="@ele">
+                                    @ele
+                                </option>
+                            }
+                        </InputSelect>
+                </div>
+            </div>
+            <div class="form-group row mb-2 ms-3">
+                <label class="col-sm-3 col-form-label">Ảnh sách</label>
+                <div class="col-sm-4">
+                    @if(book_item.book_image != null)
+                    {
+                        <img src="data:image/bmp;base64, @(Convert.ToBase64String(book_item.book_image))"/>
+                    }
+                </div>
+            </div>
+
+                <div class="form-group row mb-2 ms-3">
+                    <div class="col-sm-9 offset-3">
+                        <button type="submit" class="btn btn-primary">Cập nhật</button>
+                        <button type="button" class="btn btn-primary" @onclick="@btn_handle_del_book">Xóa</button>
+                        <a href="/manager-book" class="btn btn-primary">Trở lại</a>
+                    </div>
+                </div>
+        </EditForm>
+        }
+        <ModalConfirm DeleteGenCallBack="call_back_delete_book" @ref=conf />
+    </div>
+</div>
+<RadzenNotification />

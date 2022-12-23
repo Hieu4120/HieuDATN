@@ -1,0 +1,59 @@
+﻿@layout SupportLayout
+@page "/manager-review"
+
+<div class="card mb-4">
+    <div class="card-header mb-3">
+        Quản lý Review
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-sm table-bordered table-hover">
+                <thead class="table-warning">
+                    <tr>
+                        <th>STT</th>
+                        <th>Tên sách</th>
+                        <th>Số sao</th>
+                        <th>Nội dung</th>
+                        <th>Tên Người dùng</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (reviews == null || reviews.Count() == 0)
+                    {
+                        <tr class="cus-text-align-center">
+                            <td colspan="7">Không có dữ liệu</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var item in reviews)
+                        {
+                            <tr>
+                                <td>@ROW_INDEX</td>
+
+                                @foreach (var s in book_list)
+                                {
+                                    if (item.book_id == s.book_id)
+                                    {
+                                        <td class="cus-width-10">
+                                            @s.book_name
+                                        </td>
+                                    }
+                                }
+                                <td>@item.rating</td>
+                                <td>@item.review_content</td>
+                                <td>@item.user_name</td>
+                                <td>@item.email</td>
+                            </tr>
+                            ROW_INDEX++;
+                            @if (ROW_INDEX > reviews.Count())
+                            { ROW_INDEX = 1; }
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

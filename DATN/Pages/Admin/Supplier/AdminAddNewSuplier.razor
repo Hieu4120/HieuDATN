@@ -1,0 +1,102 @@
+﻿@layout SupportLayout
+@page "/add-suplier"
+
+<PageTitle>Thêm nhà cung cấp</PageTitle>
+
+<div class="card mb-4">
+    <div class="card-header mb-3">
+        Thêm mới nhà cung cấp
+    </div>
+    <div class="card-body">
+        @if (@isLoading)
+        {
+            <DATN.Shared.Components.LoadingComponent />
+        }
+        else
+        {
+            <EditForm Model="supp" OnValidSubmit="@AddSupp">
+                <DataAnnotationsValidator />
+                @if(IsName_supExist){
+                    <div class="text-danger col-sm-7 offset-sm-3 ps-0">@errMessage</div>
+                }
+                <div class="form-group row ms-3">
+                    <div class="text-danger col-sm-7 offset-sm-3 ps-0">
+                        <ValidationMessage For="@(() => supp.supplier_name)" />
+                    </div>
+                </div>
+                <div class="form-group row mb-2 ms-3 col-sm-11">
+                    <label class="col-sm-3">Tên nhà cung cấp</label>
+                    <div class="col-sm-4">
+                        <InputText @bind-Value="supp.supplier_name"
+                               style="@errCodeStyle"
+                               class="form-control form-control-sm" />
+                    </div>
+                </div>
+
+                <div class="form-group row ms-3">
+                    <div class="text-danger col-sm-7 offset-sm-3 ps-0">
+                        <ValidationMessage For="@(() => supp.supplier_phone_number)" />
+                    </div>
+                </div>
+                <div class="form-group row mb-2 ms-3 col-sm-11">
+                    <label class="col-sm-3 col-form-label">SĐT</label>
+                    <div class="col-sm-4">
+                        <InputText @bind-Value="supp.supplier_phone_number" class="form-control form-control-sm" />
+                    </div>
+                </div>
+
+                <div class="form-group row ms-3">
+                    <div class="text-danger col-sm-7 offset-sm-3 ps-0">
+                        <ValidationMessage For="@(() => supp.supplier_email)" />
+                    </div>
+                </div>
+                <div class="form-group row mb-2 ms-3 col-sm-11">
+                    <label class="col-sm-3 col-form-label">Email</label>
+                    <div class="col-sm-4">
+                        <InputText @bind-Value="supp.supplier_email" class="form-control form-control-sm" />
+                    </div>
+                </div>
+
+                <div class="form-group row ms-3">
+                    <div class="text-danger col-sm-7 offset-sm-3 ps-0">
+                        <ValidationMessage For="@(() => supp.supplier_address)" />
+                    </div>
+                </div>
+                <div class="form-group row mb-2 ms-3 col-sm-11">
+                    <label class="col-sm-3 col-form-label">Địa chỉ</label>
+                    <div class="col-sm-4">
+                        <InputText @bind-Value="supp.supplier_address" class="form-control form-control-sm" />
+                    </div>
+                </div>
+
+                <div class="form-group row ms-3">
+                    <div class="text-danger col-sm-7 offset-sm-3 ps-0">
+                        <ValidationMessage For="@(() => supp.supplier_status)" />
+                    </div>
+                </div>
+                <div class="form-group row mb-2 ms-3 col-sm-11">
+                    <label class="col-sm-3 col-form-label">Trạng thái</label>
+                    <div class="col-sm-4">
+                        <InputSelect @bind-Value="supp.supplier_status"
+                                 class="form-select form-select-sm">
+                            <option disabled selected></option>
+                            @foreach (var ele in status_sup)
+                            {
+                                <option value="@ele">
+                                    @ele
+                                </option>
+                            }
+                        </InputSelect>
+                    </div>
+                </div>
+                <div class="form-group row mb-2 ms-3">
+                    <div class="col-sm-9 offset-3">
+                        <button type="submit" class="btn btn-primary">Thêm nhà cung cấp</button>
+                        <a href="/manager-suplier" class="btn btn-primary">Trở lại</a>
+                    </div>
+                </div>
+            </EditForm>
+        }
+    </div>
+</div>
+<RadzenNotification />

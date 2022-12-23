@@ -1,0 +1,106 @@
+﻿@layout SupportLayout
+@page "/sale-order-detail"
+
+<div class="card mb-4">
+    <div class="card-header mb-3">
+        Chi tiết đơn hàng bán
+    </div>
+    <div class="card-body">
+        @if (isLoading)
+        {
+            <DATN.Shared.Components.LoadingComponent />
+        }
+        else
+        {
+            <EditForm Model="@sale_Order" OnValidSubmit="@UpdateSaleorder">
+                <DataAnnotationsValidator />
+                <div class="form-group row ms-3">
+                    <div class="text-danger col-sm-7 offset-sm-3 ps-0">
+                        <ValidationMessage For="@(() => sale_Order.delivery_date)" />
+                    </div>
+                </div>
+                <div class="form-group row mb-2 ms-3 col-sm-11">
+                    <label class="col-sm-3">Ngày vận chuyển</label>
+                    <div class="col-sm-4">
+                        <InputDate @bind-Value="@sale_Order.delivery_date"
+                               class="form-control form-control-sm" />
+                    </div>
+                </div>
+
+                <div class="form-group row ms-3">
+                    <div class="text-danger col-sm-7 offset-sm-3 ps-0">
+                        <ValidationMessage For="@(() => sale_Order.status)" />
+                    </div>
+                </div>
+                <div class="form-group row mb-2 ms-3 col-sm-11">
+                    <label class="col-sm-3 col-form-label">Trạng thái</label>
+                    <div class="col-sm-4">
+                        <InputSelect @bind-Value="@sale_Order.status"
+                                 class="form-select form-select-sm">
+                            <option selected disabled>@sale_Order.status</option>
+                            @foreach (var ele in status_sale)
+                            {
+                                <option value="@ele">
+                                    @ele
+                                </option>
+                            }
+                        </InputSelect>
+                    </div>
+                </div>
+                <div class="form-group row mb-2 ms-3">
+                    <div class="col-sm-9 offset-3">
+                        <button type="submit" class="btn btn-primary">Cập nhật</button>
+                        <a href="/manager-sale-order" class="btn btn-primary">Trở lại</a>
+                    </div>
+                </div>
+            </EditForm>
+            <div class="table-responsive">
+                <table class="table table-sm table-bordered table-hover">
+                    <thead class="table-warning">
+                        <tr>
+                            <th>STT</th>
+                            <th>Mã chi tiết đơn hàng</th>
+                            <th>Tên sách</th>
+                            <th>Số lượng</th>
+                            <th>SDT</th>
+                            <th>Tên khách hàng</th>
+                            <th>Họ Tên Đệm</th>
+                            <th>Địa chỉ</th>
+                            <th>Giá sách</th>
+                            <th>Ngày đặt</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (sale_order_detail == null || sale_order_detail.Count() == 0)
+                        {
+                            <tr class="cus-text-align-center">
+                                <td colspan="6">Không có dữ liệu</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var item in sale_order_detail)
+                            {
+                                <tr>
+                                    <td>@ROW_INDEX</td>
+                                    <td>@item.sale_order_detail_id</td>
+                                    <td>@item.book_name</td>
+                                    <td>@item.amount</td>
+                                    <td>@item.phone_number</td>
+                                    <td>@item.first_name</td>
+                                    <td>@item.last_name</td>
+                                    <td>@item.address</td>
+                                    <td>@item.price</td>
+                                    <td>@item.create_at.ToString("yyyy-MM-dd")</td>
+                                </tr>
+                                ROW_INDEX++;
+                                @if (ROW_INDEX > sale_order_detail.Count())
+                                { ROW_INDEX = 1; }
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>

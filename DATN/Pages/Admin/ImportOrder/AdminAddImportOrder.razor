@@ -1,0 +1,148 @@
+﻿@layout SupportLayout
+@page "/add-import-order"
+
+
+<div class="card mb-4">
+    <div class="card-header mb-3">
+        Thêm đơn hàng nhập
+    </div>
+    <div class="card-body">
+        @if (@isLoading)
+        {
+            <DATN.Shared.Components.LoadingComponent />
+        }
+        else
+        {
+            <div class="form-group row" style="padding:10px;">
+                <label class="col-sm-2 col-form-label">ID đơn hàng</label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control form-control-sm"
+                       id="inp-proj-code" @bind-value="@Import_order_id">
+                </div>
+                @if (import_order_detail.Count() == 0)
+                {
+                    <div class="col-sm-2">
+                        <button disabled type="button" class="btn btn-sm btn-primary">Lưu đơn hàng</button>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-sm-2">
+                        <button type="button" class="btn btn-sm btn-primary" @onclick="btn_add_import_order">Lưu đơn hàng</button>
+                    </div>
+                }
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Nhà cung cấp</label>
+                <div class="col-sm-3 mb-1">
+                    <select class="form-select" @onchange="(e) => OnSelSupp(e)">
+                        @if (suppliers != null)
+                        {
+                            <option disabled selected></option>
+                            @foreach (var item in suppliers)
+                            {
+                                <option value="@item.supplier_id">
+                                    @item.supplier_name
+                                </option>
+                            }
+                        }
+                    </select>
+                </div>
+                <label class="col-sm-2 col-form-label">Ngày nhận</label>
+                <div class="col-sm-3">
+                    <input type="date" class="form-control form-control-sm"
+                       id="inp-proj-code" @bind-value="@recive_date">
+                </div>
+            </div>
+            @if (import_order_detail != null)
+            {
+                @for (int i = 0; i < import_order_detail.Count(); i++)
+                {
+                    int current_ind = i;
+                    <form style="border:1px solid #6C757D; padding:10px;
+                            @active_form_ind[current_ind]"
+              class="m-2 "
+              @onclick="@(() => SelectItems(current_ind))">
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">ID sách</label>
+                            <div class="col-sm-3">
+                                <input type="number" class="form-control form-control-sm"
+                           id="inp-proj-name"
+                           @bind-value="@import_order_detail[current_ind].book_id">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Tên Sách</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control form-control-sm"
+                           id="inp-proj-code"
+                           @bind-value="@import_order_detail[current_ind].book_name">
+                            </div>
+
+                            <label class="col-sm-2 col-form-label">Ảnh sách</label>
+                            <div class="col-sm-3">
+                                <InputFile class="form-control form-control-sm"
+                               id="inp-proj-name"
+                               OnChange="@((e) => HandleFileSelected(e, current_ind))" />
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Thể loại</label>
+                            <div class="col-sm-3 mb-1">
+                                <select class="form-select" @onchange="(e) => OnSelGenre(e, current_ind)">
+                                    @if (genres != null)
+                                    {
+                                        <option disabled selected></option>
+                                        @foreach (var item in genres)
+                                        {
+                                            <option value="@item.genre_id">
+                                                @item.genre_name
+                                            </option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <label class="col-sm-2 col-form-label">Tên tác giả</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control form-control-sm"
+                           id="inp-order-date"
+                           @bind-value="@import_order_detail[current_ind].author">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Giá</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control form-control-sm"
+                           id="inp-finish-date"
+                           @bind-value="@import_order_detail[current_ind].price">
+                            </div>
+                            <label class="col-sm-2 col-form-label">Số lượng</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control form-control-sm"
+                           id="inp-order-date"
+                           @bind-value="@import_order_detail[current_ind].amount">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Số trang</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control form-control-sm"
+                           id="inp-finish-date"
+                           @bind-value="@import_order_detail[current_ind].page_number">
+                            </div>
+                        </div>
+                    </form>
+                }
+            }
+        }
+        <div class="form-group row mb-2 ms-3">
+            <div class="col-sm-10">
+                <button type="button" class="btn btn-sm btn-primary" @onclick="btn_add_new">Thêm</button>
+                <button type="button" class="btn btn-sm btn-primary" @onclick="btn_remove">Xóa</button>
+            </div>
+        </div>
+    </div>
+</div>
+<RadzenNotification />

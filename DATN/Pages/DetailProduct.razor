@@ -1,0 +1,294 @@
+﻿@page "/detail"
+
+
+<!-- Shop Detail Start -->
+<div class="container-fluid pb-5">
+    <div class="row px-xl-5">
+        <div class="col-lg-5 mb-30">
+            @if (book_item.book_image != null)
+            {
+                <img class="w-100 h-100" src="data:image/bmp;base64, @(Convert.ToBase64String(book_item.book_image))" />
+            }
+        </div>
+
+        <div class="col-lg-7 h-auto mb-30">
+            <div class="h-100 bg-light p-30">
+                <h3>@book_item.book_name</h3>
+                <div class="d-flex mb-3">
+                    <div class="text-primary me-2">
+                        <small class="oi oi-star"></small>
+                        <small class="oi oi-star"></small>
+                        <small class="oi oi-star"></small>
+                        <small class="oi oi-star"></small>
+                        <small class="oi oi-star"></small>
+                    </div>
+                    <small class="pt-1">(99 Reviews)</small>
+                </div>
+                <h3 class="font-weight-semi-bold mb-4">@book_item.price VND</h3>
+                <div class="d-flex mb-3">
+                    <strong class=" me-3">Nhà Xuất bản:</strong>
+                    <label> @supplier_item.supplier_name</label>
+                </div>
+                <div class="d-flex mb-4">
+                    <strong class=" me-3">Tác Giả:</strong>
+                    <label> @book_item.author</label>
+                </div>
+                <div class="d-flex mb-4">
+                    <strong class=" me-3">Số Trang:</strong>
+                    <label>@book_item.page_number </label>
+                </div>
+                <div class="d-flex mb-4">
+                    <strong class=" me-3">Ngày Xuất Bản:</strong>
+                    <label>@book_item.release_date</label>
+                </div>
+                <div class="d-flex align-items-center mb-4 pt-2">
+                    <div class="input-group quantity me-3" style="width: 130px;">
+                        <div class="input-group-btn">
+                            @if (isDisable)
+                            {
+                                <button disabled class="btn btn-primary" @onclick="btn_minus">
+                                    <i class="oi oi-minus"></i>
+                                </button>
+                            }
+                            else
+                            {
+                                <button class="btn btn-primary" @onclick="btn_minus">
+                                    <i class="oi oi-minus"></i>
+                                </button>
+                            }
+                        </div>
+                        <input type="text" class="form-control bg-secondary border-0 text-center" value="@curr_amount">
+                        <div class="input-group-btn">
+                            <button class="btn btn-primary" @onclick="btn_plus">
+                                <i class="oi oi-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary px-3" @onclick="btn_add_to_cart">
+                        <i class="oi oi-cart me-1"></i>Thêm vào giỏ hàng
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row px-xl-5">
+        <div class="col">
+            <div class="bg-light p-30">
+                <BSNav IsTabs="true">
+                    <BSNavItem>
+                        <TabLabel>Tóm tắt nội dung</TabLabel>
+                        <TabContent>
+                            <div class="tab-content mt-4">
+                                <h4 class="mb-3">Nội Dung</h4>
+                                <p>@book_item.book_content</p>
+                            </div>
+                        </TabContent>
+                    </BSNavItem>
+                    <BSNavItem>
+                        <TabLabel>Bình luận</TabLabel>
+                        <TabContent>
+                            <div class="row mt-4">
+                                <div class="col-md-6">
+                                    <h4 class="mb-4">Bình luận cho @book_item.book_name</h4>
+                                    <div class="media mb-4">
+                                        <img src="img/user.jpg" alt="Image" class="img-fluid me-3 mt-1" style="width: 45px;">
+                                        <div class="media-body">
+                                            <h6>John Doe<small> - <i>01 Jan 2045</i></small></h6>
+                                            <div class="text-primary mb-2">
+                                                <i class="oi oi-star"></i>
+                                                <i class="oi oi-star"></i>
+                                                <i class="oi oi-star"></i>
+                                                <i class="oi oi-star"></i>
+                                                <i class="oi oi-star"></i>
+                                            </div>
+                                            <p>Diam amet duo labore stet elitr ea clita ipsum, tempor labore accusam ipsum et no at. Kasd diam tempor rebum magna dolores sed sed eirmod ipsum.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <EditForm Model="review_item">
+                                        <div class="d-flex my-3">
+                                            <p class="mb-0 me-2">Đánh giá của bạn * :</p>
+                                            <select @onchange="(e) => SelChange(e)"
+                                                    style="width: 15%; height: 31px;" class="form-select me-3">
+                                                <option disabled selected></option>
+                                                @foreach (var item in ratings)
+                                                {
+                                                    <option value="@item">
+                                                        @item
+                                                    </option>
+                                                }
+                                            </select>
+                                            <div class="text-primary">
+                                                <i class="oi oi-star"></i>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="mb-2" for="message">Nội dung bình luận</label>
+                                            <InputTextArea @bind-Value="review_item.review_content" id="message" cols="30" rows="5" class="form-control" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="mb-2 mt-2" for="name">Họ Tên</label>
+                                            <InputText @bind-Value="review_item.user_name" type="text" class="form-control" id="name" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="mb-2 mt-2" for="email"> Email *</label>
+                                            <InputText @bind-Value="review_item.email" type="email" class="form-control mb-2" id="email" />
+                                        </div>
+                                        <div class="form-group mb-2">
+                                            <button type="button" @onclick="AddReview" class="btn btn-primary px-3">Gửi bình luận</button>
+                                        </div>
+                                    </EditForm>
+                                </div>
+                            </div>
+                        </TabContent>
+                    </BSNavItem>
+                </BSNav>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid py-5">
+        <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Sản Phẩm Tương Tự</span></h2>
+        <div class="row px-xl-5">
+            @if (book_similers != null && book_similers.Count() > 0)
+            {
+                @foreach (var ele in book_similers)
+                {
+                    <div class="col-lg-2 col-md-4 col-sm-4 pb-1">
+                        <div class="product-item bg-light mb-4">
+                            <div class="product-img position-relative overflow-hidden">
+                                <img class="img-fluid w-100" src="data:image/bmp;base64,
+                                         @(Convert.ToBase64String(ele.book_image))" alt="">
+                                <div class="product-action">
+                                    <a class="btn btn-outline-dark btn-square" style="cursor:pointer;"
+                               @onclick="() => icon_add_to_cart(ele)">
+                                        <i class="oi oi-cart"></i>
+                                    </a>
+                                    <a class="btn btn-outline-dark btn-square" style="cursor:pointer;"><i class="oi oi-heart"></i></a>
+                                </div>
+                            </div>
+                            <div class="text-center py-4 ">
+                                <a class="h6 text-decoration-none text-truncate cus-text-secondary cus-font-weight"
+                           @onclick="() => pass_data_book(ele)" style="cursor:pointer;">@ele.book_name</a>
+                                <div class="d-flex align-items-center justify-content-center mt-2">
+                                    <h5 class="cus-font-weight">@ele.price </h5><h6 class="text-muted ms-2"><del>$123.00</del></h6>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-center mb-1">
+                                    <small class="oi oi-star text-primary me-1"></small>
+                                    <small class="oi oi-star text-primary me-1"></small>
+                                    <small class="oi oi-star text-primary me-1"></small>
+                                    <small class="oi oi-star text-primary me-1"></small>
+                                    <small class="oi oi-star text-primary me-1"></small>
+                                    <small>(99)</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            <div class="col-lg-2 col-md-4 col-sm-4 pb-1">
+                <div class="product-item bg-light mb-4">
+                    <div class="product-img position-relative overflow-hidden">
+                        <img class="img-fluid w-100" src="./img/cam-nang-cau-truc-tieng-anh.webp" alt="">
+                        <div class="product-action">
+                            <a class="btn btn-outline-dark btn-square" href=""><i class="oi oi-cart"></i></a>
+                            <a class="btn btn-outline-dark btn-square" href=""><i class="oi oi-heart"></i></a>
+                        </div>
+                    </div>
+                    <div class="text-center py-4 ">
+                        <a class="h6 text-decoration-none text-truncate cus-text-secondary cus-font-weight" href="">Product Name Goes Here</a>
+                        <div class="d-flex align-items-center justify-content-center mt-2">
+                            <h5 class="cus-font-weight">$123.00</h5><h6 class="text-muted ms-2"><del>$123.00</del></h6>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-center mb-1">
+                            <small class="oi oi-star text-primary me-1"></small>
+                            <small class="oi oi-star text-primary me-1"></small>
+                            <small class="oi oi-star text-primary me-1"></small>
+                            <small class="oi oi-star text-primary me-1"></small>
+                            <small class="oi oi-star text-primary me-1"></small>
+                            <small>(99)</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-4pb-1">
+                <div class="product-item bg-light mb-4">
+                    <div class="product-img position-relative overflow-hidden">
+                        <img class="img-fluid w-100" src="./img/giai-thich-ngu-phap-tieng-anh.jpg" alt="">
+                        <div class="product-action">
+                            <a class="btn btn-outline-dark btn-square" href=""><i class="oi oi-cart"></i></a>
+                            <a class="btn btn-outline-dark btn-square" href=""><i class="oi oi-heart"></i></a>
+                        </div>
+                    </div>
+                    <div class="text-center py-4 ">
+                        <a class="h6 text-decoration-none text-truncate cus-text-secondary cus-font-weight" href="">Product Name Goes Here</a>
+                        <div class="d-flex align-items-center justify-content-center mt-2">
+                            <h5 class="cus-font-weight">$123.00</h5><h6 class="text-muted ms-2"><del>$123.00</del></h6>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-center mb-1">
+                            <small class="oi oi-star text-primary me-1"></small>
+                            <small class="oi oi-star text-primary me-1"></small>
+                            <small class="oi oi-star text-primary me-1"></small>
+                            <small class="oi oi-star text-primary me-1"></small>
+                            <small class="oi oi-star text-primary me-1"></small>
+                            <small>(99)</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-4pb-1">
+                <div class="product-item bg-light mb-4">
+                    <div class="product-img position-relative overflow-hidden">
+                        <img class="img-fluid w-100" src="./img/hai-so-phan.jpg" alt="">
+                        <div class="product-action">
+                            <a class="btn btn-outline-dark btn-square" href=""><i class="oi oi-cart"></i></a>
+                            <a class="btn btn-outline-dark btn-square" href=""><i class="oi oi-heart"></i></a>
+                        </div>
+                    </div>
+                    <div class="text-center py-4 ">
+                        <a class="h6 text-decoration-none text-truncate cus-text-secondary cus-font-weight" href="">Product Name Goes Here</a>
+                        <div class="d-flex align-items-center justify-content-center mt-2">
+                            <h5 class="cus-font-weight">$123.00</h5><h6 class="text-muted ms-2"><del>$123.00</del></h6>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-center mb-1">
+                            <small class="oi oi-star text-primary me-1"></small>
+                            <small class="oi oi-star text-primary me-1"></small>
+                            <small class="oi oi-star text-primary me-1"></small>
+                            <small class="oi oi-star text-primary me-1"></small>
+                            <small class="oi oi-star text-primary me-1"></small>
+                            <small>(99)</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-4pb-1">
+                <div class="product-item bg-light mb-4">
+                    <div class="product-img position-relative overflow-hidden">
+                        <img class="img-fluid w-100" src="./img/thoi-mien-bang-ngon-tu.jpg" alt="">
+                        <div class="product-action">
+                            <a class="btn btn-outline-dark btn-square" href=""><i class="oi oi-cart"></i></a>
+                            <a class="btn btn-outline-dark btn-square" href=""><i class="oi oi-heart"></i></a>
+                        </div>
+                    </div>
+                    <div class="text-center py-4 ">
+                        <a class="h6 text-decoration-none text-truncate cus-text-secondary cus-font-weight" href="">Product Name Goes Here</a>
+                        <div class="d-flex align-items-center justify-content-center mt-2">
+                            <h5 class="cus-font-weight">$123.00</h5><h6 class="text-muted ms-2"><del>$123.00</del></h6>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-center mb-1">
+                            <small class="oi oi-star text-primary me-1"></small>
+                            <small class="oi oi-star text-primary me-1"></small>
+                            <small class="oi oi-star text-primary me-1"></small>
+                            <small class="oi oi-star text-primary me-1"></small>
+                            <small class="oi oi-star text-primary me-1"></small>
+                            <small>(99)</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Shop Detail End -->
+<RadzenNotification />
