@@ -29,16 +29,8 @@ namespace DATN.Pages.Admin.Book
         private int book_id_init;
         private bool isLoading = false;
         private string? errMess = "";
-        private string? errCodeStyle_n = "";
-        private string? errCodeStyle_g = "";
-        private string? errCodeStyle_s = "";
-        private string? errCodeStyle_a = "";
-        private string? errCodeStyle_p = "";
-        private string? errCodeStyle_c = "";
-        private string? errCodeStyle_t = "";
-        private string? errCodeStyle_m = "";
-        private string? errCodeStyle_i = "";
         private string? CSS_outline = "outline: 1px solid red!important;";
+        private bool isDisable = false;
 
         private int? GenId;
         private int? SuppId;
@@ -166,9 +158,8 @@ namespace DATN.Pages.Admin.Book
             {
                 book_id_init = 1;
             }
+                       
             isLoading = true;
-
-            //books.book_id = book_id_init + 1;
             books.update_at = DateTime.Now;
             await abs.Create(books);
             books = new m_book();
@@ -177,6 +168,7 @@ namespace DATN.Pages.Admin.Book
             isLoading = false;
             ino.Notify((NotificationSeverity.Success, "Thêm thành công"));
             StateHasChanged();
+            
         }
     }
 }

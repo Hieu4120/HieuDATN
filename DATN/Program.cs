@@ -33,6 +33,7 @@ builder.Services.AddTransient<ISaleOrderDetailServices, SaleOrderDetailServices>
 builder.Services.AddTransient<IImportOrderServices, ImportOrderServices>();
 builder.Services.AddTransient<ISaleOrderServices, SaleOrderServices>();
 builder.Services.AddTransient<IFeedBackServices, FeedBackServices>();
+builder.Services.AddTransient<ICustomerServices, CustomerServices>();
 
 
 

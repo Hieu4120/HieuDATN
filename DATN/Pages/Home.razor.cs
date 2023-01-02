@@ -13,10 +13,6 @@ namespace DATN.Pages
         [Inject]
         private IBookServices bs { get; set; }
         [Inject]
-        private IGenreServices ges { get; set; }
-        [Inject]
-        private ISupplierServices sups { get; set; }
-        [Inject]
         private IRedirectSevices? iredir { get; set; }
         [Inject]
         private ICartServices ics { get; set; }
@@ -28,7 +24,8 @@ namespace DATN.Pages
         private ICarouselSevices icas { get; set; }
         [CascadingParameter]
         private Task<AuthenticationState> authenticationStateTask { get; set; }
-        private IEnumerable<m_book>? books;
+        private IEnumerable<mediate_book>? books;
+        private m_book? book_item;
         private IEnumerable<m_carosel>? carosels;
         private m_cart? cart_item = new m_cart();
         private m_account? account_item = new m_account();
@@ -39,15 +36,16 @@ namespace DATN.Pages
         protected override async Task OnInitializedAsync()
         {
             carosels = await icas.GetAllCarousel();
-            books = await bs.GetAllBook();
+            await Task.Delay(500);
+            books = await bs.GetAllJustBookInf();
             StateHasChanged();
         }
-
-        private async void pass_data_book(m_book ele)
+        private async void pass_data_book(mediate_book ele)
         {
-            ele.number_click += 1;
-            await bs.Update(ele);
-            Task.Delay(100);
+            book_item = await bs.GetBookById(ele.book_id);
+            book_item.number_click += 1;
+            await bs.Update(book_item);
+            Task.Delay(200);
             string book_id = ele.book_id.ToString();
             Dictionary<string, string> passData = new Dictionary<string, string>
             {
@@ -56,11 +54,11 @@ namespace DATN.Pages
             iredir.RedirectParameter("detail", passData);
         }
 
-        private async void icon_add_to_cart(m_book ele)
+        private async void icon_add_to_cart(int book_id)
         {
             var authState = await authenticationStateTask;
             user = authState.User.Identity.Name;
-            CartItemIsExits = await ics.ExistCartItemCHK(ele.book_id);
+            CartItemIsExits = await ics.ExistCartItemCHK(book_id);
             if (user == null )
             {
                 ino.Notify((NotificationSeverity.Success, "Bạn vẫn chưa đăng nhập"));
@@ -85,7 +83,7 @@ namespace DATN.Pages
                 cart_item.cart_id = cart_id_init + 1;
                 cart_item.customer_id = account_item.customer_id;
                 cart_item.amount = 1;
-                cart_item.book_id = ele.book_id;
+                cart_item.book_id = book_id;
                 cart_item.create_at = DateTime.Now;
                 cart_item.update_at = DateTime.Now;
                 await ics.Create(cart_item);

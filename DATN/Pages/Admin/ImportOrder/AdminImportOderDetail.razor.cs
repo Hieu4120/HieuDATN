@@ -19,17 +19,16 @@ namespace DATN.Pages.Admin.ImportOrder
         private ISupplierServices sups { get; set; }
         [Inject]
         private IImportOrderDetailServices imods { get; set; }
+        [Parameter]
+        public int page { get; set; }
 
-        private IEnumerable<m_import_order_detail>? import_order_detail;
-        private List<m_import_order_detail>? import_order_detail_list =  new List<m_import_order_detail>() { };
-
-        private m_genre? genres = new m_genre();
-        private List<m_genre> genre_list = new List<m_genre>() { };
-        private m_supplier? suppliers = new m_supplier();
-
+        private IEnumerable<mediate_import_order_detail>? import_order_detail;
+        private IEnumerable<mediate_import_order_detail>? import_order_detail_p = Enumerable.Empty<mediate_import_order_detail>();
         private int get_import_id;
-        private int get_supp_id;
+        private string sup_name;
         private bool isLoading;
+        private string CurrentUri = "import-order-detail";
+        PagingInfo pagingInfo = new PagingInfo();
         protected override async Task OnInitializedAsync()
         {
             var uri = iredir.GetUri();
@@ -43,18 +42,27 @@ namespace DATN.Pages.Admin.ImportOrder
                 return;
             }
             isLoading = true;
-            import_order_detail = await imods.GetImportDetailByImportOrderId(get_import_id);
-            foreach(var m in import_order_detail)
-            {
-                genres = await ges.GetById(m.genre_id);
-                import_order_detail_list.Add(m);
-                genre_list.Add(genres);
-            }
-            get_supp_id = import_order_detail.FirstOrDefault().supplier_id;
-            suppliers = await sups.GetSuppById(get_supp_id);
-            
+            import_order_detail = await imods.GetImportDetailByImportOrderId1(get_import_id);
+            sup_name = import_order_detail.Select(col => col.supplier_name).First();
             isLoading = false;
             StateHasChanged();
+        }
+
+        protected override void OnParametersSet()
+        {
+            CreatePagingInfo();
+        }
+        public async void CreatePagingInfo()
+        {
+            int PageSize = 3;
+            pagingInfo = new PagingInfo();
+            page = page == 0 ? 1 : page;
+            pagingInfo.CurrentPage = page;
+            pagingInfo.TotalItems = import_order_detail.Count();
+            pagingInfo.ItemsPerPage = PageSize;
+
+            var skip = PageSize * (Convert.ToInt32(page) - 1);
+            import_order_detail_p = import_order_detail.Skip(skip).Take(PageSize).ToList();
         }
     }
 }

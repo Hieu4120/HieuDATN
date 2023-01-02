@@ -19,7 +19,7 @@
                             <div class="p-3" style="max-width: 700px;">
                                 <h1 class="display-4 text-white mb-3  animate__fadeInDown">@item.tiltle</h1>
                                 <p class="mx-md-5 px-5 ">@item.content</p>
-                                <a class="btn btn-outline-light py-2 px-4 mt-3  animate__fadeInUp" href="#">Mua ngay</a>
+                                <a class="btn btn-outline-light py-2 px-4 mt-3  animate__fadeInUp" href="/shop">Mua ngay</a>
                             </div>
                         </div>
                     </div>
@@ -73,7 +73,7 @@
                                          @(Convert.ToBase64String(ele.book_image))" alt="">
                             <div class="product-action">
                                 <a class="btn btn-outline-dark btn-square" style="cursor:pointer;"
-                           @onclick="() => icon_add_to_cart(ele)">
+                           @onclick="() => icon_add_to_cart(ele.book_id)">
                                     <i class="oi oi-cart"></i>
                                 </a>
                                 <a class="btn btn-outline-dark btn-square" style="cursor:pointer;"><i class="oi oi-heart"></i></a>
@@ -83,15 +83,14 @@
                             <a class="h6 text-decoration-none text-truncate cus-text-secondary cus-font-weight"
                        @onclick="() => pass_data_book(ele)" style="cursor:pointer;">@ele.book_name</a>
                             <div class="d-flex align-items-center justify-content-center mt-2">
-                                <h5 class="cus-font-weight">@ele.price </h5><h6 class="text-muted ms-2"><del>$123.00</del></h6>
+                                <h5 class="cus-font-weight">@ele.price VND</h5>
                             </div>
                             <div class="d-flex align-items-center justify-content-center mb-1">
                                 <small class="oi oi-star text-primary me-1"></small>
                                 <small class="oi oi-star text-primary me-1"></small>
                                 <small class="oi oi-star text-primary me-1"></small>
                                 <small class="oi oi-star text-primary me-1"></small>
-                                <small class="oi oi-star text-primary me-1"></small>
-                                <small>(99)</small>
+                                <small class="oi oi-star text-primary me-1"></small>   
                             </div>
                         </div>
                     </div>
@@ -283,9 +282,9 @@
             <div class="product-offer mb-30" style="height: 300px;">
                 <img class="img-fluid" src="./img/cover_img1.png" alt="">
                 <div class="offer-text">
-                    <h6 class="text-white text-uppercase">Save 20%</h6>
-                    <h3 class="text-white mb-3">Special Offer</h3>
-                    <a class="btn btn-primary">Mua ngay</a>
+                    <h6 class="text-white text-uppercase">Tiết kiệm 20%</h6>
+                    <h3 class="text-white mb-3">Offer Đặc biệt</h3>
+                    <a href="/shop" class="btn btn-primary">Mua ngay</a>
                 </div>
             </div>
         </div>
@@ -293,9 +292,9 @@
             <div class="product-offer mb-30" style="height: 300px;">
                 <img class="img-fluid" src="./img/img_cover2.jpg" alt="">
                 <div class="offer-text">
-                    <h6 class="text-white text-uppercase">Save 20%</h6>
-                    <h3 class="text-white mb-3 ">Special Offer</h3>
-                    <a class="btn btn-primary">Mua ngay</a>
+                    <h6 class="text-white text-uppercase">Giảm 20%</h6>
+                    <h3 class="text-white mb-3 ">Offer Đặc biệt</h3>
+                    <a href="/shop" class="btn btn-primary">Mua ngay</a>
                 </div>
             </div>
         </div>

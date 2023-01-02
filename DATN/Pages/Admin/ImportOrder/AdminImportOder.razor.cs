@@ -13,21 +13,23 @@ namespace DATN.Pages.Admin.ImportOrder
         private ISupplierServices sups { get; set; }
         [Inject]
         private IRedirectSevices? iredir { get; set; }
-        private IEnumerable<m_import_order> import_Orders;
+        [Parameter]
+        public int page { get; set; }
+        PagingInfo pagingInfo = new PagingInfo();
+        private string CurrentUri = "manager-import-order";
+        private IEnumerable<m_import_order>? import_Orders;
+        private IEnumerable<m_import_order> import_Orders_p = Enumerable.Empty<m_import_order>();
         private List<m_import_order> import_order_List = new List<m_import_order>();
-        private m_supplier? supplier_item { get; set; }
-        private List<m_supplier>? suppliers = new List<m_supplier>();
+        private IEnumerable<m_supplier> supplier_item;
+        private List<int> List_Suppid = new List<int>();
         private int ROW_INDEX = 1;
         private bool isLoading;
         protected override async Task OnInitializedAsync()
         {
             isLoading = true;
             import_Orders = await ipos.GetAllImportOrder();
-            foreach (var item in import_Orders)
-            {
-                supplier_item = await sups.GetSuppById(item.supplier_id);
-                suppliers.Add(supplier_item);
-            }
+            List_Suppid = import_Orders.Select(col => col.supplier_id).ToList();
+            supplier_item = await sups.GetSuppByListId(List_Suppid);
             isLoading =false;
             StateHasChanged();
         }
@@ -52,6 +54,22 @@ namespace DATN.Pages.Admin.ImportOrder
             // export ex
             bool IsDisableCopy = await JS.InvokeAsync<bool>("ExcelExport", "ExcelExport.xlsx", base64str);
             StateHasChanged();
+        }
+        protected override void OnParametersSet()
+        {
+            CreatePagingInfo();
+        }
+        public async void CreatePagingInfo()
+        {
+            int PageSize = 4;
+            pagingInfo = new PagingInfo();
+            page = page == 0 ? 1 : page;
+            pagingInfo.CurrentPage = page;
+            pagingInfo.TotalItems = import_Orders.Count();
+            pagingInfo.ItemsPerPage = PageSize;
+
+            var skip = PageSize * (Convert.ToInt32(page) - 1);
+            import_Orders_p = import_Orders.Skip(skip).Take(PageSize).ToList();
         }
     }
 }

@@ -5,7 +5,7 @@
 @inject AuthenticationStateProvider authStateProvider
 @inject NavigationManager navManager
 <nav class="navbar navbar-expand-lg bg-dark  navbar-dark py-lg-0 px-0">
-    <a href="" class="text-decoration-none d-block plr mt-1">
+    <a href="" class="text-decoration-none d-block plr mt-1" @onclick="() => nav_click_handle(HOME)">
         <img src="./img/log_img.png" />
     </a>
     <AuthorizeView>
@@ -23,15 +23,20 @@
     </button>
     <div class="@NavMenuCssClass navbar-collapse justify-content-between mt-1" id="navbarCollapse">
         <div class="navbar-nav mr-auto py-0">
-            <a href="index.html" class="nav-item nav-link active">Trang Chủ</a>
-            <a href="shop.html" class="nav-item nav-link">Cửa Hàng</a>
-            <a href="detail.html" class="nav-item nav-link">Thông Tin</a>
-            <a href="contact.html" class="nav-item nav-link">Liên Hệ</a>
+            <a href="/" class="nav-item nav-link @navActiveClass[HOME]" @onclick="() => nav_click_handle(HOME)">Trang Chủ</a>
+            <a href="/shop" class="nav-item nav-link @navActiveClass[SHOP]" @onclick="() => nav_click_handle(SHOP)">Cửa Hàng</a>
+            <a href="/contact" class="nav-item nav-link @navActiveClass[CONTACT]" @onclick="() => nav_click_handle(CONTACT)">Liên Hệ</a>
+            <a href="/ShopInfo" class="nav-item nav-link @navActiveClass[INFOMATION]" @onclick="() => nav_click_handle(INFOMATION)">Thông tin</a>
         </div>
+        <AuthorizeView Roles="Adminstrator">
+            <Authorized>
+                    <a href="/admin" class="btn btn-sm cus-text-dark cus-bg-primary">Quản lý</a>
+            </Authorized>
+        </AuthorizeView>
         <AuthorizeView>
             <Authorized>
                 <div class="navbar-nav nav-item m-3">
-                    <h4 class="pe-3">Xin chào, @context.User.Identity.Name </h4>
+                    <label class="pe-3">Xin chào, @context.User.Identity.Name </label>
                     <a @onclick="Logout" class="btn btn-sm cus-text-dark cus-bg-primary">Đăng xuất</a>
                 </div>
             </Authorized>
@@ -46,37 +51,3 @@
 <div class="col-8 offset-2 p-sm-3 mt-3">
     <SearchBox></SearchBox>
 </div>
-@code {
-    [Inject]
-    private IRedirectSevices? iredir { get; set; }
-    [Inject]
-    private IAccountServices? acs { get; set; }
-    [CascadingParameter]
-    private Task<AuthenticationState> authenticationStateTask { get; set; }
-    private async Task Logout()
-    {
-        var customAuthStateProvider = (Authentication)authStateProvider;
-        await customAuthStateProvider.UpdateAuthentincationState(null);
-        navManager.NavigateTo("/", true);
-    }
-
-    private bool collapseNavMenu = true;
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : "bg-dark";
-
-    private void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
-    }  
-    private async void pass_data_to_cart()
-    {
-        var authState = await authenticationStateTask;
-        string user = authState.User.Identity.Name;
-        var getUser = await acs.GetCurrentCustomerByName(user);
-        string customer_id = getUser.customer_id.ToString();
-        Dictionary<string, string> passData = new Dictionary<string, string>
-            {
-                {"customer_id", customer_id},
-            };
-        iredir.RedirectParameter("cart", passData);
-    }
-}

@@ -11,16 +11,16 @@ namespace DATN.Pages.Admin.Supplier
         private ISupplierServices sups{ get; set; }
         [Inject]
         private IRedirectSevices? iredir { get; set; }
-        public IEnumerable<m_supplier> supplis { get; set; } = Enumerable.Empty<m_supplier>();
+        public IEnumerable<m_supplier> supplis = Enumerable.Empty<m_supplier>();
         [Parameter]
         public int page { get; set; }
 
         private string CurrentUri = "manager-suplier";
         PagingInfo pagingInfo = new PagingInfo();
-        private IEnumerable<m_supplier> supplis_i { get; set; }
+        private IEnumerable<m_supplier> supplis_i;
         private int ROW_INDEX = 1;
-        private string status_sup = "";
-        private string supId;
+        /*private string status_sup = "";
+        private string supId;*/
 
         protected override async Task OnInitializedAsync()
         {

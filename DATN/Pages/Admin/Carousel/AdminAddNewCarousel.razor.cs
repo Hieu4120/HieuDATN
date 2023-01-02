@@ -21,6 +21,9 @@ namespace DATN.Pages.Admin.Carousel
         private long maxFileSize = 25 * 1048576;
         //Limit file = 1
         private int maxAllowedFiles = 1;
+        private bool IsNull = false;
+        private string? errCodeStyle => IsNull ? "width: 100%; border:1px solid red!important;" : "width: 100%;";
+        private string? errMess => IsNull ? "Vui lòng nhập hình ảnh" : "";
         async Task HandleFileSelected(InputFileChangeEventArgs files)
         {
             foreach (var file in files.GetMultipleFiles(maxAllowedFiles))
@@ -33,14 +36,21 @@ namespace DATN.Pages.Admin.Carousel
 
         private async void AddCarousel()
         {
-            isLoading = true;
-            carosel.create_at = DateTime.Now;
-            carosel.carosel_image = ImgUploaded;
-            await icas.Create(carosel);
-            carosel = new m_carosel();
-            isLoading = false;
-            ino.Notify((NotificationSeverity.Success, "Thêm thành công"));
-            StateHasChanged();
+            if (ImgUploaded == null)
+            {
+                IsNull = true;
+            }
+            else
+            {
+                isLoading = true;
+                carosel.create_at = DateTime.Now;
+                carosel.carosel_image = ImgUploaded;
+                await icas.Create(carosel);
+                carosel = new m_carosel();
+                isLoading = false;
+                ino.Notify((NotificationSeverity.Success, "Thêm thành công"));
+                StateHasChanged();
+            }
         }
     }
 }

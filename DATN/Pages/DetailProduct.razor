@@ -5,15 +5,16 @@
 <div class="container-fluid pb-5">
     <div class="row px-xl-5">
         <div class="col-lg-5 mb-30">
-            @if (book_item.book_image != null)
+            @if (book_Detail.book_image != null)
             {
-                <img class="w-100 h-100" src="data:image/bmp;base64, @(Convert.ToBase64String(book_item.book_image))" />
+                <img class="w-100 h-100" src="data:image/bmp;base64, 
+                @(Convert.ToBase64String(book_Detail.book_image))" />
             }
         </div>
 
         <div class="col-lg-7 h-auto mb-30">
             <div class="h-100 bg-light p-30">
-                <h3>@book_item.book_name</h3>
+                <h3>@book_Detail.book_name</h3>
                 <div class="d-flex mb-3">
                     <div class="text-primary me-2">
                         <small class="oi oi-star"></small>
@@ -24,22 +25,26 @@
                     </div>
                     <small class="pt-1">(99 Reviews)</small>
                 </div>
-                <h3 class="font-weight-semi-bold mb-4">@book_item.price VND</h3>
+                <h3 class="font-weight-semi-bold mb-4">@book_Detail.price VND</h3>
                 <div class="d-flex mb-3">
                     <strong class=" me-3">Nhà Xuất bản:</strong>
-                    <label> @supplier_item.supplier_name</label>
+                    <label> @book_Detail.supplier_name</label>
                 </div>
                 <div class="d-flex mb-4">
                     <strong class=" me-3">Tác Giả:</strong>
-                    <label> @book_item.author</label>
+                    <label> @book_Detail.author</label>
                 </div>
                 <div class="d-flex mb-4">
                     <strong class=" me-3">Số Trang:</strong>
-                    <label>@book_item.page_number </label>
+                    <label>@book_Detail.page_number </label>
                 </div>
                 <div class="d-flex mb-4">
                     <strong class=" me-3">Ngày Xuất Bản:</strong>
-                    <label>@book_item.release_date</label>
+                    <label>@book_Detail.release_date.ToString("yyyy/MM/dd")</label>
+                </div>
+                 <div class="d-flex mb-4">
+                    <strong class=" me-3">Giá</strong>
+                    <label>@book_Detail.price VND </label>
                 </div>
                 <div class="d-flex align-items-center mb-4 pt-2">
                     <div class="input-group quantity me-3" style="width: 130px;">
@@ -80,7 +85,7 @@
                         <TabContent>
                             <div class="tab-content mt-4">
                                 <h4 class="mb-3">Nội Dung</h4>
-                                <p>@book_item.book_content</p>
+                                <p>@book_Detail.book_content</p>
                             </div>
                         </TabContent>
                     </BSNavItem>
@@ -89,24 +94,27 @@
                         <TabContent>
                             <div class="row mt-4">
                                 <div class="col-md-6">
-                                    <h4 class="mb-4">Bình luận cho @book_item.book_name</h4>
+                                    <h4 class="mb-4">Bình luận cho @book_Detail.book_name</h4>
                                     <div class="media mb-4">
-                                        <img src="img/user.jpg" alt="Image" class="img-fluid me-3 mt-1" style="width: 45px;">
-                                        <div class="media-body">
-                                            <h6>John Doe<small> - <i>01 Jan 2045</i></small></h6>
-                                            <div class="text-primary mb-2">
-                                                <i class="oi oi-star"></i>
-                                                <i class="oi oi-star"></i>
-                                                <i class="oi oi-star"></i>
-                                                <i class="oi oi-star"></i>
-                                                <i class="oi oi-star"></i>
+                                        @foreach (var item in reviews)
+                                        {
+                                            <div class="media-body">
+                                                <h6>@item.user_name<small> - <i>@item.create_at.ToString("yyyy-MM-dd")</i></small></h6>
+                                                <div class="text-primary mb-2">
+                                                    <i class="oi oi-star"></i>
+                                                    <i class="oi oi-star"></i>
+                                                    <i class="oi oi-star"></i>
+                                                    <i class="oi oi-star"></i>
+                                                    <i class="oi oi-star"></i>
+                                                </div>
+                                                <p>@item.review_content</p>
                                             </div>
-                                            <p>Diam amet duo labore stet elitr ea clita ipsum, tempor labore accusam ipsum et no at. Kasd diam tempor rebum magna dolores sed sed eirmod ipsum.</p>
-                                        </div>
+                                        }
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <EditForm Model="review_item">
+                                    <EditForm Model="review_item" OnValidSubmit="@AddReview">
+                                        <DataAnnotationsValidator />
                                         <div class="d-flex my-3">
                                             <p class="mb-0 me-2">Đánh giá của bạn * :</p>
                                             <select @onchange="(e) => SelChange(e)"
@@ -125,18 +133,27 @@
                                         </div>
                                         <div class="form-group">
                                             <label class="mb-2" for="message">Nội dung bình luận</label>
+                                            <div class="form-group ">
+                                                <ValidationMessage For="@(() => review_item.review_content)" />
+                                            </div>
                                             <InputTextArea @bind-Value="review_item.review_content" id="message" cols="30" rows="5" class="form-control" />
                                         </div>
                                         <div class="form-group">
                                             <label class="mb-2 mt-2" for="name">Họ Tên</label>
+                                            <div class="form-group ">
+                                                <ValidationMessage For="@(() => review_item.user_name)" />
+                                            </div>
                                             <InputText @bind-Value="review_item.user_name" type="text" class="form-control" id="name" />
                                         </div>
                                         <div class="form-group">
-                                            <label class="mb-2 mt-2" for="email"> Email *</label>
+                                            <label class="mb-2 mt-2" for="email"> Email</label>
+                                            <div class="form-group ">
+                                                <ValidationMessage For="@(() => review_item.email)" />
+                                            </div>
                                             <InputText @bind-Value="review_item.email" type="email" class="form-control mb-2" id="email" />
                                         </div>
                                         <div class="form-group mb-2">
-                                            <button type="button" @onclick="AddReview" class="btn btn-primary px-3">Gửi bình luận</button>
+                                            <button type="submit" class="btn btn-primary px-3">Gửi bình luận</button>
                                         </div>
                                     </EditForm>
                                 </div>
@@ -172,7 +189,7 @@
                                 <a class="h6 text-decoration-none text-truncate cus-text-secondary cus-font-weight"
                            @onclick="() => pass_data_book(ele)" style="cursor:pointer;">@ele.book_name</a>
                                 <div class="d-flex align-items-center justify-content-center mt-2">
-                                    <h5 class="cus-font-weight">@ele.price </h5><h6 class="text-muted ms-2"><del>$123.00</del></h6>
+                                    <h5 class="cus-font-weight">@ele.price VND</h5>
                                 </div>
                                 <div class="d-flex align-items-center justify-content-center mb-1">
                                     <small class="oi oi-star text-primary me-1"></small>
@@ -180,7 +197,6 @@
                                     <small class="oi oi-star text-primary me-1"></small>
                                     <small class="oi oi-star text-primary me-1"></small>
                                     <small class="oi oi-star text-primary me-1"></small>
-                                    <small>(99)</small>
                                 </div>
                             </div>
                         </div>

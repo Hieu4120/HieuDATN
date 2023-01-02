@@ -7,7 +7,7 @@ using System.Xml.Linq;
 
 namespace DATN.Services
 {
-    public class ImportOrderDetailServices: IImportOrderDetailServices
+    public class ImportOrderDetailServices : IImportOrderDetailServices
     {
         private readonly IDbContextFactory<BookDBContext> _contextFactory;
         public ImportOrderDetailServices(IDbContextFactory<BookDBContext> contextFactory)
@@ -43,9 +43,9 @@ namespace DATN.Services
         public async Task<IEnumerable<m_import_order_detail>> GetImportDetailByImportOrderId(int importcode)
         {
             using (var _context = _contextFactory.CreateDbContext())
-            {  
-             var ret = await _context.m_import_order_details.Where(col => col.import_order_id == importcode).ToListAsync();                
-             return ret;   
+            {
+                var ret = await _context.m_import_order_details.Where(col => col.import_order_id == importcode).ToListAsync();
+                return ret;
             }
         }
 
@@ -150,6 +150,52 @@ namespace DATN.Services
             using (var _context = _contextFactory.CreateDbContext())
             {
                 return await _context.m_import_order_details.Where(col => book_list_id.Contains((int)col.book_id)).ToListAsync();
+            }
+        }
+
+        public async Task<IEnumerable<mediate_import_order_detail>> GetImportDetailByImportOrderId1(int importcode)
+        {
+            using (var _context = _contextFactory.CreateDbContext())
+            {
+                var query = await (
+                    from A in _context.m_import_order_details.
+                    Where(col => col.import_order_id == importcode)
+                    from B in _context.m_genres
+                    .Where(gen => gen.genre_id == A.genre_id)
+                    from C in _context.m_suppliers
+                    .Where(sup => sup.supplier_id == A.supplier_id)
+                    select new
+                    {
+                        import_order_id = A.import_order_id,
+                        book_id = A.book_id,
+                        book_name = A.book_name,
+                        price = A.price,
+                        author = A.author,
+                        book_image = A.book_image,
+                        page_number = A.page_number,
+                        amount = A.amount,
+                        supplier_name = C.supplier_name,
+                        genre_name = B.genre_name,
+                    }).ToListAsync();
+                List<mediate_import_order_detail> List_import_detail = new List<mediate_import_order_detail>();
+
+                foreach (var item in query)
+                {
+                    List_import_detail.Add( new mediate_import_order_detail()
+                    {
+                        import_order_id = item.import_order_id,
+                        book_id = item.book_id,
+                        book_name = item.book_name,
+                        price = item.price,
+                        author = item.author,
+                        amount = item.amount,
+                        book_image = item.book_image,
+                        page_number = item.page_number,
+                        supplier_name = item.supplier_name,
+                        genre_name = item.genre_name,
+                    });
+                }
+                return List_import_detail;
             }
         }
     }

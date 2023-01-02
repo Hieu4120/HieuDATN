@@ -1,91 +1,91 @@
 ﻿@page "/checkout"
-
+@using DATN.Shared.Components
 <!-- Checkout Start -->
-<div class="container-fluid">
-    <div class="row px-xl-5">
-        <div class="col-lg-8">
-            <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Billing Address</span></h5>
-            <div class="bg-light p-30 mb-5">
-                <EditForm Model="sale_order_detail">
-                    <div class="row">
-                        <div class="col-md-6 mb-4">
-                            <label>Tên</label>
-                            <InputText @bind-Value="@sale_order_detail.first_name" class="form-control" type="text" />
-                        </div>
-                        <div class="col-md-6 mb-4">
-                            <label>Họ tên đệm</label>
-                            <InputText @bind-Value="@sale_order_detail.last_name" class="form-control" type="text" />
-                        </div>
-                        <div class="col-md-6 mb-4">
-                            <label>SĐT</label>
-                            <InputNumber @bind-Value="@sale_order_detail.phone_number" class="form-control" />
-                        </div>
-                        <div class="col-md-6 mb-4">
-                            <label>Địa chỉ</label>
-                            <InputText @bind-Value="@sale_order_detail.address" class="form-control" type="text" />
-                        </div>
-                    </div>
-                </EditForm>
-            </div>
-        </div>
-        <div class="col-lg-4">
-            <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Order Total</span></h5>
-            <div class="bg-light p-30 mb-5">
-                @if (DataList != null && DataList.Count() > 0)
-                {
-                    <div class="border-bottom">
-                        <h6 class="mb-3">Tên sản phẩm</h6>
-                        @foreach (var item in DataList)
-                        {
-                            <div class="d-flex justify-content-between">
-                                <p>@item.book_name (@item.amount)</p>
-                                <p>@item.price</p>
+@if (Isloading)
+{
+    <div class="mt-5 mb-5">
+        <DATN.Shared.Components.LoadingComponent />
+    </div>
+}
+else
+{
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <div class="col-lg-8">
+                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Billing Address</span></h5>
+                <div class="bg-light p-30 mb-5">
+                    <EditForm Model="sale_order_detail">
+                        <DataAnnotationsValidator />
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <div class="text-danger">
+                                    <ValidationMessage For="@(() => sale_order_detail.first_name)" />
+                                </div>
+                                <label>Tên</label>
+                                <InputText @bind-Value="@sale_order_detail.first_name" class="form-control" type="text" />
                             </div>
-                        }
-                    </div>
-                }
-                <div class="border-bottom pt-3 mb-4">
-                    <div class="d-flex justify-content-between mb-3">
-                        <h6>Tổng tiền</h6>
-                        <h6>@total</h6>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <h6 class="font-weight-medium">Phí ship</h6>
-                        <h6 class="font-weight-medium">@ship_price</h6>
-                    </div>
-                </div>
-                <div class="pt-2">
-                    <div class="d-flex justify-content-between mt-2">
-                        <h5>Tổng thanh toán</h5>
-                        <h5>@total_pay</h5>
-                    </div>
+                            <div class="col-md-6 mb-4">
+                                <div class="text-danger">
+                                    <ValidationMessage For="@(() => sale_order_detail.last_name)" />
+                                </div>
+                                <label>Họ tên đệm</label>
+                                <InputText @bind-Value="@sale_order_detail.last_name" class="form-control" type="text" />
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <div class="text-danger">
+                                    <ValidationMessage For="@(() => sale_order_detail.phone_number)" />
+                                </div>
+                                <label>SĐT</label>
+                                <InputNumber @bind-Value="@sale_order_detail.phone_number" class="form-control" />
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <div class="text-danger">
+                                    <ValidationMessage For="@(() => sale_order_detail.address)" />
+                                </div>
+                                <label>Địa chỉ</label>
+                                <InputText @bind-Value="@sale_order_detail.address" class="form-control" type="text" />
+                            </div>
+                        </div>
+                    </EditForm>
                 </div>
             </div>
-            <div class="mb-5">
-                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Payment</span></h5>
-                <div class="bg-light p-30">
-                    <div class="mb-4">
-                        <div class="custom-control custom-radio">
-                            <input type="radio" class="custom-control-input" name="payment" id="paypal">
-                            <label class="custom-control-label" for="paypal">Paypal</label>
+            <div class="col-lg-4">
+                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Order Total</span></h5>
+                <div class="bg-light p-30 mb-5">
+                    @if (DataList != null && DataList.Count() > 0)
+                    {
+                        <div class="border-bottom">
+                            <h6 class="mb-3">Tên sản phẩm</h6>
+                            @foreach (var item in DataList)
+                            {
+                                <div class="d-flex justify-content-between">
+                                    <p>@item.book_name (@item.amount)</p>
+                                    <p>@item.price</p>
+                                </div>
+                            }
+                        </div>
+                    }
+                    <div class="border-bottom pt-3 mb-4">
+                        <div class="d-flex justify-content-between mb-3">
+                            <h6>Tổng tiền</h6>
+                            <h6>@total</h6>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <h6 class="font-weight-medium">Phí ship</h6>
+                            <h6 class="font-weight-medium">@ship_price</h6>
                         </div>
                     </div>
-                    <div class="mb-4">
-                        <div class="custom-control custom-radio">
-                            <input type="radio" class="custom-control-input" name="payment" id="directcheck">
-                            <label class="custom-control-label" for="directcheck">Direct Check</label>
+                    <div class="pt-2">
+                        <div class="d-flex justify-content-between mt-2">
+                            <h5>Tổng thanh toán</h5>
+                            <h5>@total_pay</h5>
                         </div>
                     </div>
-                    <div class="mb-4 mb-4">
-                        <div class="custom-control custom-radio">
-                            <input type="radio" class="custom-control-input" name="payment" id="banktransfer">
-                            <label class="custom-control-label" for="banktransfer">Bank Transfer</label>
-                        </div>
-                    </div>
-                    <button @onclick="() => check_out()" class="btn btn-block btn-primary font-weight-bold py-3">Thanh toán</button>
                 </div>
+                 <button @onclick="() => handle_check_out()" class="btn btn-block btn-primary font-weight-bold py-3">Thanh toán</button>
             </div>
         </div>
     </div>
-</div>
+}
+<ModalCheckout ConfirmCallBack="call_back_confirm" @ref=conf_ch />
 <!-- Checkout End -->

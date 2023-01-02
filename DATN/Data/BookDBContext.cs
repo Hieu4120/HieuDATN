@@ -17,6 +17,7 @@ namespace DATN.Data
         public DbSet<m_sale_order_detail> m_sale_order_details { get; set; }
         public DbSet<m_supplier> m_suppliers { get; set; }
         public DbSet<m_review> m_reviews { get; set; }
+        public DbSet<m_customer> m_customers { get; set; }
 
         public BookDBContext(DbContextOptions<BookDBContext> options) : base(options) { }
         protected override void OnModelCreating(ModelBuilder builder)
@@ -80,7 +81,11 @@ namespace DATN.Data
                 table.review_id,
                 table.book_id
             });
-
+            builder.Entity<m_customer>().HasKey(table => new
+            {
+                table.checkout_id,
+                table.customer_id
+            });
         }
     }
 }

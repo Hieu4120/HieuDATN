@@ -14,6 +14,7 @@ namespace DATN.Services
         Task<IEnumerable<m_account>> GetUserName(string name);
         Task<bool> ExistUser(string userName);
         Task<bool> CheckAcc(string username, string password);
+        Task<int> GetTotalAccount();
         Task<m_account> GetCurrentCustomerByName( string name);
     }
 }

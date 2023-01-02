@@ -10,6 +10,7 @@ namespace DATN.Services
         Task<int> GetGenId();
         Task<m_genre> GetById(int g_id);
         Task<IEnumerable<m_genre>> GetAllGenre();
+        Task<IEnumerable<mediate_genre>> GetAllGenreName();
         Task<bool> ExistName(string g_name);
     }
 }

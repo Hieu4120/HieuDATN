@@ -10,6 +10,7 @@ namespace DATN.Services
         Task<bool> Update(m_import_order_detail import_Order_Detail);
         Task<bool> Delete(m_import_order_detail import_Order_Detail);
         Task<IEnumerable<m_import_order_detail>> GetImportDetailByImportOrderId(int importcode);
+        Task<IEnumerable<mediate_import_order_detail>> GetImportDetailByImportOrderId1(int importcode);
         Task<IEnumerable<m_import_order_detail>> GetImportDetailByListIdBook(List<int> book_list_id);
         Task<m_import_order_detail> GetImportDetailByBookId(int bookid);
         Task<bool> CheckBookNameExist(string book_name);

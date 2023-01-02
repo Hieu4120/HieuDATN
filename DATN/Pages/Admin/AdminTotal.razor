@@ -1,0 +1,70 @@
+﻿@using DATN.Services;
+
+@layout SupportLayout
+@page "/admin"
+
+<PageTitle>Quản lý</PageTitle>
+<AuthorizeView Roles="Adminstrator">
+    <Authorized>
+        <div class="card mb-4">
+            <div class="card-header mb-3">
+                Quản lý
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class=" col-sm-6 p-4">
+                        <div class="counter bg-success">
+                            <i class="oi oi-cart"></i>
+                            <label>Tổng đơn hàng bán trong tháng</label>
+                            <h2>@Total_sale_order đơn hàng</h2>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 p-4">
+                        <div class="counter bg-warning">
+                            <i class="oi oi-loop"></i>
+                            <label> Tổng đơn hàng nhập</label>
+                            <h2>@Total_import_order đơn hàng</h2>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 p-4">
+                        <div class="counter bg-purple">
+                            <i class="oi oi-loop"></i>
+                            <label> Tổng doanh thu</label>
+                            <h2>@Total_Price_order VND</h2>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 p-4">
+                        <div class="counter bg-primary">
+                            <i class="oi oi-loop"></i>
+                            <label> Tổng khách hàng có tài khoản</label>
+                            <h2>@Total_Account người</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </Authorized>
+</AuthorizeView>
+@code {
+    [Inject]
+    private ISaleOrderServices? isos { get; set; }
+    [Inject]
+    private IImportOrderServices? iipos { get; set; }
+    [Inject]
+    private IAccountServices? iacs { get; set; }
+    private int Total_sale_order;
+    private int Total_import_order;
+    private int Total_Account;
+    private decimal Total_Price_order;
+    private List<decimal> Total_Price_order_list = new List<decimal>();
+    protected override async Task OnInitializedAsync()
+    {
+        Total_sale_order = await isos.GetTotalSaleOrder();
+        Total_import_order = await iipos.GetTotalImportOrder();
+        Total_Price_order_list = await isos.GetTotalPriceSaleOrder();
+        Total_Account = await iacs.GetTotalAccount();
+        Total_Price_order = Total_Price_order_list.Sum(x => Convert.ToInt32(x));
+        StateHasChanged();
+    }
+}

@@ -10,8 +10,12 @@ namespace DATN.Pages.Admin.Feeback
         private IFeedBackServices ifes { get; set; }
         [Inject]
         private IRedirectSevices? iredir { get; set; }
-
-        private IEnumerable<m_feedback> feedbacks { get; set; }
+        [Parameter]
+        public int page { get; set; }
+        PagingInfo pagingInfo = new PagingInfo();
+        private string CurrentUri = "manager-feeback";
+        private IEnumerable<m_feedback> feedbacks;
+        private IEnumerable<m_feedback> feedbacks_p = new List<m_feedback>();
         private int ROW_INDEX = 1;
         private bool isLoading;
 
@@ -32,6 +36,21 @@ namespace DATN.Pages.Admin.Feeback
             };
             iredir.RedirectParameter("update-feedback", passData);
         }
+        protected override void OnParametersSet()
+        {
+            CreatePagingInfo();
+        }
+        public async void CreatePagingInfo()
+        {
+            int PageSize = 4;
+            pagingInfo = new PagingInfo();
+            page = page == 0 ? 1 : page;
+            pagingInfo.CurrentPage = page;
+            pagingInfo.TotalItems = feedbacks.Count();
+            pagingInfo.ItemsPerPage = PageSize;
 
+            var skip = PageSize * (Convert.ToInt32(page) - 1);
+            feedbacks_p = feedbacks.Skip(skip).Take(PageSize).ToList();
+        }
     }
 }

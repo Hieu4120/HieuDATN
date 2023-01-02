@@ -30,30 +30,20 @@ namespace DATN.Pages
 
         private string CurrentUri = "shop";
         PagingInfo pagingInfo = new PagingInfo();
-        private IEnumerable<m_book>? books_i;
-        private IEnumerable<m_genre>? genres;
-        private List<m_book>? booksFillter = new List<m_book>();
-        private List<m_genre>? genre_list = new List<m_genre>();
+        private IEnumerable<mediate_book>? books_i;
+        private IEnumerable<mediate_genre>? genres;
         private m_cart? cart_item = new m_cart();
         private m_account? account_item = new m_account();
-        public IEnumerable<m_book> books { get; set; } = Enumerable.Empty<m_book>();
+        public IEnumerable<mediate_book> books { get; set; } = Enumerable.Empty<mediate_book>();
         private int cart_id_init;
         private string user;
         private bool CartItemIsExits;
         protected override async Task OnInitializedAsync()
         {
-            books_i = await bs.GetAllBook();
             await Task.Delay(500);
-            genres = await igs.GetAllGenre();
-            foreach (var book in books_i)
-            {
-                booksFillter.Add(book);
-            }
-            foreach(var item in genres)
-            {
-                genre_list.Add(item);
-            }
-           StateHasChanged();
+            books_i = await bs.GetBookPriceFilter();
+            genres = await igs.GetAllGenreName();          
+            StateHasChanged();
         }
 
         private async void getvaluecheck( ChangeEventArgs e, int index)
@@ -61,38 +51,38 @@ namespace DATN.Pages
             string check = e.Value.ToString();
             if (check == "on" && index == 1)
             {
-                books = booksFillter;
+                books = books_i;
             }
             if (check == "on" && index == 2)
             {
-                books = booksFillter.Where(col => col.price < 100000).ToList();
+                books = books_i.Where(col => col.price < 100000).ToList();
             }
             if (check == "on" && index == 3)
             {
-                books = booksFillter.Where(col => col.price > 100000 &&
+                books = books_i.Where(col => col.price > 100000 &&
                 col.price < 300000).ToList();
             }
             if (check == "on" && index == 4)
             {
-                books = booksFillter.Where(col => col.price > 300000 &&
+                books = books_i.Where(col => col.price > 300000 &&
                 col.price < 500000).ToList();
             }
             if (check == "on" && index == 5)
             {
-                books = booksFillter.Where(col => col.price > 500000).ToList();
+                books = books_i.Where(col => col.price > 500000).ToList();
             }
         }
         private async void GetGenreValue(ChangeEventArgs e)
         {
             int gen_check = Int32.Parse((string)e.Value);
-            books = booksFillter.Where(col => col.genre_id == gen_check).ToList();
+            books = books_i.Where(col => col.genre_id == gen_check).ToList();
         }
-            private void pass_data_book(m_book ele)
+            private void pass_data_book(int book_id )
         {
-            string book_id = ele.book_id.ToString();
+            string book_id_pass = book_id.ToString();
             Dictionary<string, string> passData = new Dictionary<string, string>
             {
-                {"book_id", book_id},
+                {"book_id", book_id_pass},
             };
             iredir.RedirectParameter("detail", passData);
         }
@@ -112,11 +102,11 @@ namespace DATN.Pages
             var skip = PageSize * (Convert.ToInt32(page) - 1);
             books = books_i.Skip(skip).Take(PageSize).ToList();
         }
-        private async void icon_add_to_cart(m_book ele)
+        private async void icon_add_to_cart(int book_id)
         {
             var authState = await authenticationStateTask;
             user = authState.User.Identity.Name;
-            CartItemIsExits = await ics.ExistCartItemCHK(ele.book_id);
+            CartItemIsExits = await ics.ExistCartItemCHK(book_id);
             if (user == null)
             {
                 ino.Notify((NotificationSeverity.Success, "Bạn vẫn chưa đăng nhập"));
@@ -141,7 +131,7 @@ namespace DATN.Pages
                 cart_item.cart_id = cart_id_init + 1;
                 cart_item.customer_id = account_item.customer_id;
                 cart_item.amount = 1;
-                cart_item.book_id = ele.book_id;
+                cart_item.book_id = book_id;
                 cart_item.create_at = DateTime.Now;
                 cart_item.update_at = DateTime.Now;
                 await ics.Create(cart_item);

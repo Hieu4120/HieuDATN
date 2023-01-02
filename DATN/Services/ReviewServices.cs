@@ -1,5 +1,7 @@
 ﻿using DATN.Data;
 using DATN.Model;
+using DocumentFormat.OpenXml.Office2010.Excel;
+using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.EntityFrameworkCore;
 
 namespace DATN.Services
@@ -37,20 +39,53 @@ namespace DATN.Services
             }
         }
 
-        public async Task<IEnumerable<m_review>> GetAllReView()
+        public async Task<IEnumerable<mediate_review>> GetAllReView()
         {
             using (var _context = _contextFactory.CreateDbContext())
             {
                 try
                 {
-                    var ret = await _context.m_reviews.ToListAsync();
-                    return ret;
+                    var query = await (
+                   from A in _context.m_reviews
+                   from B in _context.m_books
+                   .Where(bs => bs.book_id == A.book_id)
+                   select new
+                   {
+                       book_name = B.book_name,
+                       review_content = A.review_content,
+                       user_name = A.user_name,
+                       email = A.email,
+                       rating = A.rating
+                   }).ToListAsync();
+                    List<mediate_review> reviewList = new List<mediate_review>();
+                    foreach(var ele in query)
+                    {
+                        reviewList.Add(new mediate_review()
+                        {
+                            book_name = ele.book_name,
+                            review_content = ele.review_content,
+                            user_name = ele.user_name,
+                            email = ele.email,
+                            rating = ele.rating
+                        });
+                    }
+                    return reviewList;
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
                     return null;
                 }
+            }
+        }
+
+        public async Task<IEnumerable<m_review>> GetReViewByBookId(int bookId)
+        {
+            using (var _context = _contextFactory.CreateDbContext())
+            {
+                var ret = await _context.m_reviews.Where(
+                    col => col.book_id.Equals(bookId)).ToListAsync();
+                return ret;
             }
         }
 

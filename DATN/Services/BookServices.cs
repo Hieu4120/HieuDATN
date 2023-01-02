@@ -1,5 +1,6 @@
 ﻿using DATN.Data;
 using DATN.Model;
+using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
@@ -12,14 +13,36 @@ namespace DATN.Services
         {
             _contextFactory = contextFactory;
         }
-        public async Task<IEnumerable<m_book>> GetAllBook()
+        public async Task<IEnumerable<mediate_book>> GetAllJustBookInf()
         {
             using (var _context = _contextFactory.CreateDbContext())
             {
                 try
                 {
-                    var ret = await _context.m_books.ToListAsync();
-                    return ret;
+                    var query = await (
+                   from A in _context.m_books
+                        .Where(col => col.number_click > 5)
+                   select new
+                   {
+                       book_id = A.book_id,
+                       book_name = A.book_name,
+                       price = A.price,
+                       book_image = A.book_image,
+                       number_click = A.number_click
+                   }).OrderBy(col => col.number_click)
+                   .ToListAsync();
+                    List<mediate_book> book_list = new List<mediate_book>();
+                    foreach (var ele in query)
+                    {
+                        book_list.Add(new mediate_book()
+                        {
+                            book_id = ele.book_id,
+                            book_name = ele.book_name,
+                            price = ele.price,
+                            book_image = ele.book_image
+                        });
+                    }
+                    return book_list;
                 }
                 catch (Exception ex)
                 {
@@ -33,7 +56,6 @@ namespace DATN.Services
         {
             using (var _context = _contextFactory.CreateDbContext())
             {
-
                 bool ret = false;
                 await _context.m_books.AddAsync(book);
                 await _context.SaveChangesAsync();
@@ -152,6 +174,162 @@ namespace DATN.Services
             using (var _context = _contextFactory.CreateDbContext())
             {
                 return await _context.m_books.Where(col => bookname.Contains(col.book_name)).ToListAsync();
+            }
+        }
+
+        public async Task<mediate_book_detail> bookDetail(int book_id)
+        {
+            using (var _context = _contextFactory.CreateDbContext())
+            {
+                var query = await (
+                    from A in _context.m_books.
+                    Where(col => col.book_id == book_id)
+                    from B in _context.m_genres
+                    .Where(gen => gen.genre_id == A.genre_id)
+                    from C in _context.m_suppliers
+                    .Where(sup => sup.supplier_id == A.supplier_id)
+                    select new
+                    {
+                        book_id = A.book_id,
+                        book_name = A.book_name,
+                        price = A.price,
+                        author = A.author,
+                        book_content = A.book_content,
+                        book_image = A.book_image,
+                        page_number = A.page_number,
+                        amount = A.amount,
+                        supplier_name = C.supplier_name,
+                        genre_name = B.genre_name,
+                        release_date = A.release_date,
+                        genre_id = B.genre_id,
+                    }).FirstOrDefaultAsync();
+                mediate_book_detail bookDetail = new mediate_book_detail()
+                {
+                    book_id = query.book_id,
+                    book_name = query.book_name,
+                    price = query.price,
+                    author = query.author,
+                    book_content = query.book_content,
+                    amount = query.amount,
+                    book_image = query.book_image,
+                    page_number = query.page_number,
+                    supplier_name = query.supplier_name,
+                    genre_name = query.genre_name,
+                    release_date = query.release_date,
+                    genre_id = query.genre_id
+                };
+                return bookDetail;
+            }
+        }
+
+        public async Task<IEnumerable<mediate_book_detail>> GetAllBookWithGenre()
+        {
+            using (var _context = _contextFactory.CreateDbContext())
+            {
+                var query = await(
+                    from A in _context.m_books
+                    from B in _context.m_genres
+                    .Where(colg => colg.genre_id == A.genre_id)
+                    from C in _context.m_suppliers
+                    .Where(cols => cols.supplier_id == A.supplier_id)
+                    select new
+                    {
+                        book_id = A.book_id,
+                        book_name = A.book_name,
+                        price = A.price,
+                        author = A.author,
+                        book_content = A.book_content,
+                        book_image = A.book_image,
+                        page_number = A.page_number,
+                        amount = A.amount,
+                        supplier_name = C.supplier_name,
+                        genre_name = B.genre_name,
+                        release_date = A.release_date,
+                        genre_id = B.genre_id,
+                        status = A.status,
+                        number_click = A.number_click
+                    }).ToListAsync();
+                List<mediate_book_detail> bookDetailList = new List<mediate_book_detail>();
+                foreach(var item in query)
+                {
+                    bookDetailList.Add (new mediate_book_detail()
+                    {
+                    book_id = item.book_id,
+                    book_name = item.book_name,
+                    price = item.price,
+                    author = item.author,
+                    book_content = item.book_content,
+                    amount = item.amount,
+                    book_image = item.book_image,
+                    page_number = item.page_number,
+                    supplier_name = item.supplier_name,
+                    genre_name = item.genre_name,
+                    release_date = item.release_date,
+                    genre_id = item.genre_id,
+                    status = item.status,
+                    number_click = item.number_click
+                });
+                }
+                return bookDetailList;
+            }
+        }
+
+        public async Task<IEnumerable<mediate_book>> GetBookPriceFilter()
+        {
+            using (var _context = _contextFactory.CreateDbContext())
+            {
+                try
+                {
+                    var query = await(
+                   from A in _context.m_books
+                   from B in _context.m_genres
+                   .Where(colg => colg.genre_id == A.genre_id)
+                   select new
+                   {
+                       book_id = A.book_id,
+                       book_name = A.book_name,
+                       price = A.price,
+                       book_image = A.book_image,
+                       number_click = A.number_click,
+                       genre_id = B.genre_id
+                   }).OrderBy(col => col.number_click)
+                   .ToListAsync();
+                    List<mediate_book> book_list = new List<mediate_book>();
+                    foreach (var ele in query)
+                    {
+                        book_list.Add(new mediate_book()
+                        {
+                            book_id = ele.book_id,
+                            book_name = ele.book_name,
+                            price = ele.price,
+                            book_image = ele.book_image,
+                            genre_id = ele.genre_id
+                        });
+                    }
+                    return book_list;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return null;
+                }
+            }
+        }
+
+        public async Task<IEnumerable<m_book>> GetAllBook()
+        {
+            using (var _context = _contextFactory.CreateDbContext())
+            {
+                try
+                {
+                    var ret = await _context.m_books.ToListAsync();
+                    return ret;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return null;
+                }
             }
         }
     }

@@ -87,6 +87,15 @@ namespace DATN.Services
             }
         }
 
+        public async Task<int> GetTotalAccount()
+        {
+            using (var _context = _contextFactory.CreateDbContext())
+            {
+                var ret = await _context.m_accounts.CountAsync();
+                return ret;
+            }
+        }
+
         /* public async Task<int> GetCustomerId()
          {
              using (var _context = _contextFactory.CreateDbContext())

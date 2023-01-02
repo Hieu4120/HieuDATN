@@ -1,78 +1,92 @@
 ﻿@layout SupportLayout
 @inject IJSRuntime JS
+@page "/manager-import-order/{Page:int}"
 @page "/manager-import-order"
 
-<div class="card mb-4">
-    <div class="card-header mb-3">
-        Quản lý thể loại
-    </div>
-    <div class="card-body">
-         @if (isLoading)
-        {
-            <DATN.Shared.Components.LoadingComponent />
-        }
-        else
-        {
-        <div class="table-responsive">
-            <div class="row col-sm-12 mb-4 mt-2">
-                <div class="col-sm-3">
-                    <a class="btn btn-primary btn-sm">Thêm đơn hàng nhập</a>
-                </div>
-                    <div class="col-sm-2 offset-7">
-                    <button type="button" class="btn btn-sm btn-primary" @onclick="btn_export_excel">Xuất Excel</button>
-                </div>
+
+<PageTitle> Quản lý đơn hàng nhập</PageTitle>
+<AuthorizeView Roles="Adminstrator">
+    <Authorized>
+        <div class="card mb-4">
+            <div class="card-header mb-3">
+                Quản lý đơn hàng nhập
             </div>
-            <table class="table table-sm table-bordered table-hover">
-                <thead class="table-warning">
-                    <tr>
-                        <th>STT</th>
-                        <th>Mã đơn hàng</th>
-                        <th>Tên nhà cung cấp</th>
-                        <th>Tổng tiền</th>
-                        <th>Ngày tạo</th>
-                        <th>Ngày nhận</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (import_Orders == null || import_Orders.Count() == 0)
-                    {
-                        <tr class="cus-text-align-center">
-                            <td colspan="4">Không có dữ liệu</td>
-                        </tr>
-                    }
-                    else
-                    {
-                        @foreach (var item in import_Orders)
-                        {
-                            <tr>
-                                <td>@ROW_INDEX</td>
-                                    <td class="cus-width-10">@item.import_order_id</td>
-                                @foreach (var s in suppliers)
+            <div class="card-body">
+                @if (isLoading)
+                {
+                    <DATN.Shared.Components.LoadingComponent />
+                }
+                else
+                {
+                    <div class="table-responsive">
+                        <div class="row col-sm-12 mb-4 mt-2">
+                            <div class="col-sm-3">
+                                <a href="/add-import-order" class="btn btn-primary btn-sm">Thêm đơn hàng nhập</a>
+                            </div>
+                            <div class="col-sm-2 offset-7">
+                                <button type="button" class="btn btn-sm btn-primary" @onclick="btn_export_excel">Xuất Excel</button>
+                            </div>
+                        </div>
+                        <table class="table table-sm table-bordered table-hover">
+                            <thead class="table-warning">
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Mã đơn hàng</th>
+                                    <th>Tên nhà cung cấp</th>
+                                    <th>Tổng tiền</th>
+                                    <th>Ngày tạo</th>
+                                    <th>Ngày nhận</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (import_Orders_p == null || import_Orders_p.Count() == 0)
                                 {
-                                    if (item.supplier_id == s.supplier_id)
+                                    <tr class="cus-text-align-center">
+                                        <td colspan="7">Không có dữ liệu</td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    @foreach (var item in import_Orders_p)
                                     {
-                                        <td class="cus-width-30">
-                                            @s.supplier_name
-                                        </td>
+                                        <tr>
+                                            <td>@ROW_INDEX</td>
+                                            <td class="cus-width-10">@item.import_order_id</td>
+                                            @foreach (var s in supplier_item)
+                                            {
+                                                if (item.supplier_id == s.supplier_id)
+                                                {
+                                                    <td class="cus-width-30">
+                                                        @s.supplier_name
+                                                    </td>
+                                                }
+                                            }
+                                            <td class="cus-width-10">@item.price</td>
+                                            <td>@item.create_at.ToString("yyyy-MM-dd") </td>
+                                            <td>@item.receive_at.ToString("yyyy-MM-dd") </td>
+                                            <td class="cus-width-10">
+                                                <a class="btn btn-primary"
+                                       @onclick="() => btn_pass_data_b(item)">Xem chi tiết</a>
+                                            </td>
+                                        </tr>
+                                        ROW_INDEX++;
+                                        @if (ROW_INDEX > import_Orders_p.Count())
+                                        { ROW_INDEX = 1; }
                                     }
                                 }
-                                    <td class="cus-width-10">@item.price</td>
-                                <td>@item.create_at.ToString("yyyy-MM-dd") </td>
-                                <td>@item.receive_at.ToString("yyyy-MM-dd") </td>
-                                    <td class="cus-width-10">
-                                    <a class="btn btn-primary"
-                               @onclick="() => btn_pass_data_b(item)">Xem chi tiết</a>
-                                </td>
-                            </tr>
-                            ROW_INDEX++;
-                            @if (ROW_INDEX > import_Orders.Count())
-                            { ROW_INDEX = 1; }
-                        }
-                    }
-                </tbody>
-            </table>
+                            </tbody>
+                                <tfoot>
+                                <tr>
+                                    <td colspan="7">
+                                            <Paging PI="pagingInfo" PageClassesEnabled="true" PageClass="Paging" PageClassSelected="active" PageUri="@CurrentUri"></Paging>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                        </table>
+                    </div>
+                }
+            </div>
         </div>
-        }
-    </div>
-</div>
+    </Authorized>
+</AuthorizeView>

@@ -1,0 +1,21 @@
+﻿.counter {
+    padding: 1rem;
+    text-align: center;
+    color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%);
+}
+
+.bg-warning {
+    background-color: #f0932b;
+}
+.bg-success {
+    background-color: #6ab04c;
+}
+.bg-primary {
+    background-color: #4834d4;
+}
+
+.bg-purple {
+    background-color: #5d1275cc;
+}

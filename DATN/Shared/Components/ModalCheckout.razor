@@ -1,0 +1,70 @@
+﻿@if (ModalClass)
+{
+
+    <div class="modal modal_overlay show d-block" tabindex="-1" role="dialog">
+        <div class="modal-dialog fade-modal-open" role="document">
+            <div class="modal-content modal-content-top-50">
+                <div class="p-3">
+                    <h6 class="modal-title pb-2 text-center">Bạn chắc chắn muốn thanh toán cho đơn hàng này ?</h6>
+                    @if (IsDisplay)
+                    {
+                        <div class="d-flex justify-content-end">
+                            <button type="button" class="btn btn-primary btn-sm me-2" @onclick="() => OpenQR()"> OK </button>
+                            <button type="button" class="btn btn-secondary  btn-sm" data-dismiss="modal" @onclick="() => Close()">Không</button>
+                        </div>
+                    }
+                    @if (IsDisplay_QR)
+                    {
+                        <img style="width:300px; height:300px; margin-left: 75px;" src="./img/check_out.jpg" alt="">
+                        <div class="row mt-5 ms-5">
+                            <button type="button" class="btn btn-primary btn-sm me-2 col-sm-5" @onclick="() => handleConfirm()"> Thanh Toán </button>
+                            <button type="button" class="btn btn-secondary btn-sm col-sm-5" data-dismiss="modal" @onclick="() => Close()">Không</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@code {
+    [Inject]
+    private NavigationManager? NavManager { get; set; }
+    [Parameter]
+    public EventCallback<string> ConfirmCallBack { get; set; }
+    public string ModalDisplay = "none;";
+    public bool ModalClass = false;
+    public bool IsDisplay = true;
+    public bool IsDisplay_QR = false;
+
+
+    private void reset()
+    {
+        ModalDisplay = "none";
+        ModalClass = false;
+
+    }
+    public void Show()
+    {
+        ModalDisplay = "block;";
+        ModalClass = true;
+        StateHasChanged();
+    }
+    public void Close()
+    {
+        reset();
+        StateHasChanged();
+    }
+    public async void OpenQR()
+    {
+        IsDisplay = false;
+        IsDisplay_QR = true;
+    }
+
+    public async void handleConfirm()
+    {
+        await ConfirmCallBack.InvokeAsync();
+        ModalClass = false;
+    }
+}

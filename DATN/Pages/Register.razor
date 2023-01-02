@@ -2,6 +2,8 @@
 @using DATN
 @using DATN.Model
 @using DATN.Services
+@using System.Text.RegularExpressions
+@using static DATN.Services.NotificationServices
 @inject IJSRuntime js
 @inject AuthenticationStateProvider authStateProvider
 @inject NavigationManager navManager
@@ -48,7 +50,7 @@
                 <label>
                     email
                 </label>
-                <InputText @bind-Value="account_n.email" class="form-control" placeholder="email" />
+                <InputText typeof="email" @bind-Value="account_n.email" class="form-control" placeholder="email" />
             </div>
 
             <div class="mb-2 ">
@@ -57,19 +59,28 @@
         </div>
     </div>
 </EditForm>
+<RadzenNotification />
 @code {
     [Inject]
     private IAccountServices asv { get; set; }
+    [Inject]
+    private INotificationService ino { get; set; }
     private m_account account_n = new m_account();
     private bool UserIsExits;
+    private bool invalidps = false;
     private string? errCodeStyle;
     private string? errMess;
+    private string? errCodeStyle_p;
+    private string? errMess_p;
 
+    Regex regexpassword = new Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*/d)(?=.*[^/da-zA-Z]).{8,}$");
     private void resetState()
     {
         UserIsExits = false;
         errCodeStyle = "";
         errMess = "";
+        errCodeStyle_p = "";
+        errMess_p = "";
     }
 
     private void btn_handle_input()
@@ -86,6 +97,13 @@
         {
             errCodeStyle = "outline: 1px solid red!important;";
             errMess = "Tên người dùng đã tồn tại";
+            return;
+        }
+
+        if (!regexpassword.IsMatch(account_n.password))
+        {
+            ino.Notify((NotificationSeverity.Success, "Mật khẩu chưa đủ mạnh"));
+            //StateHasChanged();
             return;
         }
         await asv.Create(account_n);

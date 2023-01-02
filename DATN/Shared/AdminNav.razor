@@ -1,67 +1,70 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <img src="./img/log_img.png" />
-        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </div>
-</div>
+﻿<AuthorizeView Roles="Adminstrator">
+    <Authorized>
+        <div class="top-row ps-3 navbar navbar-dark">
+            <div class="container-fluid">
+                <img src="./img/log_img.png" />
+                <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+        </div>
 
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Trang chủ
-            </NavLink>
+        <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+            <nav class="flex-column">
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="/admin" Match="NavLinkMatch.All">
+                        <span class="oi oi-home" aria-hidden="true"></span> Trang chủ
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="manager-account">
+                        <span class="oi oi-person" aria-hidden="true"></span> Quản lý tài khoản
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="manager-book">
+                        <span class="oi oi-book" aria-hidden="true"></span> Quản lý sách
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="manager-carousel">
+                        <span class="oi oi-clipboard" aria-hidden="true"></span> Quản lý Carousel
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="manager-feeback">
+                        <span class="oi oi-envelope-closed" aria-hidden="true"></span> Quản lý phản hồi
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="manager-genre">
+                        <span class="oi oi-list-rich" aria-hidden="true"></span> Quản lý thể loại
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="manager-suplier">
+                        <span class="oi oi-people" aria-hidden="true"></span> Quản lý nhà cung cấp
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="manager-review">
+                        <span class="oi oi-comment-square" aria-hidden="true"></span> Quản lý đánh giá
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="manager-import-order">
+                        <span class="oi oi-pencil" aria-hidden="true"></span> Quản lý đơn hàng nhập
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="manager-sale-order">
+                        <span class="oi oi-list-rich" aria-hidden="true"></span> Quản lý đơn hàng bán
+                    </NavLink>
+                </div>
+            </nav>
         </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="manager-account">
-                <span class="oi oi-plus" aria-hidden="true"></span> Quản lý tài khoản
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="manager-book">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Quản lý sách
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="manager-carousel">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Quản lý Carousel
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="manager-feeback">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Quản lý phản hồi
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="manager-genre">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Quản lý thể loại
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="manager-suplier">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Quản lý nhà cung cấp
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="manager-review">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Quản lý đánh giá
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="manager-import-order">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Quản lý đơn hàng nhập
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="manager-import-order">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Quản lý đơn hàng bán
-            </NavLink>
-        </div>
-    </nav>
-</div>
-
+    </Authorized>
+</AuthorizeView>
 @code {
     private bool collapseNavMenu = true;
 

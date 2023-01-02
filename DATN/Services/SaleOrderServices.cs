@@ -1,5 +1,6 @@
 ﻿using DATN.Data;
 using DATN.Model;
+using DocumentFormat.OpenXml.Office2010.Excel;
 using Microsoft.EntityFrameworkCore;
 
 namespace DATN.Services
@@ -86,6 +87,24 @@ namespace DATN.Services
             {
                 var ret = await _context.m_sale_orders.Where(
                     col => col.sale_order_id.Equals(id)).FirstOrDefaultAsync();
+                return ret;
+            }
+        }
+
+        public async Task<int> GetTotalSaleOrder()
+        {
+            using (var _context = _contextFactory.CreateDbContext())
+            {
+                var ret = await _context.m_sale_orders.CountAsync();
+                return ret;
+            }
+        }
+
+        public async Task<List<decimal>> GetTotalPriceSaleOrder()
+        {
+            using (var _context = _contextFactory.CreateDbContext())
+            {
+                var ret = await _context.m_sale_orders.Select(col => col.price).ToListAsync();
                 return ret;
             }
         }

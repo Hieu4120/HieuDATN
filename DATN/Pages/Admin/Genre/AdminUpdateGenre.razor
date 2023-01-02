@@ -3,74 +3,78 @@
 @using DATN.Shared.Components
 @inject NavigationManager NavigationManager
 
-<div class="card mb-4">
-    <div class="card-header mb-3">
-        Cập nhật thể loại
-    </div>
-    <div class="card-body">
-        @if (@isLoading)
-        {
-            <DATN.Shared.Components.LoadingComponent />
-        }
-        else
-        {
-            <EditForm Model="@gen_item" OnValidSubmit="@UpdateGenre">
-                <DataAnnotationsValidator />
-                 @if (IsName_genExist)
+<PageTitle> Cập nhật thể loại</PageTitle>
+<AuthorizeView Roles="Adminstrator">
+    <Authorized>
+        <div class="card mb-4">
+            <div class="card-header mb-3">
+                Cập nhật thể loại
+            </div>
+            <div class="card-body">
+                @if (@isLoading)
                 {
-                    <div class="text-danger col-sm-7 offset-sm-3 ps-0">@errMessage</div>
+                    <DATN.Shared.Components.LoadingComponent />
                 }
-                <div class="form-group row ms-3">
-                    <div class="text-danger col-sm-7 offset-sm-3 ps-0">
-                        <ValidationMessage For="@(() => gen_item.genre_name)" />
-                    </div>
-                </div>
-                <div class="form-group row mb-2 ms-3 col-sm-11">
-                    <label class="col-sm-3">Tên thể loại</label>
-                    <div class="col-sm-4">
-                        <InputText @bind-Value="@gen_item.genre_name"
-                               style="@errCodeStyle"
-                               class="form-control form-control-sm" />
-                    </div>
-                </div>
-
-                <div class="form-group row ms-3">
-                    <div class="text-danger col-sm-7 offset-sm-3 ps-0">
-                        <ValidationMessage For="@(() => gen_item.status)" />
-                    </div>
-                </div>
-                <div class="form-group row mb-2 ms-3 col-sm-11">
-                    <label class="col-sm-3 col-form-label">Trạng thái</label>
-                    <div class="col-sm-4">
-                        <InputSelect @bind-Value="@gen_item.status"
-                            class="form-select form-select-sm">
-                            <option selected disabled>@status_gen</option>
-                            @foreach (var ele in status)
-                            {
-                                <option value="@ele">
-                                    @ele
-                                </option>
-                            }
-                        </InputSelect>
-                    </div>
-                </div>
-                <div class="form-group row mb-2 ms-3">
-                    <div class="col-sm-9 offset-3">
-                        <button type="submit" class="btn btn-primary">Cập nhật</button>
-                        @if (IsGenreActive)
+                else
+                {
+                    <EditForm Model="@gen_item" OnValidSubmit="@UpdateGenre" Context="aa">
+                        <DataAnnotationsValidator />
+                        @if (IsName_genExist)
                         {
-                            <button type="button" class="btn btn-primary m-2" disabled>Xóa</button>
+                            <div class="text-danger col-sm-7 offset-sm-3 ps-0">@errMessage</div>
                         }
-                        else
-                        {
-                            <button type="button" class="btn btn-primary m-2" @onclick="@btn_handle_del_genre">Xóa</button>
-                        }
-                        <a href="/manager-genre" class="btn btn-primary">Trở lại</a>
-                    </div>
-                </div>
-            </EditForm>
-        }
-    </div>
-</div>
+                        <div class="form-group row ms-3">
+                            <div class="text-danger col-sm-7 offset-sm-3 ps-0">
+                                <ValidationMessage For="@(() => gen_item.genre_name)" />
+                            </div>
+                        </div>
+                        <div class="form-group row mb-2 ms-3 col-sm-11">
+                            <label class="col-sm-3">Tên thể loại</label>
+                            <div class="col-sm-4">
+                                <InputText @bind-Value="@gen_item.genre_name"
+                                       style="@errCodeStyle"
+                                       class="form-control form-control-sm" />
+                            </div>
+                        </div>
 
+                        <div class="form-group row ms-3">
+                            <div class="text-danger col-sm-7 offset-sm-3 ps-0">
+                                <ValidationMessage For="@(() => gen_item.status)" />
+                            </div>
+                        </div>
+                        <div class="form-group row mb-2 ms-3 col-sm-11">
+                            <label class="col-sm-3 col-form-label">Trạng thái</label>
+                            <div class="col-sm-4">
+                                <InputSelect @bind-Value="@gen_item.status"
+                                         class="form-select form-select-sm">
+                                    <option selected disabled>@status_gen</option>
+                                    @foreach (var ele in status)
+                                    {
+                                        <option value="@ele">
+                                            @ele
+                                        </option>
+                                    }
+                                </InputSelect>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-2 ms-3">
+                            <div class="col-sm-9 offset-3">
+                                <button type="submit" class="btn btn-primary">Cập nhật</button>
+                                @if (IsGenreActive)
+                                {
+                                    <button type="button" class="btn btn-primary m-2" disabled>Xóa</button>
+                                }
+                                else
+                                {
+                                    <button type="button" class="btn btn-primary m-2" @onclick="@btn_handle_del_genre">Xóa</button>
+                                }
+                                <a href="/manager-genre" class="btn btn-primary">Trở lại</a>
+                            </div>
+                        </div>
+                    </EditForm>
+                }
+            </div>
+        </div>
+    </Authorized>
+</AuthorizeView>
 <ModalConfirm DeleteGenCallBack="call_back_delete" @ref=conf />

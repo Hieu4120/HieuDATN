@@ -54,6 +54,15 @@ namespace DATN.Services
             }
         }
 
+        public async Task<int> GetTotalImportOrder()
+        {
+            using (var _context = _contextFactory.CreateDbContext())
+            {
+                var ret = await _context.m_import_orders.CountAsync();
+                return ret;
+            }
+        }
+
         public async Task<bool> Update(m_import_order m_Import_Order)
         {
             using (var _context = _contextFactory.CreateDbContext())

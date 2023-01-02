@@ -88,6 +88,16 @@ namespace DATN.Services
             }
         }
 
+        public async Task<IEnumerable<m_supplier>> GetSuppByListId(List<int> list_id)
+        {
+            using (var _context = _contextFactory.CreateDbContext())
+            {
+                var ret = await _context.m_suppliers.Where(
+                  col =>  list_id.Contains(col.supplier_id)).ToListAsync();
+                return ret;
+            }
+        }
+
         public async Task<bool> Update(m_supplier supp)
         {
             using (var _context = _contextFactory.CreateDbContext())

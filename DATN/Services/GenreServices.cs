@@ -63,6 +63,38 @@ namespace DATN.Services
             }
         }
 
+        public async Task<IEnumerable<mediate_genre>> GetAllGenreName()
+        {
+            using (var _context = _contextFactory.CreateDbContext())
+            {
+                try
+                {
+                    var query = await(
+                   from B in _context.m_genres
+                   select new
+                   {
+                       gen_name  = B.genre_name,
+                       gen_id = B.genre_id
+                   }).ToListAsync();
+                    List<mediate_genre> genre_list = new List<mediate_genre>();
+                    foreach (var ele in query)
+                    {
+                        genre_list.Add(new mediate_genre()
+                        {
+                            genre_name = ele.gen_name,
+                            genre_id = ele.gen_id
+                        });
+                    }
+                    return genre_list;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return null;
+                }
+            }
+        }
+
         public async Task<m_genre> GetById(int g_id)
         {
             using (var _context = _contextFactory.CreateDbContext())

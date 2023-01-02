@@ -1,30 +1,23 @@
-﻿
-
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DATN.Model
 {
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
+    
     public class m_book
     {
         [Key]
         public int book_id { get; set; }
-  
         public int genre_id { get; set; }
-
         public int supplier_id { get; set; }
-        [Required]
         public string book_name { get; set; }
-        [Required]
         public string author { get; set; }
-        [Required]
         public decimal? price { get; set; }
-        [Required]
-        public string book_content { get; set; }
-        [Required]
+        [Required(ErrorMessage =" Vui lòng nhập nội dung sách")]
+        public string book_content { get; set; }     
         public int? amount { get; set; }
-        [Required]
         public byte[] book_image { get; set; }
+        [Required(ErrorMessage = " Vui lòng chọn trạng thái sách")]
         public string status { get; set; }
         public int number_click { get; set; }
         public int page_number { get; set; }
