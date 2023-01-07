@@ -1,8 +1,10 @@
-﻿using DATN.Model;
+﻿using BlazorStrap;
+using DATN.Model;
 using DATN.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.WebUtilities;
 using Radzen;
+using System.Text.RegularExpressions;
 using static DATN.Services.NotificationServices;
 
 namespace DATN.Pages.Admin.Feeback
@@ -16,7 +18,7 @@ namespace DATN.Pages.Admin.Feeback
         [Inject]
         private INotificationService ino { get; set; }
         private m_feedback feedback_item = new m_feedback();
-
+        Regex regexNumberonly = new Regex("^[0-9]+$");
         private bool isLoading = false;
         private List<string> status = new List<string>()
         {
@@ -29,9 +31,18 @@ namespace DATN.Pages.Admin.Feeback
             var uri = iredir.GetUri();
             if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("feedback_id", out var param1))
             {
-                get_feedback_id = Int32.Parse(param1.First());
+                if (regexNumberonly.IsMatch(param1.First()))
+                {
+                    get_feedback_id = Int32.Parse(param1.First());
+                }
+                else
+                {
+                    iredir.RedirectNormal("manager-feeback");
+                    return;
+                }
             }
-            if (get_feedback_id == null || get_feedback_id == 0)
+            bool CHK_get_feedback_id = await ifes.ExistFeedBack(get_feedback_id);
+            if (!CHK_get_feedback_id)
             {
                 iredir.RedirectNormal("manager-feeback");
                 return;

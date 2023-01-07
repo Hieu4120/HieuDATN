@@ -1,6 +1,8 @@
 ﻿using DATN.Data;
 using DATN.Model;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq.Dynamic.Core;
 using System.Xml.Linq;
 
 namespace DATN.Services
@@ -11,6 +13,16 @@ namespace DATN.Services
         public GenreServices(IDbContextFactory<BookDBContext> contextFactory)
         {
             _contextFactory = contextFactory;
+        }
+
+        public async Task<bool> CHKExistGenres(int gen_id)
+        {
+            using (var _context = _contextFactory.CreateDbContext())
+            {
+                return await _context.m_genres
+                    .AnyAsync(e => e.genre_id
+                    .Equals(gen_id));
+            }
         }
 
         public async Task<bool> Create(m_genre genre)
@@ -120,6 +132,19 @@ namespace DATN.Services
                 return max;
             }
 
+        }
+
+        public async Task<string> GetGenreNameById(int genre_id)
+        {
+            using (var _context = _contextFactory.CreateDbContext())
+            {
+                var ret = await _context.m_genres
+                    .Where(col => col.genre_id
+                    .Equals(genre_id))
+                    .Select(col => col.genre_name)
+                    .FirstOrDefaultAsync();
+                return ret;
+            }
         }
 
         public async Task<bool> Update(m_genre genre)

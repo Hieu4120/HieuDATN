@@ -119,3 +119,4 @@ C:\DATN\DATN\DATN\obj\Debug\net6.0\refint\DATN.dll
 C:\DATN\DATN\DATN\obj\Debug\net6.0\DATN.pdb
 C:\DATN\DATN\DATN\obj\Debug\net6.0\DATN.genruntimeconfig.cache
 C:\DATN\DATN\DATN\obj\Debug\net6.0\ref\DATN.dll
+C:\DATN\DATN\DATN\obj\Debug\net6.0\scopedcss\Pages\BookResultSearch.razor.rz.scp.css

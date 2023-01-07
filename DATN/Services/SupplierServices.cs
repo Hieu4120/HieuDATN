@@ -12,6 +12,16 @@ namespace DATN.Services
             _contextFactory = contextFactory;
         }
 
+        public async Task<bool> CHKExistSupp(int supp_id)
+        {
+            using (var _context = _contextFactory.CreateDbContext())
+            {
+                return await _context.m_suppliers
+                    .AnyAsync(e => e.supplier_id
+                    .Equals(supp_id));
+            }
+        }
+
         public async Task<bool> Create(m_supplier supp)
         {
             using (var _context = _contextFactory.CreateDbContext())
@@ -94,6 +104,19 @@ namespace DATN.Services
             {
                 var ret = await _context.m_suppliers.Where(
                   col =>  list_id.Contains(col.supplier_id)).ToListAsync();
+                return ret;
+            }
+        }
+
+        public async Task<string> GetSuppNameById(int sup_id)
+        {
+            using (var _context = _contextFactory.CreateDbContext())
+            {
+                var ret = await _context.m_suppliers
+                    .Where(col => col.supplier_id
+                    .Equals(sup_id))
+                    .Select(col => col.supplier_name)
+                    .FirstOrDefaultAsync();
                 return ret;
             }
         }

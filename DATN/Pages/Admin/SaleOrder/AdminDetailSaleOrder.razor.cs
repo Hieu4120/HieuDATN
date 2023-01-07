@@ -1,8 +1,10 @@
-﻿using DATN.Model;
+﻿using BlazorStrap;
+using DATN.Model;
 using DATN.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.WebUtilities;
 using Radzen;
+using System.Text.RegularExpressions;
 using static DATN.Services.NotificationServices;
 using static System.Reflection.Metadata.BlobBuilder;
 
@@ -25,6 +27,8 @@ namespace DATN.Pages.Admin.SaleOrder
         private int get_sale_id;
         private bool isLoading;
         private int ROW_INDEX = 1;
+        Regex regexNumberonly = new Regex("^[0-9]+$");
+
         private IEnumerable<m_sale_order_detail>? sale_order_detail;
         private IEnumerable<m_book>? books;
         private List<m_book>? booklist = new List<m_book>();
@@ -42,9 +46,18 @@ namespace DATN.Pages.Admin.SaleOrder
             var uri = iredir.GetUri();
             if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("sale_order_id", out var param1))
             {
-                get_sale_id = Int32.Parse(param1.First());
+                if (regexNumberonly.IsMatch(param1.First()))
+                {
+                    get_sale_id = Int32.Parse(param1.First());
+                }
+                else
+                {
+                    iredir.RedirectNormal("manager-sale-order");
+                    return;
+                }
             }
-            if (get_sale_id == null || get_sale_id == 0)
+            bool CHK_get_book_id = await isods.ExistSaleOrder(get_sale_id);
+            if (!CHK_get_book_id)
             {
                 iredir.RedirectNormal("manager-sale-order");
                 return;

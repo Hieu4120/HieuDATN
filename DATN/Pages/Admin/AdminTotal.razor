@@ -63,7 +63,7 @@
         Total_sale_order = await isos.GetTotalSaleOrder();
         Total_import_order = await iipos.GetTotalImportOrder();
         Total_Price_order_list = await isos.GetTotalPriceSaleOrder();
-        Total_Account = await iacs.GetTotalAccount();
+        Total_Account = await iacs.GetTotalAccount() - 1;
         Total_Price_order = Total_Price_order_list.Sum(x => Convert.ToInt32(x));
         StateHasChanged();
     }

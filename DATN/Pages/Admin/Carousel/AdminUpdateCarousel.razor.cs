@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.WebUtilities;
 using Radzen;
+using System.Text.RegularExpressions;
 using static DATN.Services.NotificationServices;
 
 namespace DATN.Pages.Admin.Carousel
@@ -23,26 +24,34 @@ namespace DATN.Pages.Admin.Carousel
         private ModalConfirm? conf { set; get; }
         private bool isLoading = false;
         private int get_carousel_id;
-        
-        public byte[] ImgUploaded { get; set; }
+        Regex regexNumberonly = new Regex("^[0-9]+$");
+       /* public byte[] ImgUploaded { get; set; }
         //Limit file size = 25MB
         private long maxFileSize = 25 * 1048576;
         //Limit file = 1
-        private int maxAllowedFiles = 1;
+        private int maxAllowedFiles = 1;*/
         protected override async Task OnInitializedAsync()
         {
             var uri = iredir.GetUri();
             if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("carosel_id", out var param1))
             {
-                get_carousel_id = Int32.Parse(param1.First());
+                if (regexNumberonly.IsMatch(param1.First()))
+                {
+                    get_carousel_id = Int32.Parse(param1.First());
+                }
+                else
+                {
+                    iredir.RedirectNormal("manager-carousel");
+                    return;
+                }
             }
-            if (get_carousel_id == null || get_carousel_id == 0)
+            bool CHK_get_carousel_id = await icas.ExistCarousel(get_carousel_id);
+            if (!CHK_get_carousel_id)
             {
                 iredir.RedirectNormal("manager-carousel");
                 return;
             }
-            carosel_item = await icas.GetCarouselById(get_carousel_id);
-            
+            carosel_item = await icas.GetCarouselById(get_carousel_id);      
             StateHasChanged();
         }
        /*private async Task HandleFileSelected(InputFileChangeEventArgs files)

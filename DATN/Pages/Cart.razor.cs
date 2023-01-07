@@ -19,7 +19,7 @@ namespace DATN.Pages
         private ICartServices ics { get; set; }
         [Inject]
         private INotificationService ino { get; set; }
-        private IEnumerable<m_cart>? carts = Enumerable.Empty<m_cart>();
+        private IEnumerable<m_cart>? carts;
         private m_book? book_item = new m_book();
         private List<m_book>? List_books = new List<m_book>();
         private Dictionary<int, int>? Dic_total_price = new Dictionary<int, int>();
@@ -113,7 +113,7 @@ namespace DATN.Pages
         {
             await ics.Delete(cart_item);
             await Task.Delay(100);
-            carts = await ics.GetAllCart();
+            carts = await ics.GetCartItembyCusId(get_cus_id);
             StateHasChanged();
         }
     }

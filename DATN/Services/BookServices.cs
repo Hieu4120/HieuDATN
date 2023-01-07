@@ -54,7 +54,6 @@ namespace DATN.Services
                 }
             }
         }
-
         public async Task<bool> Create(m_book book)
         {
             using (var _context = _contextFactory.CreateDbContext())
@@ -66,7 +65,6 @@ namespace DATN.Services
                 return ret;
             }
         }
-
         public async Task<bool> Delete(m_book book)
         {
             using (var _context = _contextFactory.CreateDbContext())
@@ -111,8 +109,10 @@ namespace DATN.Services
         {
             using (var _context = _contextFactory.CreateDbContext())
             {
-                var ret = await _context.m_books.Where(
-                    col => col.book_id.Equals(id)).FirstOrDefaultAsync();
+                var ret = await _context.m_books
+                    .Where(
+                    col => col.book_id.Equals(id))
+                    .FirstOrDefaultAsync();
                 return ret;
             }
         }
@@ -122,7 +122,10 @@ namespace DATN.Services
             using (var _context = _contextFactory.CreateDbContext())
             {
                 var ret = await _context.m_books.Where(
-                    col => col.book_search_name.Contains(booksearchname)).ToListAsync();
+                    col => col.book_search_name
+                    .Contains(booksearchname) 
+                    || col.book_name.Contains(booksearchname))
+                    .ToListAsync();
                 return ret;
             }
         }
@@ -130,7 +133,9 @@ namespace DATN.Services
         {
             using (var _context = _contextFactory.CreateDbContext())
             {
-                return await _context.m_books.AnyAsync(e => e.genre_id.Equals(gen_id));
+                return await _context.m_books
+                    .AnyAsync(e => e.genre_id
+                    .Equals(gen_id));
             }
         }
 
@@ -138,7 +143,9 @@ namespace DATN.Services
         {
             using (var _context = _contextFactory.CreateDbContext())
             {
-                return await _context.m_books.AnyAsync(e => e.supplier_id.Equals(supp_id));
+                return await _context.m_books
+                    .AnyAsync(e => e.supplier_id
+                    .Equals(supp_id));
             }
         }
 
@@ -156,7 +163,10 @@ namespace DATN.Services
         {
             using (var _context = _contextFactory.CreateDbContext())
             {
-                return await _context.m_books.Where(col => id_list.Contains(col.book_id)).ToListAsync();
+                return await _context.m_books
+                    .Where(col => id_list
+                    .Contains(col.book_id))
+                    .ToListAsync();
             }
         }
 
@@ -175,7 +185,10 @@ namespace DATN.Services
         {
             using (var _context = _contextFactory.CreateDbContext())
             {
-                return await _context.m_books.Where(col => bookname.Contains(col.book_name)).ToListAsync();
+                return await _context.m_books
+                    .Where(col => bookname
+                    .Contains(col.book_name))
+                    .ToListAsync();
             }
         }
 
@@ -221,7 +234,6 @@ namespace DATN.Services
                 return bookDetail;
             }
         }
-
         public async Task<IEnumerable<mediate_book_detail>> GetAllBookWithGenre()
         {
             using (var _context = _contextFactory.CreateDbContext())
@@ -330,6 +342,16 @@ namespace DATN.Services
                     Console.WriteLine(ex.Message);
                     return null;
                 }
+            }
+        }
+
+        public async Task<bool> ExistBook(int book_id)
+        {
+            using (var _context = _contextFactory.CreateDbContext())
+            {
+                return await _context.m_books
+                    .AnyAsync(e => e.book_id
+                    .Equals(book_id));
             }
         }
     }

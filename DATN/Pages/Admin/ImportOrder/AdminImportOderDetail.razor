@@ -1,5 +1,4 @@
 ﻿@layout SupportLayout
-@page "/import-order-detail/{Page:int}"
 @page "/import-order-detail"
 
 
@@ -32,9 +31,9 @@
                             <a href="/manager-import-order" class="btn btn-primary">Trở lại</a>
                         </div>
                     </div>
-                    @if (import_order_detail_p != null)
+                    @if (import_order_detail != null)
                     {
-                        @for (int i = 0; i < import_order_detail_p.Count(); i++)
+                        @for (int i = 0; i < import_order_detail.Count(); i++)
                         {
                             int current_ind = i;
                             <form style="border:1px solid #6C757D; padding:10px;" class="m-2">
@@ -43,7 +42,7 @@
                                     <div class="col-sm-3">
                                         <input type="number" class="form-control form-control-sm"
                                    id="inp-proj-name"
-                                   @bind-value="@import_order_detail_p.ElementAt(current_ind).book_id">
+                                   @bind-value="@import_order_detail.ElementAt(current_ind).book_id">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -51,27 +50,27 @@
                                     <div class="col-sm-3">
                                         <input type="text" class="form-control form-control-sm"
                                    id="inp-proj-code"
-                                   @bind-value="@import_order_detail_p.ElementAt(current_ind).book_name">
+                                   @bind-value="@import_order_detail.ElementAt(current_ind).book_name">
                                     </div>
 
                                     <label class="col-sm-2 col-form-label">Ảnh sách</label>
                                     <div class="col-sm-3">
                                         <img style="width:50%;" class="mb-2"
                                  src="data:image/bmp;base64,
-                                    @(Convert.ToBase64String(import_order_detail_p.ElementAt(current_ind).book_image))" />
+                                    @(Convert.ToBase64String(import_order_detail.ElementAt(current_ind).book_image))" />
                                     </div>
                                 </div>
 
                                 <div class="form-group row">
                                     <label class="col-sm-2 col-form-label">Thể loại</label>
                                     <div class="col-sm-3 mb-1">
-                                        <label class="form-control form-control-sm">@import_order_detail_p.ElementAt(current_ind).genre_name</label>
+                                        <label class="form-control form-control-sm">@import_order_detail.ElementAt(current_ind).genre_name</label>
                                     </div>
                                     <label class="col-sm-2 col-form-label">Tên tác giả</label>
                                     <div class="col-sm-3">
                                         <input type="text" class="form-control form-control-sm"
                                    id="inp-order-date"
-                                   @bind-value="@import_order_detail_p.ElementAt(current_ind).author">
+                                   @bind-value="@import_order_detail.ElementAt(current_ind).author">
                                     </div>
                                 </div>
 
@@ -80,13 +79,13 @@
                                     <div class="col-sm-3">
                                         <input type="text" class="form-control form-control-sm"
                                    id="inp-finish-date"
-                                   @bind-value="@import_order_detail_p.ElementAt(current_ind).price">
+                                   @bind-value="@import_order_detail.ElementAt(current_ind).price">
                                     </div>
                                     <label class="col-sm-2 col-form-label">Số lượng</label>
                                     <div class="col-sm-3">
                                         <input type="text" class="form-control form-control-sm"
                                    id="inp-order-date"
-                                   @bind-value="@import_order_detail_p.ElementAt(current_ind).amount">
+                                   @bind-value="@import_order_detail.ElementAt(current_ind).amount">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -94,16 +93,13 @@
                                     <div class="col-sm-3">
                                         <input type="text" class="form-control form-control-sm"
                                    id="inp-finish-date"
-                                   @bind-value="@import_order_detail_p.ElementAt(current_ind).page_number">
+                                   @bind-value="@import_order_detail.ElementAt(current_ind).page_number">
                                     </div>
                                 </div>
                             </form>
                         }
                     }
                 }
-                <div class="col-12">
-                    <Paging PI="pagingInfo" PageClassesEnabled="true" PageClass="Paging" PageClassSelected="active" PageUri="@CurrentUri"></Paging>
-                </div>
             </div>
         </div>
         <RadzenNotification />

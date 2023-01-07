@@ -198,5 +198,15 @@ namespace DATN.Services
                 return List_import_detail;
             }
         }
+
+        public async Task<bool> ExistImportOrderDetail(int imo_id)
+        {
+            using (var _context = _contextFactory.CreateDbContext())
+            {
+                return await _context.m_import_order_details
+                    .AnyAsync(e => e.import_order_id
+                    .Equals(imo_id));
+            }
+        }
     }
 }

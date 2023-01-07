@@ -1,0 +1,14 @@
+﻿a:hover {
+    color: #e6b400;
+    text-decoration: underline;
+}
+
+a {
+    text-decoration: none;
+    background-color: transparent;
+}
+
+.cus-font-weight {
+    font-weight: 700;
+    color: #3D464D;
+}

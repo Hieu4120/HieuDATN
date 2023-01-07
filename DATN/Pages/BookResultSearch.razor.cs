@@ -28,18 +28,21 @@ namespace DATN.Pages
         private int cart_id_init;
         private string user;
         private bool CartItemIsExits;
+        private bool IsLoading;
         private IEnumerable<m_book>? bookSearch;
         private m_cart? cart_item = new m_cart();
         private m_account? account_item = new m_account();
         protected override async Task OnInitializedAsync()
-        {         
+        {
+            IsLoading = true;
             var uri = iredir.GetUri();
             if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("search_string", out var param1))
             {
                 searchString = param1.First();
             }
-            await Task.Delay(500);
+            await Task.Delay(500);           
             bookSearch = await bs.GetBookByName(searchString);
+            IsLoading = false;
             StateHasChanged();
         }
         private void pass_data_book(m_book ele)

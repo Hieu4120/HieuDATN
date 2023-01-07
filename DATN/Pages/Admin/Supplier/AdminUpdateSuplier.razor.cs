@@ -5,6 +5,7 @@ using DATN.Shared.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.WebUtilities;
 using Radzen;
+using System.Text.RegularExpressions;
 using static DATN.Services.NotificationServices;
 
 namespace DATN.Pages.Admin.Supplier
@@ -27,6 +28,7 @@ namespace DATN.Pages.Admin.Supplier
         private string? old_sup_name;
         private bool IsSuppActive = false;
         private bool IsName_supExist = false;
+        Regex regexNumberonly = new Regex("^[0-9]+$");
         private string errCodeStyle => (IsName_supExist) ? "outline: 1px solid red!important;" : "";
         private string errMessage = "Tên đã tồn tại";
 
@@ -42,9 +44,18 @@ namespace DATN.Pages.Admin.Supplier
             var uri = iredir.GetUri();
             if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("supplier_id", out var param1))
             {
-                get_sup_id = Int32.Parse(param1.First());
+                if (regexNumberonly.IsMatch(param1.First()))
+                {
+                    get_sup_id = Int32.Parse(param1.First());
+                }
+                else
+                {
+                    iredir.RedirectNormal("manager-suplier");
+                    return;
+                }
             }
-            if (get_sup_id == null || get_sup_id == 0)
+            bool CHK_get_sup_id = await sups.CHKExistSupp(get_sup_id);
+            if (!CHK_get_sup_id)
             {
                 iredir.RedirectNormal("manager-suplier");
                 return;

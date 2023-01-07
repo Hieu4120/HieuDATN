@@ -20,6 +20,7 @@ namespace DATN.Services
         Task<mediate_book_detail> bookDetail(int book_id);
         Task<int> GetId();
         Task<bool> ExistGenres(int gen_id);
+        Task<bool> ExistBook(int book_id);
         Task<bool> ExistSupp(int supp_id);
     }
 }

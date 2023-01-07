@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.WebUtilities;
 using Radzen;
+using System.Text.RegularExpressions;
 using static DATN.Services.NotificationServices;
 
 namespace DATN.Pages
@@ -38,8 +39,9 @@ namespace DATN.Pages
         private mediate_book_detail? book_Detail = new mediate_book_detail();
         private m_review? review_item = new m_review();
         private m_cart? cart_item = new m_cart();
-        private m_cart? cart_item_exist = new m_cart();
+        private m_cart? cart_item_exist;
         private m_account? account_item = new m_account();
+        Regex regexNumberonly = new Regex("^[0-9]+$");
 
         private bool isLoading = false;
         private bool isDisable = false;
@@ -64,13 +66,23 @@ namespace DATN.Pages
             var uri = iredir.GetUri();
             if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("book_id", out var param1))
             {
-                get_book_id = Int32.Parse(param1.First());
+                if (regexNumberonly.IsMatch(param1.First()))
+                {
+                    get_book_id = Int32.Parse(param1.First());
+                }
+                else
+                {
+                    iredir.RedirectNormal("/");
+                    return;
+                }
             }
-            if (get_book_id == null || get_book_id == 0)
+            bool CHK_get_book_id = await bs.ExistBook(get_book_id);
+            if (!CHK_get_book_id)
             {
                 iredir.RedirectNormal("/");
                 return;
             }
+
             book_Detail = await bs.bookDetail(get_book_id);
             await Task.Delay(200);
             book_similers = await bs.GetBookByGenre(book_Detail.genre_id);
@@ -198,7 +210,6 @@ namespace DATN.Pages
             {
                 account_item = await ias.GetCurrentCustomerByName(user);
                 cart_item_exist = await ics.GetCartItembyBookId(get_book_id);
-                int old_amount = cart_item_exist.amount;
                 if (cart_item.cart_id != null)
                 {
                     cart_id_init = await ics.GetCartId();
@@ -209,7 +220,7 @@ namespace DATN.Pages
                 }
                 if (cart_item_exist != null && cart_item_exist.book_id == get_book_id)
                 {
-
+                    int old_amount = cart_item_exist.amount;
                     cart_item_exist.amount = curr_amount + old_amount;
                     cart_item_exist.update_at = DateTime.Now;
                     await ics.Update(cart_item_exist);
@@ -220,7 +231,7 @@ namespace DATN.Pages
                     cart_item.cart_id = cart_id_init + 1;
                     cart_item.customer_id = account_item.customer_id;
                     cart_item.amount = curr_amount;
-                    cart_item.book_id = book_Detail.book_id;
+                    cart_item.book_id = get_book_id;
                     cart_item.create_at = DateTime.Now;
                     cart_item.update_at = DateTime.Now;
                     await ics.Create(cart_item);

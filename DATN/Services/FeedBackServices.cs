@@ -37,7 +37,15 @@ namespace DATN.Services
                 return ret;
             }
         }
-
+        public async Task<bool> ExistFeedBack(int fb_id)
+        {
+            using (var _context = _contextFactory.CreateDbContext())
+            {
+                return await _context.m_feedbacks
+                    .AnyAsync(e => e.feedback_id
+                    .Equals(fb_id));
+            }
+        }
         public async Task<IEnumerable<m_feedback>> GetAllFeedBack()
         {
             using (var _context = _contextFactory.CreateDbContext())

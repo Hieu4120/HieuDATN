@@ -102,5 +102,15 @@ namespace DATN.Services
                 return ret;
             }
         }
+
+        public async Task<bool> ExistSaleOrder(int sale_order_id)
+        {
+            using (var _context = _contextFactory.CreateDbContext())
+            {
+                return await _context.m_sale_orders
+                    .AnyAsync(e => e.sale_order_id
+                    .Equals(sale_order_id));
+            }
+        }
     }
 }

@@ -35,6 +35,16 @@ namespace DATN.Services
             }
         }
 
+        public async Task<bool> ExistCarousel(int carou_id)
+        {
+            using (var _context = _contextFactory.CreateDbContext())
+            {
+                return await _context.m_carosels
+                    .AnyAsync(e => e.carosel_id
+                    .Equals(carou_id));
+            }
+        }
+
         public async Task<IEnumerable<m_carosel>> GetAllCarousel()
         {
             using (var _context = _contextFactory.CreateDbContext())
@@ -45,6 +55,7 @@ namespace DATN.Services
                    from A in _context.m_carosels
                    select new
                    {
+                       carosel_id = A.carosel_id,
                        tiltle = A.tiltle,
                        content = A.content,
                        caroimg_url = A.caroimg_url,
@@ -56,6 +67,7 @@ namespace DATN.Services
                         {
                             Caro_list.Add(new m_carosel()
                             {
+                                carosel_id = ele.carosel_id,
                                 tiltle = ele.tiltle,
                                 content = ele.content,
                                 caroimg_url = ele.caroimg_url,

@@ -22,6 +22,21 @@
 .bg-purple[b-kedkw4kqg7] {
     background-color: #5d1275cc;
 }
+/* _content/DATN/Pages/BookResultSearch.razor.rz.scp.css */
+a:hover[b-onszy8etwi] {
+    color: #e6b400;
+    text-decoration: underline;
+}
+
+a[b-onszy8etwi] {
+    text-decoration: none;
+    background-color: transparent;
+}
+
+.cus-font-weight[b-onszy8etwi] {
+    font-weight: 700;
+    color: #3D464D;
+}
 /* _content/DATN/Pages/Cart.razor.rz.scp.css */
 
 .table[b-fc9ad5bfk9] {
@@ -744,7 +759,7 @@ a:hover[b-lp15x7xxs5] {
     text-decoration: underline;
 }
 
-a[b-lp15x7xxs5] {
+a[b-lp15x7xxs5]{
     text-decoration: none;
     background-color: transparent;
 }

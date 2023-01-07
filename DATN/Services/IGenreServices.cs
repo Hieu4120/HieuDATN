@@ -9,8 +9,10 @@ namespace DATN.Services
         Task<bool> Delete(m_genre genre);
         Task<int> GetGenId();
         Task<m_genre> GetById(int g_id);
+        Task<string> GetGenreNameById(int genre_id);
         Task<IEnumerable<m_genre>> GetAllGenre();
         Task<IEnumerable<mediate_genre>> GetAllGenreName();
         Task<bool> ExistName(string g_name);
+        Task<bool> CHKExistGenres(int gen_id);
     }
 }

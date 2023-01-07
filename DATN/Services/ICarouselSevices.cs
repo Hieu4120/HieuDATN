@@ -9,5 +9,6 @@ namespace DATN.Services
         Task<bool> Delete(m_carosel carosel);
         Task<IEnumerable<m_carosel>> GetAllCarousel();
         Task<m_carosel> GetCarouselById(int id);
+        Task<bool> ExistCarousel(int carou_id);
     }
 }

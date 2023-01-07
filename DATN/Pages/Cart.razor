@@ -32,8 +32,7 @@
                                     if (carts.ElementAt(i).book_id == item.book_id)
                                     {
                                         <td class="align-middle">
-                                            <img src="data:image/bmp;base64,
-                                            @(Convert.ToBase64String(item.book_image))" alt=""
+                                            <img src="@item.img_url" alt=""
                                  style="width: 70px;">
                                         </td>
                                         <td class="align-middle">

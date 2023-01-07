@@ -11,5 +11,6 @@ namespace DATN.Services
         Task<IEnumerable<m_sale_order_detail>> GetAllDetail();
         Task<IEnumerable<m_sale_order_detail>> GetSaleOrderDetailBySaleOrderId(int salecode);
         Task<int> GetId();
+        Task<bool> ExistSaleOrder(int sale_order_id);
     }
 }

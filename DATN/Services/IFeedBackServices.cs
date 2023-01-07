@@ -8,6 +8,7 @@ namespace DATN.Services
         Task<bool> Update(m_feedback feedback);
         Task<bool> Delete(m_feedback feedback);
         Task<int> GetFeedBackId();
+        Task<bool> ExistFeedBack(int fb_id);
         Task<m_feedback> GetFeedBackById(int feedback_id);
         Task<IEnumerable<m_feedback>> GetAllFeedBack();
     }

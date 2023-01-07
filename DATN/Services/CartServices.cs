@@ -113,7 +113,7 @@ namespace DATN.Services
         {
             using (var _context = _contextFactory.CreateDbContext())
             {
-                var query = (
+                var query = await (
                     from M in _context.m_carts
                     .Where(ca => ca.customer_id.Equals(cus_id))
                     from N in _context.m_books
@@ -124,7 +124,7 @@ namespace DATN.Services
                         N.book_name,
                         N.price
                     })
-                    .ToList();
+                    .ToListAsync();
                 List<m_mediate_checkout> ListCheckout = new List<m_mediate_checkout>();
                 foreach(var ele in query)
                 {
@@ -149,6 +149,39 @@ namespace DATN.Services
                 await _context.SaveChangesAsync();
                 ret = true;
                 return ret;
+            }
+        }
+
+        public async Task<IEnumerable<mediate_carts>> GetCartItembyCusIdUp(int cus_id)
+        {
+            using (var _context = _contextFactory.CreateDbContext())
+            {
+                var query = await(
+                    from A in _context.m_carts
+                    .Where(ca => ca.customer_id.Equals(cus_id))
+                    from B in _context.m_books
+                    .Where(col => col.book_id == A.book_id)
+                    select new
+                    {
+                        book_id = A.book_id,
+                        amount = A.amount,
+                        book_name = B.book_name,
+                        price = B.price,
+                        img_url = B.img_url,
+                    }).ToListAsync();
+                List<mediate_carts> cart_list = new List<mediate_carts>();
+                foreach (var ele in query)
+                {
+                    cart_list.Add(new mediate_carts()
+                    {
+                        book_id = ele.book_id,
+                        book_name = ele.book_name,
+                        amount = ele.amount,
+                        price = ele.price,
+                        img_url = ele.img_url
+                    });   
+                }
+                return cart_list;
             }
         }
     }

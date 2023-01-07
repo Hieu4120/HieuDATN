@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.WebUtilities;
 using Radzen;
+using System.Text.RegularExpressions;
 using static DATN.Services.NotificationServices;
 using static System.Reflection.Metadata.BlobBuilder;
 
@@ -28,6 +29,7 @@ namespace DATN.Pages.Admin.Genre
         private string? old_gen_name;
         private bool IsName_genExist = false;
         private bool IsGenreActive = false;
+        Regex regexNumberonly = new Regex("^[0-9]+$");
         private string errCodeStyle => (IsName_genExist) ? "outline: 1px solid red!important;" : "";
         private string errMessage = "Tên đã tồn tại";
 
@@ -42,9 +44,18 @@ namespace DATN.Pages.Admin.Genre
             var uri = iredir.GetUri();
             if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("genre_id", out var param1))
             {
-                get_gen_id = Int32.Parse(param1.First());
+                if (regexNumberonly.IsMatch(param1.First()))
+                {
+                    get_gen_id = Int32.Parse(param1.First());
+                }
+                else
+                {
+                    iredir.RedirectNormal("manager-genre");
+                    return;
+                }
             }
-            if (get_gen_id == null || get_gen_id == 0)
+            bool CHK_get_gen_id = await ges.CHKExistGenres(get_gen_id);
+            if (!CHK_get_gen_id)
             {
                 iredir.RedirectNormal("manager-genre");
                 return;
@@ -67,7 +78,7 @@ namespace DATN.Pages.Admin.Genre
             await ges.Update(gen_item);
             ino.Notify((NotificationSeverity.Success, "Cập nhật thành công"));
             isLoading = false;
-            iredir.RedirectNormal("manager-genre");       
+            iredir.RedirectNormal("manager-genre");
             StateHasChanged();
         }
 
@@ -81,7 +92,7 @@ namespace DATN.Pages.Admin.Genre
             conf.Close();
             await ges.Delete(gen_item);
             ino.Notify((NotificationSeverity.Success, "Xóa thành công"));
-            iredir.RedirectNormal("manager-genre"); 
+            iredir.RedirectNormal("manager-genre");
         }
     }
 }

@@ -18,5 +18,6 @@ namespace DATN.Services
         Task<bool> CheckImportOrderId(int import_id);
         Task<IEnumerable<m_import_order_detail>> search(string key);
         Task<int> GetId();
+        Task<bool> ExistImportOrderDetail(int imo_id);
     }
 }

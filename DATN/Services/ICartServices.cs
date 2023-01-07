@@ -13,6 +13,7 @@ namespace DATN.Services
         Task<IEnumerable<m_cart>> GetAllCart();
         Task<m_cart> GetCartItembyBookId(int bookid);
         Task<IEnumerable<m_cart>> GetCartItembyCusId(int cus_id);
+        Task<IEnumerable<mediate_carts>> GetCartItembyCusIdUp(int cus_id);
         Task<IEnumerable<m_mediate_checkout>> GetCartItem(int cus_id);
     }
 }
