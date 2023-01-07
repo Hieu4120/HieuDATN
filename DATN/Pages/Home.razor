@@ -1,341 +1,170 @@
 ﻿@page "/"
-
 @inject AuthenticationStateProvider authStateProvider
 
-
-<div class="container-fluid">
-    <BSCarousel HasControls="true" HasIndicators="true">
-        @if (carosels != null)
-        {
-            @foreach (var item in carosels)
+<PageTitle>Trang Chủ</PageTitle>
+@if (IsLoading)
+{
+    <div class="container-fluid text-center mt-5 mb-5 p-100">
+        <DATN.Shared.Components.SmallLoadingComponent />
+    </div>
+}
+else
+{
+    <div class="container-fluid">
+        <BSCarousel HasControls="true" HasIndicators="true">
+            @if (carosels != null)
             {
-                <BSCarouselItem>
-                    <div class="carousel-item  active" style="height: 430px;">
-                         <img class="cus-width-100"
-                                 src="data:image/bmp;base64,
-                                 @(Convert.ToBase64String(item.carosel_image))"
-                                  style="object-fit: cover;" />
-                        <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
-                            <div class="p-3" style="max-width: 700px;">
-                                <h1 class="display-4 text-white mb-3  animate__fadeInDown">@item.tiltle</h1>
-                                <p class="mx-md-5 px-5 ">@item.content</p>
-                                <a class="btn btn-outline-light py-2 px-4 mt-3  animate__fadeInUp" href="/shop">Mua ngay</a>
+                @foreach (var item in carosels)
+                {
+                    <BSCarouselItem>
+                        <div class="carousel-item  active" style="height: 430px;">
+                            <img class="cus-width-100"
+                     src="@item.caroimg_url"
+                     style="object-fit: cover;" />
+                            <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
+                                <div class="p-3" style="max-width: 700px;">
+                                    <h1 class="display-4 text-white mb-3  animate__fadeInDown">@item.tiltle</h1>
+                                    <p class="mx-md-5 px-5 ">@item.content</p>
+                                    <a class="btn btn-outline-light py-2 px-4 mt-3  animate__fadeInUp" href="/shop">Mua ngay</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </BSCarouselItem>
+                    </BSCarouselItem>
+                }
             }
-        }      
-    </BSCarousel>
-</div>
-<!-- Featured Start -->
-<div class="container-fluid pt-5">
-    <div class="row px-xl-5 pb-3">
-        <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
-            <div class="d-flex align-items-center bg-light mb-4" style="padding: 30px;">
-                <h1 class="oi oi-check text-primary cus-icon-fea m-0 me-3"></h1>
-                <h5 class="cus-text-fea m-0">Sản Phẩm Chất Lượng</h5>
+        </BSCarousel>
+    </div>
+    <!-- Featured Start -->
+    <div class="container-fluid pt-5">
+        <div class="row px-xl-5 pb-3">
+            <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+                <div class="d-flex align-items-center bg-light mb-4" style="padding: 30px;">
+                    <h1 class="oi oi-check text-primary cus-icon-fea m-0 me-3"></h1>
+                    <h5 class="cus-text-fea m-0">Sản Phẩm Chất Lượng</h5>
+                </div>
             </div>
-        </div>
-        <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
-            <div class="d-flex align-items-center bg-light mb-4" style="padding: 30px;">
-                <h1 class="oi oi-transfer text-primary cus-icon-fea m-0 me-3"></h1>
-                <h5 class="cus-text-fea m-0">Miễn Phí Vận Chuyển</h5>
+            <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+                <div class="d-flex align-items-center bg-light mb-4" style="padding: 30px;">
+                    <h1 class="oi oi-transfer text-primary cus-icon-fea m-0 me-3"></h1>
+                    <h5 class="cus-text-fea m-0">Miễn Phí Vận Chuyển</h5>
+                </div>
             </div>
-        </div>
-        <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
-            <div class="d-flex align-items-center bg-light mb-4" style="padding: 30px;">
-                <h1 class="oi oi-infinity text-primary cus-icon-fea m-0 me-3 "></h1>
-                <h5 class="cus-text-fea m-0"> Đa Dạng Thể Loại</h5>
+            <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+                <div class="d-flex align-items-center bg-light mb-4" style="padding: 30px;">
+                    <h1 class="oi oi-infinity text-primary cus-icon-fea m-0 me-3 "></h1>
+                    <h5 class="cus-text-fea m-0"> Đa Dạng Thể Loại</h5>
+                </div>
             </div>
-        </div>
-        <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
-            <div class="d-flex align-items-center bg-light mb-4" style="padding: 30px;">
-                <h1 class="oi oi-phone text-primary cus-icon-fea m-0 me-3"></h1>
-                <h5 class="cus-text-fea m-0">Nhân Viên Hỗ Trợ 24/7</h5>
+            <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+                <div class="d-flex align-items-center bg-light mb-4" style="padding: 30px;">
+                    <h1 class="oi oi-phone text-primary cus-icon-fea m-0 me-3"></h1>
+                    <h5 class="cus-text-fea m-0">Nhân Viên Hỗ Trợ 24/7</h5>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<!-- Featured End -->
-<!-- Products Start -->
-<div class="container-fluid pt-5 pb-3">
-    <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="cus-font-weight pe-3">Sản phẩm nổi bật</span></h2>
-    <div class="row px-xl-5">
-        @if (books != null && books.Count() > 0)
-        {
-            @foreach (var ele in books)
+    <!-- Featured End -->
+    <!-- Products Start -->
+    <div class="container-fluid pt-5 pb-3">
+        <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="cus-font-weight pe-3">Sản phẩm nổi bật</span></h2>
+        <div class="row px-xl-5">
+            @if (books != null && books.Count() > 0)
             {
-                <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
-                    <div class="product-item bg-light mb-4">
-                        <div class="product-img position-relative overflow-hidden">
-                            <img class="img-fluid w-100" src="data:image/bmp;base64,
-                                         @(Convert.ToBase64String(ele.book_image))" alt="">
-                            <div class="product-action">
-                                <a class="btn btn-outline-dark btn-square" style="cursor:pointer;"
+                @foreach (var ele in books)
+                {
+                    <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
+                        <div class="product-item bg-light mb-4">
+                            <div class="product-img position-relative overflow-hidden">
+                                <img class="img-fluid w-100" src="@ele.img_url" alt="">
+                                <div class="product-action">
+                                    <a class="btn btn-outline-dark btn-square" style="cursor:pointer;"
                            @onclick="() => icon_add_to_cart(ele.book_id)">
-                                    <i class="oi oi-cart"></i>
-                                </a>
-                                <a class="btn btn-outline-dark btn-square" style="cursor:pointer;"><i class="oi oi-heart"></i></a>
+                                        <i class="oi oi-cart"></i>
+                                    </a>
+                                </div>
                             </div>
-                        </div>
-                        <div class="text-center py-4 ">
-                            <a class="h6 text-decoration-none text-truncate cus-text-secondary cus-font-weight"
-                       @onclick="() => pass_data_book(ele)" style="cursor:pointer;">@ele.book_name</a>
-                            <div class="d-flex align-items-center justify-content-center mt-2">
-                                <h5 class="cus-font-weight">@ele.price VND</h5>
-                            </div>
-                            <div class="d-flex align-items-center justify-content-center mb-1">
-                                <small class="oi oi-star text-primary me-1"></small>
-                                <small class="oi oi-star text-primary me-1"></small>
-                                <small class="oi oi-star text-primary me-1"></small>
-                                <small class="oi oi-star text-primary me-1"></small>
-                                <small class="oi oi-star text-primary me-1"></small>   
+                            <div class="text-center py-4 ">
+                                <a class="h6 text-decoration-none text-truncate cus-text-secondary cus-font-weight"
+                       @onclick="() => pass_data_book(ele)" style="cursor:pointer; display: block;">@ele.book_name</a>
+                                <div class="d-flex align-items-center justify-content-center mt-2">
+                                    <h5 class="cus-font-weight">@ele.price VND</h5>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-center mb-1">
+                                    <small class="oi oi-star text-primary me-1"></small>
+                                    <small class="oi oi-star text-primary me-1"></small>
+                                    <small class="oi oi-star text-primary me-1"></small>
+                                    <small class="oi oi-star text-primary me-1"></small>
+                                    <small class="oi oi-star text-primary me-1"></small>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                }
             }
-        }
-        <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
-            <div class="product-item bg-light mb-4">
-                <div class="product-img position-relative overflow-hidden">
-                    <img class="img-fluid w-100" src="./img/thoi-mien-bang-ngon-tu.jpg" alt="">
-                    <div class="product-action">
-                        <a class="btn btn-outline-dark btn-square" href=""><i class="oi oi-cart"></i></a>
-                        <a class="btn btn-outline-dark btn-square" href=""><i class="oi oi-heart"></i></a>
-                    </div>
-                </div>
-                <div class="text-center py-4 ">
-                    <a class="h6 text-decoration-none text-truncate cus-text-secondary cus-font-weight" href="">Product Name Goes Here</a>
-                    <div class="d-flex align-items-center justify-content-center mt-2">
-                        <h5 class="cus-font-weight">$123.00</h5><h6 class="text-muted ms-2"><del>$123.00</del></h6>
-                    </div>
-                    <div class="d-flex align-items-center justify-content-center mb-1">
-                        <small class="oi oi-star text-primary me-1"></small>
-                        <small class="oi oi-star text-primary me-1"></small>
-                        <small class="oi oi-star text-primary me-1"></small>
-                        <small class="oi oi-star text-primary me-1"></small>
-                        <small class="oi oi oi-star text-primary me-1"></small>
-                        <small>(99)</small>
+        </div>
+    </div>
+    <!-- Products End -->
+    <!-- Offer Start -->
+    <div class="container-fluid pt-5 pb-3">
+        <div class="row px-xl-5">
+            <div class="col-md-6" style="margin-bottom: 20px;">
+                <div class="product-offer mb-30" style="height: 300px;">
+                    <img class="img-fluid" src="./img/cover_img1.png" alt="">
+                    <div class="offer-text">
+                        <h6 class="text-white text-uppercase">Tiết kiệm 20%</h6>
+                        <h3 class="text-white mb-3">Offer Đặc biệt</h3>
+                        <a href="/shop" class="btn btn-primary">Mua ngay</a>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
-            <div class="product-item bg-light mb-4">
-                <div class="product-img position-relative overflow-hidden">
-                    <img class="img-fluid w-100" src="./img/hoang-tu-be.jpg" alt="">
-                    <div class="product-action">
-                        <a class="btn btn-outline-dark btn-square" href=""><i class="oi oi-cart"></i></a>
-                        <a class="btn btn-outline-dark btn-square" href=""><i class="oi oi-heart"></i></a>
-                    </div>
-                </div>
-                <div class="text-center py-4 ">
-                    <a class="h6 text-decoration-none text-truncate cus-text-secondary cus-font-weight" href="">Product Name Goes Here</a>
-                    <div class="d-flex align-items-center justify-content-center mt-2">
-                        <h5 class="cus-font-weight">$123.00</h5><h6 class="text-muted ms-2"><del>$123.00</del></h6>
-                    </div>
-                    <div class="d-flex align-items-center justify-content-center mb-1">
-                        <small class="oi oi-star text-primary me-1"></small>
-                        <small class="oi oi-star text-primary me-1"></small>
-                        <small class="oi oi-star text-primary me-1"></small>
-                        <small class="oi oi oi-star text-primary me-1"></small>
-                        <small class="far fa-star text-primary me-1"></small>
-                        <small>(99)</small>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
-            <div class="product-item bg-light mb-4">
-                <div class="product-img position-relative overflow-hidden">
-                    <img class="img-fluid w-100" src="./img/hai-so-phan.jpg" alt="">
-                    <div class="product-action">
-                        <a class="btn btn-outline-dark btn-square" href=""><i class="oi oi-cart"></i></a>
-                        <a class="btn btn-outline-dark btn-square" href=""><i class="oi oi-heart"></i></a>
-                    </div>
-                </div>
-                <div class="text-center py-4 ">
-                    <a class="h6 text-decoration-none text-truncate cus-text-secondary cus-font-weight" href="">Product Name Goes Here</a>
-                    <div class="d-flex align-items-center justify-content-center mt-2">
-                        <h5 class="cus-font-weight">$123.00</h5><h6 class="text-muted ms-2"><del>$123.00</del></h6>
-                    </div>
-                    <div class="d-flex align-items-center justify-content-center mb-1">
-                        <small class="oi oi-star text-primary me-1"></small>
-                        <small class="oi oi-star text-primary me-1"></small>
-                        <small class="oi oi-star text-primary me-1"></small>
-                        <small class="far fa-star text-primary me-1"></small>
-                        <small class="far fa-star text-primary me-1"></small>
-                        <small>(99)</small>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
-            <div class="product-item bg-light mb-4">
-                <div class="product-img position-relative overflow-hidden">
-                    <img class="img-fluid w-100" src="./img/giai-thich-ngu-phap-tieng-anh.jpg" alt="">
-                    <div class="product-action">
-                        <a class="btn btn-outline-dark btn-square" href=""><i class="oi oi-cart"></i></a>
-                        <a class="btn btn-outline-dark btn-square" href=""><i class="oi oi-heart"></i></a>
-                    </div>
-                </div>
-                <div class="text-center py-4 ">
-                    <a class="h6 text-decoration-none text-truncate cus-text-secondary cus-font-weight" href="">Product Name Goes Here</a>
-                    <div class="d-flex align-items-center justify-content-center mt-2">
-                        <h5 class="cus-font-weight">$123.00</h5><h6 class="text-muted ms-2"><del>$123.00</del></h6>
-                    </div>
-                    <div class="d-flex align-items-center justify-content-center mb-1">
-                        <small class="oi oi-star text-primary me-1"></small>
-                        <small class="oi oi-star text-primary me-1"></small>
-                        <small class="oi oi-star text-primary me-1"></small>
-                        <small class="oi oi-star text-primary me-1"></small>
-                        <small class="oi oi-star text-primary me-1"></small>
-                        <small>(99)</small>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
-            <div class="product-item bg-light mb-4">
-                <div class="product-img position-relative overflow-hidden">
-                    <img class="img-fluid w-100" src="./img/dac-nhan-tam.jpg" alt="">
-                    <div class="product-action">
-                        <a class="btn btn-outline-dark btn-square" href=""><i class="oi oi-cart"></i></a>
-                        <a class="btn btn-outline-dark btn-square" href=""><i class="oi oi-heart"></i></a>
-                    </div>
-                </div>
-                <div class="text-center py-4 ">
-                    <a class="h6 text-decoration-none text-truncate cus-text-secondary cus-font-weight" href="">Product Name Goes Here</a>
-                    <div class="d-flex align-items-center justify-content-center mt-2">
-                        <h5 class="cus-font-weight">$123.00</h5><h6 class="text-muted ms-2"><del>$123.00</del></h6>
-                    </div>
-                    <div class="d-flex align-items-center justify-content-center mb-1">
-                        <small class="oi oi-star text-primary me-1"></small>
-                        <small class="oi oi-star text-primary me-1"></small>
-                        <small class="oi oi-star text-primary me-1"></small>
-                        <small class="oi oi-star text-primary me-1"></small>
-                        <small class="oi oi oi-star text-primary me-1"></small>
-                        <small>(99)</small>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
-            <div class="product-item bg-light mb-4">
-                <div class="product-img position-relative overflow-hidden">
-                    <img class="img-fluid w-100" src="./img/bo-gia.webp" alt="">
-                    <div class="product-action">
-                        <a class="btn btn-outline-dark btn-square" href=""><i class="oi oi-cart"></i></a>
-                        <a class="btn btn-outline-dark btn-square" href=""><i class="oi oi-heart"></i></a>
-                    </div>
-                </div>
-                <div class="text-center py-4 ">
-                    <a class="h6 text-decoration-none text-truncate cus-text-secondary cus-font-weight" href="">Product Name Goes Here</a>
-                    <div class="d-flex align-items-center justify-content-center mt-2">
-                        <h5 class="cus-font-weight">$123.00</h5><h6 class="text-muted ms-2"><del>$123.00</del></h6>
-                    </div>
-                    <div class="d-flex align-items-center justify-content-center mb-1">
-                        <small class="oi oi-star text-primary me-1"></small>
-                        <small class="oi oi-star text-primary me-1"></small>
-                        <small class="oi oi-star text-primary me-1"></small>
-                        <small class="oi oi oi-star text-primary me-1"></small>
-                        <small class="far fa-star text-primary me-1"></small>
-                        <small>(99)</small>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
-            <div class="product-item bg-light mb-4">
-                <div class="product-img position-relative overflow-hidden">
-                    <img class="img-fluid w-100" src="./img/di-tim-le-song.webp" alt="">
-                    <div class="product-action">
-                        <a class="btn btn-outline-dark btn-square" href=""><i class="oi oi-cart"></i></a>
-                        <a class="btn btn-outline-dark btn-square" href=""><i class="oi oi-heart"></i></a>
-                    </div>
-                </div>
-                <div class="text-center py-4 ">
-                    <a class="h6 text-decoration-none text-truncate cus-text-secondary cus-font-weight" href="">Product Name Goes Here</a>
-                    <div class="d-flex align-items-center justify-content-center mt-2">
-                        <h5 class="cus-font-weight">$123.00</h5><h6 class="text-muted ms-2"><del>$123.00</del></h6>
-                    </div>
-                    <div class="d-flex align-items-center justify-content-center mb-1">
-                        <small class="oi oi-star text-primary me-1"></small>
-                        <small class="oi oi-star text-primary me-1"></small>
-                        <small class="oi oi-star text-primary me-1"></small>
-                        <small class="far fa-star text-primary me-1"></small>
-                        <small class="far fa-star text-primary me-1"></small>
-                        <small>(99)</small>
+            <div class="col-md-6">
+                <div class="product-offer mb-30" style="height: 300px;">
+                    <img class="img-fluid" src="./img/img_cover2.jpg" alt="">
+                    <div class="offer-text">
+                        <h6 class="text-white text-uppercase">Giảm 20%</h6>
+                        <h3 class="text-white mb-3 ">Offer Đặc biệt</h3>
+                        <a href="/shop" class="btn btn-primary">Mua ngay</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<!-- Products End -->
-<!-- Offer Start -->
-<div class="container-fluid pt-5 pb-3">
-    <div class="row px-xl-5">
-        <div class="col-md-6" style="margin-bottom: 20px;">
-            <div class="product-offer mb-30" style="height: 300px;">
-                <img class="img-fluid" src="./img/cover_img1.png" alt="">
-                <div class="offer-text">
-                    <h6 class="text-white text-uppercase">Tiết kiệm 20%</h6>
-                    <h3 class="text-white mb-3">Offer Đặc biệt</h3>
-                    <a href="/shop" class="btn btn-primary">Mua ngay</a>
+    <!-- Offer End -->
+    <!-- Vendor Start -->
+    <!-- Categories Start -->
+    <div class="container-fluid pt-5">
+        <div class="row justify-content-center px-xl-5 pb-3">
+            <div class="col-sm-2 ms-3 pb-1">
+                <div class="cat-item d-flex align-items-center mb-4">
+                    <div class="overflow-hidden" style="width: 100px; height: 100px;">
+                        <img class="img-fluid" src="./img/vendor_1.png" alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-2 ms-3 pb-1 ">
+                <div class="cat-item img-zoom d-flex align-items-center mb-4 ">
+                    <div class="overflow-hidden" style="width: 100px; height: 100px;">
+                        <img class="img-fluid" src="./img/vendor_3.jpg" alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-2 ms-3 pb-1 ">
+                <div class="cat-item img-zoom d-flex align-items-center mb-4">
+                    <div class="overflow-hidden" style="width: 100px; height: 100px;">
+                        <img class="img-fluid" src="./img/vender_4.jpg" alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-2 ms-3 pb-1 ">
+                <div class="cat-item img-zoom d-flex align-items-center mb-4">
+                    <div class="overflow-hidden" style="width: 100px; height: 100px;">
+                        <img class="img-fluid" src="./img/vender_5.png" alt="">
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="product-offer mb-30" style="height: 300px;">
-                <img class="img-fluid" src="./img/img_cover2.jpg" alt="">
-                <div class="offer-text">
-                    <h6 class="text-white text-uppercase">Giảm 20%</h6>
-                    <h3 class="text-white mb-3 ">Offer Đặc biệt</h3>
-                    <a href="/shop" class="btn btn-primary">Mua ngay</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Offer End -->
-<!-- Vendor Start -->
-<!-- Categories Start -->
-<div class="container-fluid pt-5">
-    <div class="row justify-content-center px-xl-5 pb-3">
-        <div class="col-sm-2 ms-3 pb-1">
-            <div class="cat-item d-flex align-items-center mb-4">
-                <div class="overflow-hidden" style="width: 100px; height: 100px;">
-                    <img class="img-fluid" src="./img/vendor_1.png" alt="">
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-2 ms-3 pb-1 ">
-            <div class="cat-item img-zoom d-flex align-items-center mb-4 ">
-                <div class="overflow-hidden" style="width: 100px; height: 100px;">
-                    <img class="img-fluid" src="./img/vendor_3.jpg" alt="">
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-2 ms-3 pb-1 ">
-            <div class="cat-item img-zoom d-flex align-items-center mb-4">
-                <div class="overflow-hidden" style="width: 100px; height: 100px;">
-                    <img class="img-fluid" src="./img/vender_4.jpg" alt="">
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-2 ms-3 pb-1 ">
-            <div class="cat-item img-zoom d-flex align-items-center mb-4">
-                <div class="overflow-hidden" style="width: 100px; height: 100px;">
-                    <img class="img-fluid" src="./img/vender_5.png" alt="">
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
+    </div> 
+}
 <!-- Categories End -->
 <!-- Vendor End -->
 <RadzenNotification />

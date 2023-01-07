@@ -11,6 +11,7 @@ namespace DATN.Model
         public string tiltle { get; set; }
         [Required(ErrorMessage = "Vui lòng nhập nội dung")]
         public string content { get; set; }
+        public string caroimg_url { get; set; }
         public DateTime create_at { get; set; }
 
     }

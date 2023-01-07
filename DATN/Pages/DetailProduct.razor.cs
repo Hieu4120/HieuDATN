@@ -32,8 +32,8 @@ namespace DATN.Pages
         [CascadingParameter]
         private Task<AuthenticationState> authenticationStateTask { get; set; }
 
-        private IEnumerable<m_book>? book_similers;
-        private IEnumerable<m_review>? reviews;
+        private IEnumerable<m_book>? book_similers = Enumerable.Empty<m_book>();
+        private IEnumerable<m_review>? reviews = Enumerable.Empty<m_review>();
 
         private mediate_book_detail? book_Detail = new mediate_book_detail();
         private m_review? review_item = new m_review();
@@ -66,8 +66,15 @@ namespace DATN.Pages
             {
                 get_book_id = Int32.Parse(param1.First());
             }
+            if (get_book_id == null || get_book_id == 0)
+            {
+                iredir.RedirectNormal("/");
+                return;
+            }
             book_Detail = await bs.bookDetail(get_book_id);
+            await Task.Delay(200);
             book_similers = await bs.GetBookByGenre(book_Detail.genre_id);
+            await Task.Delay(200);
             reviews = await irews.GetReViewByBookId(get_book_id);
             var authState = await authenticationStateTask;
             user = authState.User.Identity.Name;

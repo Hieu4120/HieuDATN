@@ -27,26 +27,29 @@ namespace DATN.Pages
         private Task<AuthenticationState> authenticationStateTask { get; set; }
         [Parameter]
         public int page { get; set; }
-
+        private bool IsLoading;
         private string CurrentUri = "shop";
         PagingInfo pagingInfo = new PagingInfo();
         private IEnumerable<mediate_book>? books_i;
         private IEnumerable<mediate_genre>? genres;
         private m_cart? cart_item = new m_cart();
         private m_account? account_item = new m_account();
+          private m_book? book_item;
         public IEnumerable<mediate_book> books { get; set; } = Enumerable.Empty<mediate_book>();
         private int cart_id_init;
         private string user;
         private bool CartItemIsExits;
         protected override async Task OnInitializedAsync()
         {
+            IsLoading = true;
             await Task.Delay(500);
             books_i = await bs.GetBookPriceFilter();
-            genres = await igs.GetAllGenreName();          
+            genres = await igs.GetAllGenreName();
+            IsLoading = false;
             StateHasChanged();
         }
 
-        private async void getvaluecheck( ChangeEventArgs e, int index)
+        private async void getvaluecheck(ChangeEventArgs e, int index)
         {
             string check = e.Value.ToString();
             if (check == "on" && index == 1)
@@ -77,8 +80,12 @@ namespace DATN.Pages
             int gen_check = Int32.Parse((string)e.Value);
             books = books_i.Where(col => col.genre_id == gen_check).ToList();
         }
-            private void pass_data_book(int book_id )
+        private async void pass_data_book(int book_id)
         {
+            book_item = await bs.GetBookById(book_id);
+            book_item.number_click += 1;
+            await bs.Update(book_item);
+            Task.Delay(200);
             string book_id_pass = book_id.ToString();
             Dictionary<string, string> passData = new Dictionary<string, string>
             {
@@ -92,7 +99,7 @@ namespace DATN.Pages
         }
         public async void CreatePagingInfo()
         {
-            int PageSize = 3;
+            int PageSize = 6;
             pagingInfo = new PagingInfo();
             page = page == 0 ? 1 : page;
             pagingInfo.CurrentPage = page;

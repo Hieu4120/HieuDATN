@@ -50,13 +50,26 @@
                                     </Template>
                                 </RadzenAutoComplete>
                             </div>
-                            <div class="col-sm-3 pt-1">
-                                <button type="button"
+                            @if (IsDisable)
+                            {
+                                <div class="col-sm-3 pt-1">
+                                    <button type="button"
+                                   disabled
+                                    class="btn btn-primary btn-sm">
+                                        Lấy dữ liệu
+                                    </button>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-sm-3 pt-1">
+                                    <button type="button"
                                     @onclick="btn_click_copy"
                                     class="btn btn-primary btn-sm">
-                                    Lấy dữ liệu
-                                </button>
-                            </div>
+                                        Lấy dữ liệu
+                                    </button>
+                                </div>
+                            }
                         </div>
 
                         <div class="form-group row mb-2 ms-3">

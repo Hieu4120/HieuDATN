@@ -25,24 +25,37 @@ namespace DATN.Shared
         {SHOP, "" },
         {CONTACT, "" },
         {INFOMATION,"" }};
+        public static Dictionary<string, string> MenuManager = new Dictionary<string, string>
+        {
+            {"/", "Trang chủ"},
+            {"/shop", "Cửa hàng"},
+            {"/contact", "Liên hệ"},
+            {"/ShopInfo", "Thông tin"},
+        };
         protected override async Task OnInitializedAsync()
         {
             string pageTitle = "";
             string urlName = navManager != null ?
                 navManager.Uri.ToString().Replace(navManager.BaseUri, "/") : "";
-            if (pageTitle == "")
+            urlName = urlName.Split('?').First();
+            bool keyExists = MenuManager.ContainsKey(urlName);
+            if (keyExists)
+            {
+                pageTitle = MenuManager[urlName];
+            }
+            if (pageTitle == "Trang chủ")
             {
                 navActiveClass[HOME] = BACKGROUND_ITEM;
             }
-            if (pageTitle == "/shop")
+            if (pageTitle == "Cửa hàng")
             {
                 navActiveClass[SHOP] = BACKGROUND_ITEM;
             }
-            if (pageTitle == "/contact")
+            if (pageTitle == "Liên hệ")
             {
                 navActiveClass[CONTACT] = BACKGROUND_ITEM;
             }
-            if (pageTitle == "/ShopInfo")
+            if (pageTitle == "Thông tin")
             {
                 navActiveClass[INFOMATION] = BACKGROUND_ITEM;
             }
@@ -79,6 +92,7 @@ namespace DATN.Shared
         }
         private async void pass_data_to_cart()
         {
+            resetState();
             var authState = await authenticationStateTask;
             string user = authState.User.Identity.Name;
             var getUser = await acs.GetCurrentCustomerByName(user);
@@ -87,7 +101,7 @@ namespace DATN.Shared
             {
                 {"customer_id", customer_id},
             };
-            iredir.RedirectParameter("cart", passData);
+             iredir.RedirectParameter("cart", passData);
         }
     }
 }

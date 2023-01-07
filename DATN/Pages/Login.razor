@@ -6,6 +6,7 @@
 @inject AuthenticationStateProvider authStateProvider
 @inject NavigationManager navManager
 
+<PageTitle>Đăng nhập</PageTitle>
 <EditForm Model="account_t" OnValidSubmit="@Authenticate">
 
     <div class="container-fluid cus-bg-dark cus-text-secondary">
@@ -64,7 +65,7 @@
     [Inject]
     private IAccountServices asv { get; set; }
     private m_account account_t = new m_account();
-    public IEnumerable<m_account> account_data { get; set; }
+    public IEnumerable<m_account> account_data = Enumerable.Empty<m_account>();
     private bool UserIsExits;
     private bool checkValid;
     private string? errCodeStyle_u = "";

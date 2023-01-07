@@ -18,23 +18,22 @@ namespace DATN.Pages.Admin.Book
         [Inject]
         private IBookServices abs { get; set; }
         [Inject]
-        private INotificationService ino { get; set; }
+        private INotificationService? ino { get; set; }
         [Inject]
-        private IImportOrderDetailServices iipods { get; set; }
+        private IImportOrderDetailServices? iipods { get; set; }
 
-        private m_genre? genre { get; set; }
-        private m_supplier? supplier { get; set; }
-        private IEnumerable<m_import_order_detail> import_order { get; set; }
+        private m_genre? genre;
+        private m_supplier? supplier;
+        private IEnumerable<m_import_order_detail>? import_order;
+        private m_import_order_detail? buff_import_order;
 
-        private int book_id_init;
         private bool isLoading = false;
-        private string? errMess = "";
-        private string? CSS_outline = "outline: 1px solid red!important;";
         private bool isDisable = false;
 
         private int? GenId;
         private int? SuppId;
-        private int BookId;
+        private int? BookId { get; set; }
+        private bool IsDisable = false;
         private string gen_name { get; set; }
         private string supp_name { get; set; }
         private string RetSearchValue = "";
@@ -52,47 +51,35 @@ namespace DATN.Pages.Admin.Book
         };
         protected override async Task OnInitializedAsync()
         {
-            /* genres = await ges.GetAllGenre();
-             suppliers = await sups.GetAllSupp();*/
-        }
-        async Task HandleFileSelected(InputFileChangeEventArgs files)
-        {
-            foreach (var file in files.GetMultipleFiles(maxAllowedFiles))
+            if (RetSearchValue == null || RetSearchValue == "")
             {
-                MemoryStream ms = new MemoryStream();
-                await file.OpenReadStream(maxFileSize).CopyToAsync(ms);
-                ImgUploaded = ms.ToArray();
+                IsDisable = true;
             }
         }
-        private async void selSupp(ChangeEventArgs e)
-        {
-            books.supplier_id = Int32.Parse((string)e.Value);
-        }
-
-        private async void selGen(ChangeEventArgs e)
-        {
-            books.genre_id = Int32.Parse((string)e.Value);
-        }
+        /* async Task HandleFileSelected(InputFileChangeEventArgs files)
+         {
+             foreach (var file in files.GetMultipleFiles(maxAllowedFiles))
+             {
+                 MemoryStream ms = new MemoryStream();
+                 await file.OpenReadStream(maxFileSize).CopyToAsync(ms);
+                 ImgUploaded = ms.ToArray();
+             }
+         }*/
         private async void OnLoadData(LoadDataArgs args)
         {
-            // 初期化の値
-            import_order = new List<m_import_order_detail>()
-            {
-                new m_import_order_detail(),
-            };
-            // 処理中
+            /* import_order = new List<m_import_order_detail>()
+             {
+                 new m_import_order_detail(),
+             };*/
             isLoadingAuto = true;
-            // 取得データ
             var _import_order = await iipods.search(args.Filter);
             import_order = _import_order.OrderBy(ele => ele.import_order_id);
-            // 処理完了
             isLoadingAuto = false;
             await InvokeAsync(StateHasChanged);
         }
         private void OnChanged(object value)
         {
             RetSearchValue = "";
-
             if (import_order == null ||
                 import_order.Count() == 0 ||
                 import_order?.First().book_id == null)
@@ -100,19 +87,20 @@ namespace DATN.Pages.Admin.Book
                 RetSearchValue = (string)value;
                 return;
             }
-
             RetSearchValue = (string)value;
-
-            var buff_import_order = import_order
-                .Where(e => e.book_id.ToString().Equals(RetSearchValue)).Distinct().FirstOrDefault();
-
+            buff_import_order = import_order
+                .Where(e => e.book_id.ToString()
+                .Equals(RetSearchValue))
+                .Distinct()
+                .FirstOrDefault();
+            BookId = buff_import_order?.book_id;
             if (buff_import_order == null)
             {
                 return;
             }
             else
             {
-                BookId = (int)buff_import_order.book_id;
+                IsDisable = false;
                 GenId = buff_import_order.genre_id;
                 SuppId = buff_import_order.supplier_id;
                 RetSearchValue = buff_import_order.book_id.ToString();
@@ -123,42 +111,42 @@ namespace DATN.Pages.Admin.Book
 
         private async void btn_click_copy()
         {
-
-            var _import_order = await iipods.GetImportDetailByBookId((BookId));
-            if (_import_order != null)
+            if (BookId != null)
             {
-                genre = await ges.GetById((int)GenId);
-                gen_name = genre.genre_name;
-                supplier = await sups.GetSuppById((int)SuppId);
-                supp_name = supplier.supplier_name;
-                books.book_id = (int)_import_order.book_id;
-                books.book_image = _import_order.book_image;
-                books.book_name = _import_order.book_name;
-                books.page_number = (int)_import_order.page_number;
-                books.amount = _import_order.amount;
-                books.author = _import_order.author;
-                books.price = _import_order.price;
-                books.genre_id = _import_order.genre_id;
-                books.supplier_id = _import_order.supplier_id;
+                var CHKExist = await iipods.CheckBookIdExist((int)BookId);
+                if (!CHKExist)
+                {
+                    buff_import_order = await iipods.GetImportDetailByBookId((int)BookId);
+                    genre = await ges.GetById((int)GenId);
+                    gen_name = genre.genre_name;
+                    supplier = await sups.GetSuppById((int)SuppId);
+                    supp_name = supplier.supplier_name;
+                    books.book_id = (int)buff_import_order.book_id;
+                    books.book_image = buff_import_order.book_image;
+                    books.book_name = buff_import_order.book_name;
+                    books.page_number = (int)buff_import_order.page_number;
+                    books.amount = buff_import_order.amount;
+                    books.author = buff_import_order.author;
+                    books.price = buff_import_order.price;
+                    books.genre_id = buff_import_order.genre_id;
+                    books.supplier_id = buff_import_order.supplier_id;
+                }
+                else
+                {
+                    ino.Notify((NotificationSeverity.Success, "Sách đã tồn tại"));
+                    return;
+                }
             }
             else
             {
                 ino.Notify((NotificationSeverity.Success, "Thiếu dữ liệu"));
+                return;
             }
             StateHasChanged();
         }
 
         private async void AddBook()
         {
-            if (book_id_init != null)
-            {
-                book_id_init = await abs.GetId();
-            }
-            else
-            {
-                book_id_init = 1;
-            }
-                       
             isLoading = true;
             books.update_at = DateTime.Now;
             await abs.Create(books);
@@ -168,7 +156,7 @@ namespace DATN.Pages.Admin.Book
             isLoading = false;
             ino.Notify((NotificationSeverity.Success, "Thêm thành công"));
             StateHasChanged();
-            
+
         }
     }
 }

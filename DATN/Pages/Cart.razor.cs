@@ -19,7 +19,7 @@ namespace DATN.Pages
         private ICartServices ics { get; set; }
         [Inject]
         private INotificationService ino { get; set; }
-        private IEnumerable<m_cart>? carts;
+        private IEnumerable<m_cart>? carts = Enumerable.Empty<m_cart>();
         private m_book? book_item = new m_book();
         private List<m_book>? List_books = new List<m_book>();
         private Dictionary<int, int>? Dic_total_price = new Dictionary<int, int>();
@@ -37,6 +37,11 @@ namespace DATN.Pages
             if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("customer_id", out var param1))
             {
                 get_cus_id = Int32.Parse(param1.First());
+            }
+            if (get_cus_id == null || get_cus_id == 0)
+            {
+                iredir.RedirectNormal("/");
+                return;
             }
             await Task.Delay(20);
             carts = await ics.GetCartItembyCusId(get_cus_id);
@@ -89,12 +94,20 @@ namespace DATN.Pages
 
         private void Pass_Data()
         {
-            Dictionary<string, string> passData = new Dictionary<string, string>
+            if (total != 0)
+            {
+                Dictionary<string, string> passData = new Dictionary<string, string>
             {
                 {"cus_id", get_cus_id.ToString()},
                 {"total", total.ToString()}
             };
-            iredir.RedirectParameter("checkout", passData);
+                iredir.RedirectParameter("checkout", passData);
+            }
+            else
+            {
+                ino.Notify((NotificationSeverity.Success, "Bạn chưa có sản phẩm trong giỏ hàng"));
+                return;
+            }
         }
         private async void delete_cart_item(m_cart cart_item)
         {

@@ -27,20 +27,23 @@ namespace DATN.Services
                        book_id = A.book_id,
                        book_name = A.book_name,
                        price = A.price,
-                       book_image = A.book_image,
+                       img_url = A.img_url,
                        number_click = A.number_click
-                   }).OrderBy(col => col.number_click)
+                   }).OrderByDescending(col => col.number_click)
                    .ToListAsync();
                     List<mediate_book> book_list = new List<mediate_book>();
                     foreach (var ele in query)
                     {
-                        book_list.Add(new mediate_book()
+                        if (book_list.Count() < 16)
                         {
-                            book_id = ele.book_id,
-                            book_name = ele.book_name,
-                            price = ele.price,
-                            book_image = ele.book_image
-                        });
+                            book_list.Add(new mediate_book()
+                            {
+                                book_id = ele.book_id,
+                                book_name = ele.book_name,
+                                price = ele.price,
+                                img_url = ele.img_url,
+                            });
+                        }
                     }
                     return book_list;
                 }
@@ -80,7 +83,6 @@ namespace DATN.Services
         {
             using (var _context = _contextFactory.CreateDbContext())
             {
-
                 var res = await _context
                 .m_books
                 .Select(e => e.book_id).ToListAsync();
@@ -115,12 +117,12 @@ namespace DATN.Services
             }
         }
 
-        public async Task<IEnumerable<m_book>> GetBookByName(string bookname)
+        public async Task<IEnumerable<m_book>> GetBookByName(string booksearchname)
         {
             using (var _context = _contextFactory.CreateDbContext())
             {
                 var ret = await _context.m_books.Where(
-                    col => col.book_name.Contains(bookname)).ToListAsync();
+                    col => col.book_search_name.Contains(booksearchname)).ToListAsync();
                 return ret;
             }
         }
@@ -190,12 +192,11 @@ namespace DATN.Services
                     .Where(sup => sup.supplier_id == A.supplier_id)
                     select new
                     {
-                        book_id = A.book_id,
                         book_name = A.book_name,
                         price = A.price,
                         author = A.author,
                         book_content = A.book_content,
-                        book_image = A.book_image,
+                        img_url = A.img_url,
                         page_number = A.page_number,
                         amount = A.amount,
                         supplier_name = C.supplier_name,
@@ -205,13 +206,12 @@ namespace DATN.Services
                     }).FirstOrDefaultAsync();
                 mediate_book_detail bookDetail = new mediate_book_detail()
                 {
-                    book_id = query.book_id,
                     book_name = query.book_name,
                     price = query.price,
                     author = query.author,
                     book_content = query.book_content,
                     amount = query.amount,
-                    book_image = query.book_image,
+                    img_url = query.img_url,
                     page_number = query.page_number,
                     supplier_name = query.supplier_name,
                     genre_name = query.genre_name,
@@ -226,7 +226,7 @@ namespace DATN.Services
         {
             using (var _context = _contextFactory.CreateDbContext())
             {
-                var query = await(
+                var query = await (
                     from A in _context.m_books
                     from B in _context.m_genres
                     .Where(colg => colg.genre_id == A.genre_id)
@@ -239,7 +239,7 @@ namespace DATN.Services
                         price = A.price,
                         author = A.author,
                         book_content = A.book_content,
-                        book_image = A.book_image,
+                        img_url = A.img_url,
                         page_number = A.page_number,
                         amount = A.amount,
                         supplier_name = C.supplier_name,
@@ -250,25 +250,25 @@ namespace DATN.Services
                         number_click = A.number_click
                     }).ToListAsync();
                 List<mediate_book_detail> bookDetailList = new List<mediate_book_detail>();
-                foreach(var item in query)
+                foreach (var item in query)
                 {
-                    bookDetailList.Add (new mediate_book_detail()
+                    bookDetailList.Add(new mediate_book_detail()
                     {
-                    book_id = item.book_id,
-                    book_name = item.book_name,
-                    price = item.price,
-                    author = item.author,
-                    book_content = item.book_content,
-                    amount = item.amount,
-                    book_image = item.book_image,
-                    page_number = item.page_number,
-                    supplier_name = item.supplier_name,
-                    genre_name = item.genre_name,
-                    release_date = item.release_date,
-                    genre_id = item.genre_id,
-                    status = item.status,
-                    number_click = item.number_click
-                });
+                        book_id = item.book_id,
+                        book_name = item.book_name,
+                        price = item.price,
+                        author = item.author,
+                        book_content = item.book_content,
+                        amount = item.amount,
+                        img_url = item.img_url,
+                        page_number = item.page_number,
+                        supplier_name = item.supplier_name,
+                        genre_name = item.genre_name,
+                        release_date = item.release_date,
+                        genre_id = item.genre_id,
+                        status = item.status,
+                        number_click = item.number_click
+                    });
                 }
                 return bookDetailList;
             }
@@ -280,7 +280,7 @@ namespace DATN.Services
             {
                 try
                 {
-                    var query = await(
+                    var query = await (
                    from A in _context.m_books
                    from B in _context.m_genres
                    .Where(colg => colg.genre_id == A.genre_id)
@@ -289,7 +289,7 @@ namespace DATN.Services
                        book_id = A.book_id,
                        book_name = A.book_name,
                        price = A.price,
-                       book_image = A.book_image,
+                       img_url = A.img_url,
                        number_click = A.number_click,
                        genre_id = B.genre_id
                    }).OrderBy(col => col.number_click)
@@ -302,7 +302,7 @@ namespace DATN.Services
                             book_id = ele.book_id,
                             book_name = ele.book_name,
                             price = ele.price,
-                            book_image = ele.book_image,
+                            img_url = ele.img_url,
                             genre_id = ele.genre_id
                         });
                     }

@@ -6,6 +6,8 @@ using DocumentFormat.OpenXml.Vml;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.JSInterop;
 using Radzen;
 using static DATN.Services.NotificationServices;
 
@@ -27,8 +29,7 @@ namespace DATN.Pages
         private IAccountServices iacs { get; set; }
         [Inject]
         private ICustomerServices icts { get; set; }
-        [Inject]
-        private IConfiguration icfs { get; set; }
+
         [CascadingParameter]
         private Task<AuthenticationState> authenticationStateTask { get; set; }
         private ModalCheckout? conf_ch { set; get; }
@@ -59,6 +60,11 @@ namespace DATN.Pages
             {
                 total = Int32.Parse(param2.First());
             }
+            if (get_cus_id == null || get_cus_id == 0)
+            {
+                iredir.RedirectNormal("/");
+                return;
+            }
             carts = await ics.GetCartItembyCusId(get_cus_id);
             await Task.Delay(20);
             DataList = await ics.GetCartItem(get_cus_id);
@@ -70,9 +76,21 @@ namespace DATN.Pages
             customer_email = Account.email;
             StateHasChanged();
         }
+       
         private void handle_check_out()
         {
-            conf_ch.Show();
+            if (sale_order_detail.last_name.IsNullOrEmpty() ||
+               sale_order_detail.first_name.IsNullOrEmpty() ||
+               sale_order_detail.phone_number == null ||
+               sale_order_detail.address.IsNullOrEmpty())
+            {
+                ino.Notify((NotificationSeverity.Success, "Làm ơn điền đầy đủ thông tin"));
+                return;
+            }
+            else
+            {
+                conf_ch.Show();
+            }
         }
         private async void call_back_confirm()
         {

@@ -32,15 +32,14 @@ namespace DATN.Pages
         private m_cart? cart_item = new m_cart();
         private m_account? account_item = new m_account();
         protected override async Task OnInitializedAsync()
-        {
-            
+        {         
             var uri = iredir.GetUri();
             if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("search_string", out var param1))
             {
                 searchString = param1.First();
             }
-            bookSearch = await bs.GetBookByName(searchString);
             await Task.Delay(500);
+            bookSearch = await bs.GetBookByName(searchString);
             StateHasChanged();
         }
         private void pass_data_book(m_book ele)

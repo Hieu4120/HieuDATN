@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Radzen;
+using System.Linq;
 using static DATN.Services.NotificationServices;
 
 namespace DATN.Pages.Admin.ImportOrder
@@ -26,12 +27,12 @@ namespace DATN.Pages.Admin.ImportOrder
         private IEnumerable<m_genre> genres = new List<m_genre>();
         private IEnumerable<m_supplier> suppliers = new List<m_supplier>();
         List<string> active_form_ind = new List<string>();
-        int item_ind = 0;
+        int item_ind = -1;
         private int im_order_detail_id_init;
         private int supp_id;
         private bool isLoading = false;
         private int? Import_order_id { get; set; }
-        private int form_number = 0;
+/*        private int form_number = 0;*/
         private DateTime? recive_date { get; set; }
         private decimal total_price = 0;
         public byte[] ImgUploaded { get; set; }
@@ -69,11 +70,12 @@ namespace DATN.Pages.Admin.ImportOrder
                 active_form_ind[i] = "";
             }
         }
-        async Task HandleFileSelected(InputFileChangeEventArgs files, int index)
+        private async Task HandleFileSelected(InputFileChangeEventArgs files, int index)
         {
             foreach (var file in files.GetMultipleFiles(maxAllowedFiles))
             {
                 MemoryStream ms = new MemoryStream();
+
                 await file.OpenReadStream(maxFileSize).CopyToAsync(ms);
                 ImgUploaded = ms.ToArray();
                 import_order_detail[index].book_image = ImgUploaded;
@@ -104,13 +106,20 @@ namespace DATN.Pages.Admin.ImportOrder
 
         private async void btn_add_import_order()
         {
-
-            foreach (var ele in import_order_detail)
+            
+            foreach (var ele in  import_order_detail)
             {
-                if (import_order.import_order_id == null || import_order.supplier_id == null ||
-                    import_order.receive_at == null || ele.book_id == null ||
+                var CHK = import_order_detail.Where(col => col.book_id == ele.book_id).ToList();
+                if(CHK.Count() != 1)
+                {
+                    ino.Notify((NotificationSeverity.Success, $"ID sách đã tồn tại {ele.book_id}"));
+                    return;
+                }
+
+                if (import_order?.import_order_id == null || import_order?.supplier_id == null ||
+                    import_order?.receive_at == null || ele?.book_id == null ||
                     ele.book_name == null || ele.book_image == null ||
-                    ele.genre_id == null || ele.author == null ||
+                    ele?.genre_id == null || ele.author == null ||
                     ele.price == null || ele.amount == null ||
                     ele.page_number == null)
                 {
@@ -137,7 +146,6 @@ namespace DATN.Pages.Admin.ImportOrder
                     ino.Notify((NotificationSeverity.Success, "ID Đơn hàng đã tồn tại"));
                     return;
                 }
-
                 if (im_order_detail_id_init != null)
                 {
                     im_order_detail_id_init = await imods.GetId();
@@ -152,8 +160,8 @@ namespace DATN.Pages.Admin.ImportOrder
                 ele.supplier_id = supp_id;
                 ele.import_order_id = (int)Import_order_id;
                 total_price = ((decimal)(total_price + ele.price));
-                isLoading = true;              
             }
+            isLoading = true;
             await imods.CreateRange(import_order_detail);
 
             import_order.supplier_id = supp_id;
@@ -166,17 +174,17 @@ namespace DATN.Pages.Admin.ImportOrder
             await Task.Delay(100);
             import_order_detail = new List<m_import_order_detail>() { };
             Import_order_id = null;
-            suppliers = new List<m_supplier>();
+            //suppliers = new List<m_supplier>();
             recive_date = null;
             isLoading = false;
             StateHasChanged();
         }
-        public void validCheckAll()
+        /*public void validCheckAll()
         {
             foreach (var ele in import_order_detail)
             {
                 
             }
-        }
+        }*/
     }
 }

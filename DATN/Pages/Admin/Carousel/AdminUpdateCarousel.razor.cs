@@ -45,7 +45,7 @@ namespace DATN.Pages.Admin.Carousel
             
             StateHasChanged();
         }
-        async Task HandleFileSelected(InputFileChangeEventArgs files)
+       /*private async Task HandleFileSelected(InputFileChangeEventArgs files)
         {
             foreach (var file in files.GetMultipleFiles(maxAllowedFiles))
             {
@@ -53,7 +53,7 @@ namespace DATN.Pages.Admin.Carousel
                 await file.OpenReadStream(maxFileSize).CopyToAsync(ms);
                 ImgUploaded = ms.ToArray();
             }
-        }
+        }*/
         private async void btn_handle_del_carousel()
         {
             conf.Show();
@@ -69,7 +69,7 @@ namespace DATN.Pages.Admin.Carousel
         {
             isLoading = true;
             carosel_item.create_at = DateTime.Now;
-            carosel_item.carosel_image = ImgUploaded;
+            //carosel_item.carosel_image = ImgUploaded;
             await icas.Update(carosel_item);
             ino.Notify((NotificationSeverity.Success, "Cập nhật thành công"));
             iredir.RedirectNormal("manager-carousel");

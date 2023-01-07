@@ -24,20 +24,23 @@ namespace DATN.Pages
         private ICarouselSevices icas { get; set; }
         [CascadingParameter]
         private Task<AuthenticationState> authenticationStateTask { get; set; }
-        private IEnumerable<mediate_book>? books;
-        private m_book? book_item;
-        private IEnumerable<m_carosel>? carosels;
+        private IEnumerable<mediate_book>? books = Enumerable.Empty<mediate_book>();
+        private m_book? book_item = new m_book();
+        private IEnumerable<m_carosel>? carosels = Enumerable.Empty<m_carosel>();
         private m_cart? cart_item = new m_cart();
         private m_account? account_item = new m_account();
 
         private int cart_id_init;
         private string user;
         private bool CartItemIsExits;
+        private bool IsLoading;
         protected override async Task OnInitializedAsync()
         {
+            IsLoading = true;
             carosels = await icas.GetAllCarousel();
             await Task.Delay(500);
             books = await bs.GetAllJustBookInf();
+            IsLoading = false;
             StateHasChanged();
         }
         private async void pass_data_book(mediate_book ele)

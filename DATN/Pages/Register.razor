@@ -8,6 +8,7 @@
 @inject AuthenticationStateProvider authStateProvider
 @inject NavigationManager navManager
 
+<PageTitle>Đăng ký</PageTitle>
 <EditForm Model="account_n" OnValidSubmit="@btn_add_new_account">
     <DataAnnotationsValidator />
     <div class="container-fluid cus-bg-dark cus-text-secondary">
@@ -55,7 +56,9 @@
 
             <div class="mb-2 ">
                 <button type="submit" class="btn btn-primary">Đăng ký</button>
+                <a href="/login" class="btn btn-primary ms-2">Trở lại</a>
             </div>
+
         </div>
     </div>
 </EditForm>

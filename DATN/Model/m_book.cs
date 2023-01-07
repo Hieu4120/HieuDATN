@@ -21,6 +21,8 @@ namespace DATN.Model
         public string status { get; set; }
         public int number_click { get; set; }
         public int page_number { get; set; }
+        public string book_search_name { get; set; }
+        public string img_url { get; set; }
         public DateTime update_at { get; set; }
         public DateTime release_date { get; set; }
     }

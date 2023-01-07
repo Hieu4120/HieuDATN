@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using DATN.Shared.Components;
 using Radzen;
 using static DATN.Services.NotificationServices;
+using Microsoft.AspNetCore.Components.Forms;
 
 namespace DATN.Pages.Admin.Book
 {
@@ -27,7 +28,7 @@ namespace DATN.Pages.Admin.Book
         private ModalConfirm? conf { set; get; }
         private bool isLoading = false;
         private int get_book_id;
-
+  
         private List<string> status_book_list = new List<string>()
         {
             "Mở bán",
@@ -50,6 +51,7 @@ namespace DATN.Pages.Admin.Book
             supplier_item = await sus.GetSuppById(book_item.supplier_id);
             StateHasChanged();
         }
+        
         private async Task UpdateBook()
         {
             isLoading = true;
@@ -59,7 +61,7 @@ namespace DATN.Pages.Admin.Book
             iredir.RedirectNormal("manager-book");
             isLoading = false;
             StateHasChanged();
-        }
+        }     
         private async void btn_handle_del_book()
         {
             conf.Show();

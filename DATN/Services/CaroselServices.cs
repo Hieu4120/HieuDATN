@@ -41,8 +41,28 @@ namespace DATN.Services
             {
                 try
                 {
-                    var ret = await _context.m_carosels.ToListAsync();
-                    return ret;
+                    var query = await (
+                   from A in _context.m_carosels
+                   select new
+                   {
+                       tiltle = A.tiltle,
+                       content = A.content,
+                       caroimg_url = A.caroimg_url,
+                   }).ToListAsync();
+                    List<m_carosel> Caro_list = new List<m_carosel>();
+                    foreach (var ele in query)
+                    {
+                        if (Caro_list.Count() < 16)
+                        {
+                            Caro_list.Add(new m_carosel()
+                            {
+                                tiltle = ele.tiltle,
+                                content = ele.content,
+                                caroimg_url = ele.caroimg_url,
+                            });
+                        }
+                    }
+                    return Caro_list;
                 }
                 catch (Exception ex)
                 {
@@ -56,9 +76,23 @@ namespace DATN.Services
         {
             using (var _context = _contextFactory.CreateDbContext())
             {
-                var ret = await _context.m_carosels.Where(
-                    col => col.carosel_id.Equals(id)).FirstOrDefaultAsync();
-                return ret;
+                var query = await (
+                  from A in _context.m_carosels
+                  .Where(col => col.carosel_id == id)
+                  select new
+                  {
+                      tiltle = A.tiltle,
+                      content = A.content,
+                      caroimg_url = A.caroimg_url,
+                  }).FirstOrDefaultAsync();
+                m_carosel Caro_item = new m_carosel()
+                {
+                    tiltle = query.tiltle,
+                    content = query.content,
+                    caroimg_url = query.caroimg_url,
+
+                };
+                return Caro_item;
             }
         }
 

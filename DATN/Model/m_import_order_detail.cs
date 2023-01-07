@@ -7,7 +7,7 @@ namespace DATN.Model
         [Key]
         public int import_order_detail_id { get; set; }
         public int import_order_id { get; set; }
-        public int? book_id { get; set; }
+        public int book_id { get; set; }
         public int genre_id { get; set; }
         public int supplier_id { get; set; }
         public byte[] book_image { get; set; }

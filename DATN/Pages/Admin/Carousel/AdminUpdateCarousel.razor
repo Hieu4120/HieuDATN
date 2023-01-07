@@ -47,20 +47,16 @@
                         <div class=" form-group row mb-2 ms-3 col-sm-11">
                             <label class="col-sm-3 col-form-label">Ảnh</label>
                             <div class="col-sm-4">
-                                @if (carosel_item.carosel_image != null)
-                                {
-                                    <img class="cus-width-100"
-                                 src="data:image/bmp;base64,
-                          @(Convert.ToBase64String(carosel_item.carosel_image))" />
-                                }
+                                <img class="cus-width-100"
+                                 src="@carosel_item.caroimg_url" />
                             </div>
                         </div>
-                        <div class=" form-group  mb-2 ms-3 row col-sm-11">
-                            <div class="col-sm-4">
-                                <InputFile class="form-control form-control-sm"
-                                       OnChange="@HandleFileSelected" />
-                            </div>
-                        </div>
+                        @* <div class=" form-group  mb-2 ms-3 row col-sm-11">
+                    <div class="col-sm-4">
+                    <InputFile class="form-control form-control-sm"
+                    OnChange="@HandleFileSelected" />
+                    </div>
+                    </div>*@
                         <div class="form-group row mb-2 ms-3">
                             <div class="col-sm-9 offset-3">
                                 <button type="submit" class="btn btn-primary">Cập nhật</button>

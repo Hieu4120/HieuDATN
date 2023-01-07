@@ -9,9 +9,11 @@
                 Thêm đơn hàng nhập
             </div>
             <div class="card-body">
-                @if (@isLoading)
+                @if (isLoading)
                 {
-                    <DATN.Shared.Components.LoadingComponent />
+                    <div class="container-fluid text-center mt-5 mb-5 p-100">
+                        <DATN.Shared.Components.LoadingComponent />
+                    </div>
                 }
                 else
                 {

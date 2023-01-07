@@ -1,10 +1,12 @@
 ﻿@page "/checkout"
 @using DATN.Shared.Components
+@inject IJSRuntime JS
 <!-- Checkout Start -->
+<PageTitle>Thanh toán</PageTitle>
 @if (Isloading)
 {
-    <div class="mt-5 mb-5">
-        <DATN.Shared.Components.LoadingComponent />
+    <div class="mt-5 mb-5 p-100 text-center">
+        <DATN.Shared.Components.SmallLoadingComponent/>
     </div>
 }
 else
@@ -12,7 +14,7 @@ else
     <div class="container-fluid">
         <div class="row px-xl-5">
             <div class="col-lg-8">
-                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Billing Address</span></h5>
+                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Địa chỉ người nhận</span></h5>
                 <div class="bg-light p-30 mb-5">
                     <EditForm Model="sale_order_detail">
                         <DataAnnotationsValidator />
@@ -32,25 +34,22 @@ else
                                 <InputText @bind-Value="@sale_order_detail.last_name" class="form-control" type="text" />
                             </div>
                             <div class="col-md-6 mb-4">
-                                <div class="text-danger">
-                                    <ValidationMessage For="@(() => sale_order_detail.phone_number)" />
-                                </div>
                                 <label>SĐT</label>
-                                <InputNumber @bind-Value="@sale_order_detail.phone_number" class="form-control" />
+                                <InputNumber @bind-Value="@sale_order_detail.phone_number" class="form-control"/>
                             </div>
                             <div class="col-md-6 mb-4">
                                 <div class="text-danger">
                                     <ValidationMessage For="@(() => sale_order_detail.address)" />
                                 </div>
                                 <label>Địa chỉ</label>
-                                <InputText @bind-Value="@sale_order_detail.address" class="form-control" type="text" />
+                                <InputText @bind-Value="@sale_order_detail.address" class="form-control" type="text"/>
                             </div>
                         </div>
                     </EditForm>
                 </div>
             </div>
             <div class="col-lg-4">
-                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Order Total</span></h5>
+                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Tổng đơn hàng</span></h5>
                 <div class="bg-light p-30 mb-5">
                     @if (DataList != null && DataList.Count() > 0)
                     {
@@ -89,3 +88,4 @@ else
 }
 <ModalCheckout ConfirmCallBack="call_back_confirm" @ref=conf_ch />
 <!-- Checkout End -->
+<RadzenNotification />

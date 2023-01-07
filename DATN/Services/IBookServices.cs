@@ -11,7 +11,7 @@ namespace DATN.Services
         Task<IEnumerable<mediate_book_detail>> GetAllBookWithGenre();
         Task<IEnumerable<m_book>> GetAllBook();
         Task<IEnumerable<mediate_book>> GetBookPriceFilter();
-        Task<IEnumerable<m_book>> GetBookByName(string bookname);
+        Task<IEnumerable<m_book>> GetBookByName(string booksearchname);
         Task<IEnumerable<m_book>> GetBookByListName(List<string> bookname);
         Task<bool> Updaterange(List<m_book> book_list);
         Task<IEnumerable<m_book>> GetBookByGenre(int genre_id);

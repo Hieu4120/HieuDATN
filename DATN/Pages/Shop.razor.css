@@ -48,3 +48,13 @@
     border-color: #FFD333;
 }
 
+a:hover {
+    color: #e6b400;
+    text-decoration: underline;
+}
+
+a {
+    text-decoration: none;
+    background-color: transparent;
+}
+

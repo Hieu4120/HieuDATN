@@ -1,0 +1,27 @@
+
+.div-container[b-cpsrt4q3k2] {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+    display: flex;
+}
+
+.loader[b-cpsrt4q3k2] {
+    border: 8px solid #f3f3f3; /* Light grey */
+    border-top: 8px solid #FFD333; /* Blue */
+    border-radius: 50%;
+    width: 55px;
+    height: 55px;
+    animation: spin-b-cpsrt4q3k2 1s linear infinite;
+}
+
+@keyframes spin-b-cpsrt4q3k2 {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
